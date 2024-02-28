@@ -1,0 +1,15 @@
+{
+	"name": "cortex-cs",
+	"version": "0.0.1",
+	"devDependencies": {
+		"laravel-mix": "^6.0.43",
+		"replace-in-files": "^3.0.0",
+		"sass-loader": "^12.6.0",
+		"sass": "^1.52.1"
+	},
+	"license": "Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at CortexRPG.com Cortex is © 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission. If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.",
+	"scripts": {
+		"build": "npx mix --production",
+		"watch": "npx mix --production -- --watch"
+	}
+}

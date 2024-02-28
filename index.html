@@ -1,208 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta property="og:image" content="images/cortex_sheet_preview.png"/>
-	<link href="sheet.css" rel="stylesheet">
-	<script src="sheet.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cortex Prime Character Sheet Toolkit</title>
+	<link rel="stylesheet" href="css/app.min.css">
 </head>
-<body ondragenter="on_drag_enter(event);" ondragover="on_drag_enter(event);" ondrop="on_drop(event);" ondragleave="on_drag_leave(event);">
+<body>
 
-<!-- URL Modal -->
-<div id="modal-bg" onclick="close_modal(event)"></div>
-<div id='url-modal' class='modal non-serialized'>
-	<p>Enter URL</p>
-	<input id='url' value="http://" onchange="close_modal(event)" onkeyup="if (event.key == 'Enter') { close_modal(event) }"/>
-</div>
-<div id='help-modal' class='modal'>
-	<div id="top">
-		<table>
-			<tr>
-				<td class="help-section-header" colspan=2>To save a character, you can either press Ctrl+S or click the Save button from the left-side menu.</td>
-			</tr>
-			<tr>
-				<td class="help-section-header" colspan=2>To load a character, drag and drop the .json file from your computer to the browser window.</td>
-			</tr>
-			<tr>
-				<td class="help-section-header" colspan=2>An URL selector icon will appear if you hover over the portrait. Once you have selected a portrait you can position it by dragging it and scale it if you hold Ctrl down while dragging the image.</td>
-			</tr>
-			<tr>
-				<td class="help-section-header" colspan=2>Please use the + icons to add trait groups, traits and attributes.<br></td>
-			</tr>
-			<tr>
-				<td><div class='add-item'></div></td><td>Add a trait group, trait or attribute.</td>
-			</tr>
-			<tr>
-				<td><div class='remove-item'></div></td><td>Remove a trait group, trait or attribute.</td>
-			</tr>
-			<tr>
-				<td class="help-section-header" colspan=2>You can use the following numbers when editing dice fields (abilities, trait values, etc)</td>
-			</tr>
-			<tr><td>4</td><td><c>4</c></td></tr>
-			<tr><td>6</td><td><c>6</c></td></tr>
-			<tr><td>8</td><td><c>8</c></td></tr>
-			<tr><td>0</td><td><c>0</c></td></tr>
-			<tr><td>2</td><td><c>2</c></td></tr>
-			<tr>
-				<td class="help-section-header" colspan=2>When editing free text (distinctions, traits, etc), you can use the following:</td>
-			</tr>
-			<tr><td>d4</td><td><c>4</c></td></tr>
-			<tr><td>d6</td><td><c>6</c></td></tr>
-			<tr><td>d8</td><td><c>8</c></td></tr>
-			<tr><td>d10</td><td><c>0</c></td></tr>
-			<tr><td>d12</td><td><c>2</c></td></tr>
-			<tr><td>PP</td><td><pp></pp></td></tr>
-			<tr><td>[Something]</td><td><ref>Something</ref></td></tr>
-			<tr><td>&lt;b&gt;Bold&lt;/b&gt;</td><td><b>Bold</b></td></tr>
-			<tr><td>&lt;i&gt;Italic&lt;/i&gt;</td><td><i>Italic</i></td></tr>
-			<tr><td>- List item</td><td><ul><li>List item</li></ul></td></tr>
-			<tr>
-				<td class="help-section-header" colspan=2>You can use italic and bold in trait titles as well. Once you have the text selected, press</td>
-			</tr>
-			<tr><td>Ctrl+B</td><td><b>Bold</b></td></tr>
-			<tr><td>Ctrl+I</td><td><i>Italic</i></td></tr>
-			<tr>
-				<td class="help-section-header" colspan=2>You can select the stye of a trait group by clicking on the <i class="fa-ellipsis-v"></i> icon, then selecting a style from the "Style" sub-menu.</td>
-			</tr>
-			<tr>
-				<td class="help-section-header" colspan=2>You can delete a trait group by clicking on the <i class="fa-ellipsis-v"></i> icon, then selecting the "Delete" option.</td>
-			</tr>
-		</table>
-	</div>
-	<div id="bottom">
-		<div id="legal"> 
-			Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at <a href="https://cortexrpg.com">CortexRPG.com</a>
-			Cortex is ©️ 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission.
-			If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.
-		</div>
-		<div id="close">
-			<button onclick="close_modal(event)">OK</button>
-		</div>
-	</div>
-</div>
+<div id="app" class="app">
 
-<!-- Context menu -->
-<div id="context-menu" class='context-menu non-serialized'>
-	<ul>
-		<li>Set style<i class="fa-angle-right"></i>
-			<div class='context-menu' id="styles">
-				<input type="radio" name="style" id="style-default" onchange="set_style(event);"/><label for="style-default">Default</label>
-				<input type="radio" name="style" data-style="values" id="style-compact-two-columns" onchange="set_style(event);"/><label for="style-compact-two-columns">Compact two-columns</label>
-				<input type="radio" name="style" data-style="detailed-values" id="style-detailed-two-columns" onchange="set_style(event);"/><label for="style-detailed-two-columns">Detailed two-columns</label>
-				<input type="radio" name="style" data-style="signature-asset" id="style-asset" onchange="set_style(event);"/><label for="style-asset">Asset</label>
-				<input type="radio" name="style" data-style="resources" id="style-resource" onchange="set_style(event);"/><label for="style-resource">Resource</label>
-				<input type="radio" name="style" data-style="stress" id="style-stress" onchange="set_style(event);"/><label for="style-stress">Stress</label>
-			</div>
-		</li>
-		<li onclick="context_menu_remove_item(event);">Delete</li>
-	</ul>
-</div>
+	
 
-<!-- Menu -->
-<div id="menu" class='no-print'>
-<!--	<div id="reset" onclick='reset(event)'></div> -->
-	<div id="save" onclick='save_character(event)'></div>
-	<div id="help" onclick='show_help(event)'></div>
 </div>
+	
+<script src="//cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="js/app.min.js"></script>
 
-<!-- PAGE -->
-<div class='page-container'>
-<div id='page1' class='page'>
-	<div class='content'>
-		<div class='row' id='name'>
-			<div contenteditable class='title' id='character-name' onchange='update_title()'>NAME</div>
-			<div class='ruler'><svg height="4" width="100%"><line x1="0" y1="0" x2="10000" y2="0" style="stroke:#C50852;stroke-width:4pt"/></svg></div>
-		</div>
-		<div class='left'>
-			<div contenteditable id='description'>Description.</div>
-			<div id='distinctions' class='trait-group'>
-				<div class='header'>DISTINCTIONS</div>
-				<div>
-					<h2 contenteditable class="inline">Distinction 1</h2><h2><c contenteditable>8</c></h2>
-					<hr>
-					<div contenteditable><ul><li><i>Hinder:</i> Gain a <pp></pp> when you switch out this distinction's <c>8</c> for a <c>4</c>.</li></ul></div>
-					<h2 contenteditable class="inline">Distinction 2</h2><h2><c contenteditable>8</c></h2>
-					<hr>
-					<div contenteditable><ul><li><i>Hinder:</i> Gain a <pp></pp> when you switch out this distinction's <c>8</c> for a <c>4</c>.</li></ul></div>
-					<h2 contenteditable class="inline">Distinction 3</h2><h2><c contenteditable>8</c></h2>
-					<hr>
-					<div contenteditable><ul><li><i>Hinder:</i> Gain a <pp></pp> when you switch out this distinction's <c>8</c> for a <c>4</c>.</li></ul></div>
-				</div>
-			</div>
-			<div class='trait-group template'>
-				<div id="context-menu-button" class='no-print' onclick="show_context_menu(event)"></div>
-				<div class='header' onblur="set_trait_group_name(event)" contenteditable>NEW TRAIT GROUP</div>
-				<div>
-					<div class='trait template'>
- 						<div id="remove-item" class='no-print' onclick="remove_item(event)"></div>
-						<h2 class='inline' contenteditable>New trait</h2><h2><c contenteditable>6</c></h2>
-						<hr>
-						<div contenteditable>Trait description.</div>
-					</div>
-					<div id="trait-placeholder" class='add-item no-print' onclick="add_trait(event)" data-onload="add_trait">
-					</div>
-				</div>
-				<div>
-					<div class='trait template'>
- 						<div id="remove-item" class='no-print' onclick="remove_item(event)"></div>
-						<h2 class='inline' contenteditable>New trait</h2><h2><c contenteditable>6</c></h2>
-						<hr>
-						<div contenteditable>Trait description.</div>
-					</div>
-					<div id="trait-placeholder" class='add-item no-print' onclick="add_trait(event)" data-onload="add_trait">
-					</div>
-				</div>
-			</div>
-			<div id="trait-group-placeholder" class='add-item no-print' onclick="add_trait_group(event)" data-onload="add_trait_group">
-			</div>
-		</div>
-		<div class='right'>
-			<div id="portrait">
-				<div id="circle" width=100% height=100%>
-					<div id="edit-image" class="no-print" onclick="change_image_url(event)"></div>
-					<img src="" width="110%" draggable='false' id='image' onpointerdown="start_drag(event)" onpointerup="end_drag(event)" onpointermove="drag_move(event)" data-x="0" data-y="0" data-zoom="1"></img>
-				</div>
-			</div>
-            <div id="attribute-curve" xmlns="http://www.w3.org/2000/svg">
-                <svg viewBox="0 0 62 62" width="62mm" height="30mm" preserveAspectRatio="xMidYMid slice">
-                    <path d="M -17 -25 A 32 32 0 0 0 79 0" stroke="#C50852" stroke-width="0.5mm" fill="transparent" vector-effect="non-scaling-stroke"/>
-                </svg>
-            </div>
-			<div id="attributes">
-                <div class='attribute template'>
-                    <c contenteditable>8</c>
-					<div contenteditable>Attribute</div>
-					<div id="remove-item" class='no-print' onclick="remove_attribute(event)"></div>
-                </div>
-                <div id="attribute-placeholder" class='add-item no-print' onclick="add_attribute(event)" data-onload="add_attribute"></div>
-			</div>
-			<div class='trait-group template'>
-				<div class='header' onblur='set_trait_group_name(event)' contenteditable>NEW TRAIT GROUP</div>
-				<div>
-					<div class='trait template'>
-						<h2 class='inline' contenteditable>New trait</h2><h2><c contenteditable>6</c></h2>
-						<hr>
-						<div contenteditable>Trait description.</div>
-					</div>
-					<div id="trait-placeholder" class='add-item no-print' onclick="add_trait(event)" data-onload="add_trait">
-					</div>
-				</div>
-			</div>
-			<div id="trait-group-placeholder" class='add-item no-print' onclick="add_trait_group(event)" data-onload="add_trait_group">
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- Disclaimer -->
-<div id="disclaimer">
-<div id="logo" class="non-serialized">
-<a href="https://cortexrpg.com" target="_blank"><img src="images/Community_Cortex_PRIMED_BY_LBG.png"></a>
-</div>
-<div id="legal"> 
-Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at CortexRPG.com 
-Cortex is ©️ 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission.
-If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.
-</div>
-</div>
 </body>
 </html>

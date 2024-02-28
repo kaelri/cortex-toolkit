@@ -185,7 +185,7 @@ ref
 #character-name
 {
 	text-transform: uppercase;
-	contenteditable
+	// contenteditable
 }
 .ruler
 {
@@ -1608,37 +1608,3 @@ ref
 {
 	left: 71mm;
 }
-
-
-//.stress.trait-group .trait
-//{
-//	text-align: justify;
-//	width: calc(100% - 10pt);
-//	margin-top: 2mm;
-//	margin-bottom: 2mm;
-//}
-//.stress .trait > div
-//{
-//	display: inline;
-//	margin-top: 2mm;
-//	margin-bottom: 2mm;
-//}
-//.stress .trait div + div
-//{
-//	margin-top: 2mm;
-//}
-////.stress .trait > div:before
-////{
-////	display: inline;
-////	content: ':';
-////	margin: 0 1mm 0 -1mm;
-////}
-//.stress .trait #remove-item:before
-//{
-//	left: -9mm;
-//	top: -2mm;
-//}
-//.stress hr + div
-//{
-//	font-style: normal;
-//}
