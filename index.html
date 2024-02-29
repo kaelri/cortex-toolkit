@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta property="og:image" content="images/cortex_sheet_preview.png"/>
 	<title>Cortex Prime Character Sheet Toolkit</title>
 	<link rel="stylesheet" href="css/app.min.css">
 </head>
@@ -10,9 +11,214 @@
 
 <div id="app" class="app">
 
-	
+	<div class="pages">
 
-</div>
+		<!-- PAGE -->
+		<div id="page-1" class="page">
+			<div class="content">
+
+				<!-- CHARACTER NAME -->
+				<div class="row" id="name">
+
+					<div class="title character-name"
+						v-html="name"
+						contenteditable
+						@blur="editContent( $event, ['name'] )"
+					></div>
+
+					<div class="ruler">
+						<svg height="4" width="100%"><line x1="0" y1="0" x2="10000" y2="0" style="stroke:#C50852;stroke-width:4pt"/></svg>
+					</div>
+
+				</div>
+
+				<!-- LEFT COLUMN -->
+				<div class="left">
+
+					<!-- CHARACTER DESCRIPTION -->
+					<div id="description"
+						v-html="description"
+						contenteditable
+					></div>
+
+					<!-- DISTINCTIONS -->
+					<div id="distinctions" class="trait-group">
+
+						<div class="trait-group-header">Distinctions</div>
+
+						<div class="trait-group-items">
+							<div class="trait-group-item" v-for="(distinction, d) in distinctions">
+
+								<h2 class="inline"
+									v-html="distinction.name"
+									contenteditable
+								></h2>
+								
+								<h2>
+									<span class="c"
+										contenteditable
+										v-html="distinction.value"
+									></span>
+								</h2>
+
+								<hr>
+
+								<div v-html="distinction.description"
+									contenteditable
+								></div>
+
+								<ul class="distinction-sfx" v-if="distinction.sfx.length">
+
+									<li v-for="sfx in distinction.sfx">
+
+										<span class="sfx-name"
+											v-html="sfx.name"
+											contenteditable
+										></span>:
+
+										<span class="sfx-description"
+											v-html="sfx.description"
+											contenteditable
+										></span>
+
+									</li>
+
+								</ul>
+
+							</div>
+						</div>
+
+					</div>
+
+					<!-- TRAITS -->
+					<div :class="'trait-group ' + traitGroup.style"
+						v-for="traitGroup in traitGroups"
+						v-if="traitGroup.page === 1 && traitGroup.column === 1"
+					>
+
+						<div id="context-menu-button" class="no-print"></div>
+
+						<div class="trait-group-header" contenteditable v-html="traitGroup.name"></div>
+
+						<div class="traits">
+							<div class="trait" v-for="trait in traitGroup.traits">
+
+								<div id="remove-item" class="no-print"></div>
+
+								<h2 class="inline"
+									v-html="trait.name"
+									contenteditable
+								></h2>
+								
+								<h2>
+									<span class="c"
+										contenteditable
+										v-html="trait.value"
+									></span>
+								</h2>
+
+								<hr>
+
+								<div contenteditable v-html="trait.description"></div>
+
+							</div>
+
+							<div id="trait-placeholder" class="add-item no-print"></div>
+
+						</div>
+					</div>
+
+					<!-- BUTTON: ADD TRAIT GROUP -->
+					<div id="trait-group-placeholder" class="add-item no-print"></div>
+
+				</div>
+
+				<!-- RIGHT COLUMN -->
+				<div class="right">
+
+					<!-- IMAGE -->
+					<div id="portrait">
+						<div id="circle" width=100% height=100%>
+							<div id="edit-image" class="no-print"></div>
+							<img src="" width="110%" draggable="false" id="image"></img>
+						</div>
+					</div>
+
+					<!-- ATTRIBUTES -->
+					<div id="attribute-curve" xmlns="http://www.w3.org/2000/svg">
+						<svg viewBox="0 0 62 62" width="62mm" height="30mm" preserveAspectRatio="xMidYMid slice">
+							<path d="M -17 -25 A 32 32 0 0 0 79 0" stroke="#C50852" stroke-width="0.5mm" fill="transparent" vector-effect="non-scaling-stroke"/>
+						</svg>
+					</div>
+					<div id="attributes">
+						<div class="attribute template">
+							<span class="c" contenteditable>8</span>
+							<div contenteditable>Attribute</div>
+							<div id="remove-item" class="no-print"></div>
+						</div>
+						<div id="attribute-placeholder" class="add-item no-print"></div>
+					</div>
+
+					<!-- TRAITS -->
+					<div :class="'trait-group ' + traitGroup.style"
+						v-for="traitGroup in traitGroups"
+						v-if="traitGroup.page === 1 && traitGroup.column === 2"
+					>
+
+						<div id="context-menu-button" class="no-print"></div>
+
+						<div class="trait-group-header" contenteditable v-html="traitGroup.name"></div>
+
+						<div class="traits">
+							<div class="trait" v-for="trait in traitGroup.traits">
+
+								<div id="remove-item" class="no-print"></div>
+
+								<h2 class="inline"
+									v-html="trait.name"
+									contenteditable
+								></h2>
+								
+								<h2>
+									<span class="c"
+										contenteditable
+										v-html="trait.value"
+									></span>
+								</h2>
+
+								<hr>
+
+								<div contenteditable v-html="trait.description"></div>
+
+								<div id="trait-placeholder" class="add-item no-print"></div>
+
+							</div>
+						</div>
+
+					</div>
+
+					<!-- BUTTON: ADD TRAIT GROUP -->
+					<div id="trait-group-placeholder" class="add-item no-print"></div>
+				</div>
+
+			</div> <!-- .content -->
+		</div> <!-- .page -->
+	</div> <!-- .pages -->
+</div> <!-- #app -->
+
+<!-- Disclaimer -->
+<footer>
+	<div id="disclaimer">
+		<div id="logo" class="non-serialized">
+			<a href="https://cortexrpg.com" target="_blank"><img src="images/Community_Cortex_PRIMED_BY_LBG.png"></a>
+		</div>
+		<div id="legal"> 
+			<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at CortexRPG.com </p>
+			<p>Cortex is ©️ 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission.</p>
+			<p>If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.</p>
+		</div>
+	</div>
+</footer>
 	
 <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="js/app.min.js"></script>
