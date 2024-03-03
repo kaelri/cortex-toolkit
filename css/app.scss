@@ -193,7 +193,7 @@ hr {
 	margin-top: 20pt;
 	display: flex;
 }
-.trait-group > div:not(.trait-group-header) {
+.trait-group div:not(.trait-group-header) {
 	display: block;
 	margin-top: 0pt;
 	margin-left: 13pt;
@@ -525,7 +525,7 @@ hr {
 .roles div.trait {
     margin-bottom: 3mm;
 }
-.roles .trait c:before {
+.roles .trait .c:before {
     position: absolute;
     font-size: 20pt;
 	content: " ";
@@ -567,7 +567,7 @@ hr {
     font-size: 20pt;
 	display: block;
 }
-#attributes div c:before {
+#attributes div .c:before {
     position: absolute;
     font-size: 20pt;
 	content: " ";
@@ -609,7 +609,7 @@ hr {
 //    left: 176mm;
 //}
 #attribute-curve {
-    display: none;
+    // display: none;
     position: absolute;
     left: 118mm;
     top: 98mm;
@@ -740,7 +740,7 @@ hr {
 .values div.trait {
     margin-bottom: 3mm;
 }
-.values .trait c:before {
+.values .trait .c:before {
     position: absolute;
     font-size: 20pt;
 	content: " ";
