@@ -1,7 +1,8 @@
-Vue.component('cortexCharacterSheet', {
+Vue.component('characterSheet', {
 
 	props: {
 		character: Object,
+		editable:  Boolean
 	},
 
 	data: function() {
@@ -10,7 +11,7 @@ Vue.component('cortexCharacterSheet', {
 	},
 
 	/*html*/
-	template: `<article class="cortex-character-sheet">
+	template: `<article class="character-sheet">
 	
 		<div class="pages">
 
@@ -357,7 +358,6 @@ Vue.component('cortexCharacterSheet', {
 					break;
 			}
 
-			// localStorage.setItem('cortexCS', JSON.stringify(this.$data));
 			this.$emit('edited', this.export() );
 
 		},

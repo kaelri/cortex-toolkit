@@ -1,0 +1,24 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://cortex.engard.me/cortex_character_schema.json",
+	"title": "Cortex Prime character",
+	"description": "A JSON schema for a Cortex Prime character sheet",
+	"type" : "object",
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "The character’s name."
+		},
+		"description": {
+			"type": "string",
+			"description": "A one-line summary of the character."
+		},
+		"distinctions": {
+			"type": "array",
+			"description": "The character’s distinctions.",
+			"items": {
+				"type": "string"
+			}
+		}
+	}
+}

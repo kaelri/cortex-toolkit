@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		el: '#cortex-tools',
 
 		data: {
+			baseURL: window.location.href,
 			character: null,
 		},
 
@@ -15,12 +16,34 @@ document.addEventListener('DOMContentLoaded', () => {
 		},
 
 		/*html*/
-		template: `<cortex-character-sheet
-			v-if="character"
-			:character="character"
-			@edited="setCharacter"
-		></cortex-character-sheet>`,
+		template: `<article id="cortex-tools">
+		
+			<header></header>
+			
+			<!-- CHARACTER SHEET -->
+			<character-sheet
+				v-if="character"
+				:character="character"
+				:editable="true"
+				@edited="setCharacter"
+			></character-sheet>
 
+			<!-- FOOTER -->
+			<footer>
+				<div id="disclaimer">
+					<div id="logo" class="non-serialized">
+						<a href="https://cortexrpg.com" target="_blank"><img src="images/Community_Cortex_PRIMED_BY_LBG.png"></a>
+					</div>
+					<div id="legal"> 
+						<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at CortexRPG.com </p>
+						<p>Cortex is ©️ 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission.</p>
+						<p>If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.</p>
+					</div>
+				</div>
+			</footer>
+			
+		</article>`,
+		
 		mounted() {
 
 			this.loadLocal();
@@ -29,161 +52,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		methods: {
 
-			createDefaultCharacter() {
-				return {
-					name: 'NAME',
-					description: 'Description',
-					distinctions: [
-						{
-							name: 'Distinction 1',
-							value: 8,
-							description: 'Trait description',
-							sfx: [
-								{
-									name: 'Hinder',
-									description: 'Gain a PP when you switch out this distinction’s d8 for a d4.',
-								}
-							]
-						},
-						{
-							name: 'Distinction 2',
-							value: 8,
-							description: 'Trait description',
-							sfx: [
-								{
-									name: 'Hinder',
-									description: 'Gain a PP when you switch out this distinction’s d8 for a d4.',
-								}
-							]
-						},
-						{
-							name: 'Distinction 3',
-							value: 8,
-							description: 'Trait description',
-							sfx: [
-								{
-									name: 'Hinder',
-									description: 'Gain a PP when you switch out this distinction’s d8 for a d4.',
-								}
-							]
-						}
-					],
-					attributes: [
-						{
-							name: 'Attribute 1',
-							value: 8,
-							description: 'Trait description.'
-						},
-						{
-							name: 'Attribute 2',
-							value: 8,
-							description: 'Trait description.'
-						},
-						{
-							name: 'Attribute 3',
-							value: 8,
-							description: 'Trait description.'
-						}
-					],
-					sets: [
-						{
-							name: 'New Trait Group',
-							style: 'default',
-							page: 1,
-							column: 1,
-							traits: [
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 1,
-								},
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 1,
-								},
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 1,
-								}
-							]
-						},
-						{
-							name: 'New Trait Group',
-							style: 'values',
-							page: 1,
-							column: 1,
-							traits: [
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 1,
-								},
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 1,
-								},
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 1,
-								},
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 2,
-								},
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 2,
-								}
-							]
-						},
-						{
-							name: 'New Trait Group',
-							style: 'signature-asset',
-							page: 1,
-							column: 2,
-							traits: [
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 1,
-								},
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 1,
-								},
-								{
-									name: 'New trait',
-									value: 6,
-									description: 'Trait description',
-									column: 1,
-								}
-							]
-						}
-					],
-					image: {
-						value: '',
-						x: 0,
-						y: 0,
-						zoom: 1
-					},
-				}
+			async createDefaultCharacter() {
+
+				let character = await fetch( this.baseURL + 'data/cortex_character_default.json' )
+				.then( response => response.json() );
+
+				//+ Check for errors
+
+				// character.id = crypto.randomUUID();
+
+				return character;
+
 			},
 
 			setCharacter( character ) {
@@ -191,11 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
 				this.saveLocal();
 			},
 
-			loadLocal() {
+			async loadLocal() {
 
 				let character = null;
 
-				let localJSON = localStorage.getItem('cortexCS');
+				let localJSON = localStorage.getItem('cortexToolsData');
 				if ( localJSON && localJSON.length ) {
 
 					let localData = JSON.parse(localJSON);
@@ -206,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				}
 
 				if ( !character ) {
-					character = this.createDefaultCharacter();
+					character = await this.createDefaultCharacter();
 				}
 
 				this.character = character;
@@ -214,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			},
 
 			saveLocal() {
-				localStorage.setItem('cortexCS', JSON.stringify({
+				localStorage.setItem('cortexToolsData', JSON.stringify({
 					character: this.character,
 				}));
 			},
