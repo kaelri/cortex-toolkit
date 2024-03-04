@@ -306,10 +306,10 @@ Vue.component('characterSheet', {
 							distinction.name = this.sanitizeString(content);
 							break;
 						case 'value':
-							distinction.name = Number(content);
+							distinction.value = Number(content);
 							break;
 						case 'description':
-							distinction.name = this.sanitizeString(content);
+							distinction.description = this.sanitizeString(content);
 							break;
 						case 'sfx':
 							let s = location[3];
