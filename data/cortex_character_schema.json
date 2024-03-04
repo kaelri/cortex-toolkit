@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
-	"$id": "https://cortex.engard.me/cortex_character_schema.json",
+	"$id": "https://cortex.engard.me/data/cortex_character_schema.json",
 	"title": "Cortex Prime character",
 	"description": "A JSON schema for a Cortex Prime character sheet",
 	"type" : "object",
