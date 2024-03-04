@@ -42,99 +42,15 @@
 		{
 			"name": "Attribute 1",
 			"value": 8,
-			"description": "Trait description."
-		},
-		{
-			"name": "Attribute 2",
-			"value": 8,
-			"description": "Trait description."
-		},
-		{
-			"name": "Attribute 3",
-			"value": 8,
-			"description": "Trait description."
+			"description": "Trait description"
 		}
 	],
 	"sets": [
 		{
-			"name": "New Trait Group",
+			"name": "New trait set",
 			"style": "default",
 			"column": 1,
 			"traits": [
-				{
-					"name": "New trait",
-					"value": 6,
-					"description": "Trait description",
-					"column": 1
-				},
-				{
-					"name": "New trait",
-					"value": 6,
-					"description": "Trait description",
-					"column": 1
-				},
-				{
-					"name": "New trait",
-					"value": 6,
-					"description": "Trait description",
-					"column": 1
-				}
-			]
-		},
-		{
-			"name": "New Trait Group",
-			"style": "values",
-			"column": 1,
-			"traits": [
-				{
-					"name": "New trait",
-					"value": 6,
-					"description": "Trait description",
-					"column": 1
-				},
-				{
-					"name": "New trait",
-					"value": 6,
-					"description": "Trait description",
-					"column": 1
-				},
-				{
-					"name": "New trait",
-					"value": 6,
-					"description": "Trait description",
-					"column": 1
-				},
-				{
-					"name": "New trait",
-					"value": 6,
-					"description": "Trait description",
-					"column": 2
-				},
-				{
-					"name": "New trait",
-					"value": 6,
-					"description": "Trait description",
-					"column": 2
-				}
-			]
-		},
-		{
-			"name": "New Trait Group",
-			"style": "signature-asset",
-			"column": 2,
-			"traits": [
-				{
-					"name": "New trait",
-					"value": 6,
-					"description": "Trait description",
-					"column": 1
-				},
-				{
-					"name": "New trait",
-					"value": 6,
-					"description": "Trait description",
-					"column": 1
-				},
 				{
 					"name": "New trait",
 					"value": 6,
