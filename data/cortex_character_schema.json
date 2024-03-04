@@ -16,9 +16,7 @@
 		"distinctions": {
 			"type": "array",
 			"description": "The character’s distinctions.",
-			"items": {
-				"type": "string"
-			}
+			"items": {}
 		}
 	}
 }

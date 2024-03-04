@@ -1,0 +1,23 @@
+name: Publish to Production
+on:
+  push:
+    branches: [ main ]
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get Code
+      uses: actions/checkout@v2.1.0
+      with:
+        fetch-depth: 10
+    - name: Sync Files
+      shell: bash
+      env:
+        FTP_URL:      ${{ secrets.FTP_SERVER }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      run: |
+        sudo apt-get update
+        sudo apt-get -qq install git-ftp
+        git ftp push --force --auto-init --verbose --syncroot ./ --user "$FTP_USERNAME" --passwd "$FTP_PASSWORD" --insecure "$FTP_URL"

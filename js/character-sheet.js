@@ -100,7 +100,7 @@ Vue.component('characterSheet', {
 						<!-- TRAITS -->
 						<div :class="'trait-group ' + set.style"
 							v-for="(set, s) in sets"
-							v-if="set.page === 1 && set.column === 1"
+							v-if="set.column === 1"
 						>
 
 							<div id="context-menu-button" class="no-print"></div>
@@ -115,7 +115,9 @@ Vue.component('characterSheet', {
 
 								<div class="trait" v-for="(trait, t) in set.traits" v-if="trait.column === column">
 
-									<div id="remove-item" class="no-print"></div>
+									<div id="remove-item" class="no-print"
+										@click.prevent="removeTrait(s,t)"
+									></div>
 
 									<h2 class="inline"
 										v-html="trait.name"
@@ -142,15 +144,19 @@ Vue.component('characterSheet', {
 								</div>
 
 								<!-- BUTTON: ADD TRAIT -->
-								<div id="trait-placeholder" class="add-item no-print"></div>
+								<div id="trait-placeholder" class="add-item no-print"
+									@click.prevent="addTrait( s, column )"
+								></div>
 
 							</div>
 
 						</div>
 
 						<!-- BUTTON: ADD TRAIT GROUP -->
-						<div id="trait-group-placeholder" class="add-item no-print"></div>
-
+						<div id="trait-group-placeholder" class="add-item no-print"
+							@click.prevent="addSet(1)"
+						></div>
+						
 					</div>
 
 					<!-- RIGHT COLUMN -->
@@ -189,19 +195,23 @@ Vue.component('characterSheet', {
 									@blur="editContent( $event, ['attributes', a, 'name'] )"
 								></div>
 
-								<div id="remove-item" class="no-print"></div>
+								<div id="remove-item" class="no-print"
+									@click.prevent="removeAttribute(a)"
+								></div>
 
 							</div>
 
 							<!-- BUTTON: ADD ATTRIBUTE -->
-							<div id="attribute-placeholder" class="add-item no-print"></div>
+							<div id="attribute-placeholder" class="add-item no-print"
+								@click.prevent="addAttribute()"
+							></div>
 							
 						</div>
 
 						<!-- TRAITS -->
 						<div :class="'trait-group ' + set.style"
 							v-for="(set, s) in sets"
-							v-if="set.page === 1 && set.column === 2"
+							v-if="set.column === 2"
 						>
 
 							<div id="context-menu-button" class="no-print"></div>
@@ -216,7 +226,9 @@ Vue.component('characterSheet', {
 
 								<div class="trait" v-for="(trait, t) in set.traits" v-if="trait.column === column">
 
-									<div id="remove-item" class="no-print"></div>
+									<div id="remove-item" class="no-print"
+										@click.prevent="removeTrait(s,t)"
+									></div>
 
 									<h2 class="inline"
 										v-html="trait.name"
@@ -243,14 +255,19 @@ Vue.component('characterSheet', {
 								</div>
 
 								<!-- BUTTON: ADD TRAIT -->
-								<div id="trait-placeholder" class="add-item no-print"></div>
+								<div id="trait-placeholder" class="add-item no-print"
+									@click.prevent="addTrait( s, column )"
+								></div>
 
 							</div>
 
 						</div>
 
 						<!-- BUTTON: ADD TRAIT GROUP -->
-						<div id="trait-group-placeholder" class="add-item no-print"></div>
+						<div id="trait-group-placeholder" class="add-item no-print"
+							@click.prevent="addSet(2)"
+						></div>
+
 					</div>
 
 				</div> <!-- .content -->
@@ -397,7 +414,76 @@ Vue.component('characterSheet', {
 
 			return `left: ${cssLeft}; top: ${cssTop};`;
 
-		}
+		},
+		
+		addSet( columnID ) {
+
+			this.sets.push({
+				name: 'New trait group',
+				style: 'default',
+				column: columnID,
+				traits: [
+					{
+						name: 'New trait',
+						value: 6,
+						description: 'Trait description',
+						column: 1
+					}
+				],
+			});
+
+			this.$emit('edited', this.export() );
+
+		},
+		
+		addTrait( setID, columnID ) {
+
+			let set = this.sets[setID];
+
+			set.traits.push({
+				name: 'New trait',
+				value: 6,
+				description: 'Trait description',
+				column: columnID
+			});
+
+			this.$set(this.sets, setID, set);
+
+			this.$emit('edited', this.export() );
+
+		},
+		
+		removeTrait( setID, traitID ) {
+
+			let set = this.sets[setID];
+
+			set.traits.splice(traitID, 1);
+
+			this.$set(this.sets, setID, set);
+
+			this.$emit('edited', this.export() );
+
+		},
+		
+		addAttribute() {
+
+			this.attributes.push({
+				name: 'Attribute',
+				value: 8,
+				description: 'Description'
+			});
+
+			this.$emit('edited', this.export() );
+
+		},
+		
+		removeAttribute( attributeID ) {
+
+			this.attributes.splice(attributeID, 1);
+
+			this.$emit('edited', this.export() );
+
+		},
 
 	}
 
