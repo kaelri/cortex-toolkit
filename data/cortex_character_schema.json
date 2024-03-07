@@ -5,6 +5,10 @@
 	"description": "A JSON schema for a Cortex Prime character sheet",
 	"type" : "object",
 	"properties": {
+		"version": {
+			"type": "integer",
+			"description": "The version of the Cortex Prime character sheet schema used."
+		},
 		"name": {
 			"type": "string",
 			"description": "The character’s name."
@@ -13,10 +17,45 @@
 			"type": "string",
 			"description": "A one-line summary of the character."
 		},
-		"distinctions": {
+		"traitSets": {
 			"type": "array",
-			"description": "The character’s distinctions.",
-			"items": {}
+			"description": "The character’s trait sets.",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "The name of the trait set. Examples: “Distinctions”, ”Attributes”, ”Skills”, ”Values”, ”Signature Assets”…"
+					},
+					"style": {
+						"type": "string",
+						"description": "Optional: the visual style of the trait set. Default is “default”. Used as a CSS class name on the character sheet, e.g. `<div class=\"trait-set style-default\">…</div>`"
+					},
+					"location": {
+						"type": "string",
+						"description": "Optional: the location of the trait set on the character sheet."
+					},
+					"traits": {
+						"type": "array",
+						"description": "The traits in the set.",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string",
+									"description": "The name of the trait."
+								},
+								"value": {
+									"type": "integer",
+									"description": "The die value of the trait."
+								}
+							},
+							"required": ["name", "value"]
+						}
+					}
+				},
+				"required": ["name", "traits"]
+			}
 		}
 	}
 }
