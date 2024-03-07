@@ -10,270 +10,198 @@ Vue.component('characterSheet', {
 		return data;
 	},
 
+	computed: {
+
+		distinctions() {
+			return this.traitSets.find( traitSet => traitSet.style === 'distinctions' );
+		},
+
+		attributes() {
+			return this.traitSets.find( traitSet => traitSet.location === 'attributes' )?.traits || [];
+		},
+
+		attributesID() {
+			return this.traitSets.findIndex( traitSet => traitSet.location === 'attributes' );
+		
+		}
+
+	},
+
 	/*html*/
-	template: `<article class="character-sheet">
+	template: `<section class="character-sheet">
 	
 		<div class="pages">
 
 			<!-- PAGE -->
-			<div id="page-1" class="page">
-				<div class="content">
+			<div class="page">
+				<div class="page-inner">
 
 					<!-- CHARACTER NAME -->
-					<div class="row" id="name">
+					<div class="title-container">
 
-						<div class="title character-name"
+						<div class="title"
 							v-html="name"
 							contenteditable
 							@blur="editContent( $event, ['name'] )"
 						></div>
 
-						<div class="ruler">
+						<div class="title-decoration">
 							<svg height="4" width="100%"><line x1="0" y1="0" x2="10000" y2="0" style="stroke:#C50852;stroke-width:4pt"/></svg>
 						</div>
 
 					</div>
 
-					<!-- LEFT COLUMN -->
-					<div class="left">
+					<!-- CHARACTER DESCRIPTION -->
+					<div class="subtitle"
+						v-html="description"
+						contenteditable
+						@blur="editContent( $event, ['description'] )"
+					></div>
 
-						<!-- CHARACTER DESCRIPTION -->
-						<div id="description"
-							v-html="description"
-							contenteditable
-							@blur="editContent( $event, ['description'] )"
-						></div>
+					<!-- COLUMNS -->
+					<div class="columns">
 
-						<!-- DISTINCTIONS -->
-						<div id="distinctions" class="trait-group">
+						<div v-for="pageLocation in ['left', 'right']" :class="'column-' + pageLocation">
 
-							<div class="trait-group-header">Distinctions</div>
-
-							<div class="traits">
-								<div class="trait" v-for="(distinction, d) in distinctions">
-
-									<h2 class="inline"
-										v-html="distinction.name"
-										contenteditable
-										@blur="editContent( $event, ['distinctions', d, 'name'] )"
-									></h2>
-									
-									<h2>
-										<span class="c"
-											v-html="distinction.value"
-											contenteditable
-											@blur="editContent( $event, ['distinctions', d, 'value'] )"
-										></span>
-									</h2>
-
-									<hr>
-
-									<div v-html="distinction.description"
-										contenteditable
-									></div>
-
-									<ul class="distinction-sfx" v-if="distinction.sfx.length">
-
-										<li v-for="(sfx, s) in distinction.sfx">
-
-											<span class="sfx-name"
-												v-html="sfx.name"
-												contenteditable
-												@blur="editContent( $event, ['distinctions', d, 'sfx', s, 'name'] )"
-											></span>:
-
-											<span class="sfx-description"
-												v-html="sfx.description"
-												contenteditable
-												@blur="editContent( $event, ['distinctions', d, 'sfx', s, 'description'] )"
-											></span>
-
-										</li>
-
-									</ul>
-
+							<!-- IMAGE -->
+							<div class="portrait" v-if="pageLocation === 'right'">
+								<div class="portrait-circle" width=100% height=100%>
+									<div class="edit-image"></div>
+									<img src="" width="110%" draggable="false" class="image"></img>
 								</div>
 							</div>
 
-						</div>
+							<!-- ATTRIBUTES -->
+							<div class="attribute-curve" xmlns="http://www.w3.org/2000/svg"
+								:style="'display: ' + ( attributes.length >= 2 ? 'block' : 'none' ) + ';'"
+								v-if="pageLocation === 'right'"
+							>
+								<svg viewBox="0 0 62 62" width="62mm" height="30mm" preserveAspectRatio="xMidYMid slice">
+									<path d="M -17 -25 A 32 32 0 0 0 79 0" stroke="#C50852" stroke-width="0.5mm" fill="transparent" vector-effect="non-scaling-stroke"/>
+								</svg>
+							</div>
 
-						<!-- TRAITS -->
-						<div :class="'trait-group ' + set.style"
-							v-for="(set, s) in sets"
-							v-if="set.column === 1"
-						>
+							<div :class="{ 'attributes': true, 'vertical': attributes.length > 5 }"
+								v-if="pageLocation === 'right'"
+							>
+								<div v-for="( attribute, a ) in attributes"
+									:class="{ 'attribute': true, 'vertical': attributes.length > 5 }"
+									:style="getAttributeStyle( a )"
+								>
 
-							<div id="context-menu-button" class="no-print"></div>
-
-							<div class="trait-group-header"
-								v-html="set.name"
-								contenteditable
-								@blur="editContent( $event, ['set', s, 'name'] )"
-							></div>
-
-							<div class="traits" v-for="column in 2">
-
-								<div class="trait" v-for="(trait, t) in set.traits" v-if="trait.column === column">
-
-									<div id="remove-item" class="no-print"
-										@click.prevent="removeTrait(s,t)"
-									></div>
-
-									<h2 class="inline"
-										v-html="trait.name"
+									<span class="c"
+										v-html="attribute.value"
 										contenteditable
-										@blur="editContent( $event, ['set', s, 'trait', t, 'name'] )"
-									></h2>
-									
-									<h2>
-										<span class="c"
-											v-html="trait.value"
-											contenteditable
-											@blur="editContent( $event, ['set', s, 'trait', t, 'name'] )"
-										></span>
-									</h2>
-
-									<hr>
+										@blur="editContent( $event, ['traitSet', attributesID, 'trait', a,'value'] )"
+									></span>
 
 									<div
-										v-html="trait.description"
+										v-html="attribute.name"
 										contenteditable
-										@blur="editContent( $event, ['set', s, 'trait', t, 'description'] )"
+										@blur="editContent( $event, ['traitSet', attributesID, 'trait', a,'name'] )"
+									></div>
+
+									<div class="remove-item"
+										@click.prevent="removeTrait( attributesID, a)"
 									></div>
 
 								</div>
 
-								<!-- BUTTON: ADD TRAIT -->
-								<div id="trait-placeholder" class="add-item no-print"
-									@click.prevent="addTrait( s, column )"
+								<!-- BUTTON: ADD ATTRIBUTE -->
+								<div class="attribute-placeholder add-item"
+									@click.prevent="addTrait( attributesID )"
 								></div>
-
+								
 							</div>
 
-						</div>
-
-						<!-- BUTTON: ADD TRAIT GROUP -->
-						<div id="trait-group-placeholder" class="add-item no-print"
-							@click.prevent="addSet(1)"
-						></div>
-						
-					</div>
-
-					<!-- RIGHT COLUMN -->
-					<div class="right">
-
-						<!-- IMAGE -->
-						<div id="portrait">
-							<div id="circle" width=100% height=100%>
-								<div id="edit-image" class="no-print"></div>
-								<img src="" width="110%" draggable="false" id="image"></img>
-							</div>
-						</div>
-
-						<!-- ATTRIBUTES -->
-						<div id="attribute-curve" xmlns="http://www.w3.org/2000/svg" :style="'display: ' + ( attributes.length >= 2 ? 'block' : 'none' ) + ';'">
-							<svg viewBox="0 0 62 62" width="62mm" height="30mm" preserveAspectRatio="xMidYMid slice">
-								<path d="M -17 -25 A 32 32 0 0 0 79 0" stroke="#C50852" stroke-width="0.5mm" fill="transparent" vector-effect="non-scaling-stroke"/>
-							</svg>
-						</div>
-
-						<div id="attributes" :class="{ 'vertical': attributes.length > 5 }">
-							<div v-for="( attribute, a ) in attributes"
-								:class="{ 'attribute': true, 'vertical': attributes.length > 5 }"
-								:style="getAttributeStyle( a )"
+							<!-- TRAITS -->
+							<div :class="'trait-group style-' + traitSet.style"
+								v-for="(traitSet, s) in traitSets"
+								v-if="traitSet.location === pageLocation"
 							>
 
-								<span class="c"
-									v-html="attribute.value"
+								<div class="trait-group-header"
+									v-html="traitSet.name"
 									contenteditable
-									@blur="editContent( $event, ['attributes', a, 'value'] )"
-								></span>
-
-								<div
-									v-html="attribute.name"
-									contenteditable
-									@blur="editContent( $event, ['attributes', a, 'name'] )"
+									@blur="editContent( $event, ['traitSet', s, 'name'] )"
 								></div>
 
-								<div id="remove-item" class="no-print"
-									@click.prevent="removeAttribute(a)"
-								></div>
+								<div class="trait-columns">
+									<div class="trait-column" v-for="traitSetLocation in ['left', 'right']">
+
+										<div class="trait" v-for="(trait, t) in traitSet.traits" v-if="trait.location === traitSetLocation">
+
+											<div class="remove-item"
+												@click.prevent="removeTrait(s,t)"
+											></div>
+
+											<h2 class="trait-title">
+
+												<span class="trait-name"
+													v-html="trait.name"
+													contenteditable
+													@blur="editContent( $event, ['traitSet', s, 'trait', t, 'name'] )"
+												></span>
+											
+												<span class="trait-value c"
+													v-html="trait.value"
+													contenteditable
+													@blur="editContent( $event, ['traitSet', s, 'trait', t, 'value'] )"
+												></span>
+
+											</h2>
+
+											<hr>
+
+											<div
+												class="trait-description"
+												v-html="trait.description"
+												contenteditable
+												@blur="editContent( $event, ['traitSet', s, 'trait', t, 'description'] )"
+											></div>
+
+											<ul class="trait-sfx" v-if="trait.sfx && trait.sfx.length">
+												<li v-for="(sfx, s) in trait.sfx">
+
+													<span class="trait-sfx-name"
+														v-html="sfx.name"
+														contenteditable
+														@blur="editContent( $event, ['traitSets', t, 'sfx', s, 'name'] )"
+													></span>:
+
+													<span class="trait-sfx-description"
+														v-html="sfx.description"
+														contenteditable
+														@blur="editContent( $event, ['traitSets', t, 'sfx', s, 'description'] )"
+													></span>
+
+												</li>
+											</ul>
+
+										</div>
+
+										<!-- BUTTON: ADD TRAIT -->
+										<div class="trait-placeholder add-item"
+											@click.prevent="addTrait( s, traitSetLocation )"
+										></div>
+
+									</div> <!-- .trait-column -->
+								</div> <!-- .trait-columns -->
 
 							</div>
 
-							<!-- BUTTON: ADD ATTRIBUTE -->
-							<div id="attribute-placeholder" class="add-item no-print"
-								@click.prevent="addAttribute()"
+							<!-- BUTTON: ADD TRAIT GROUP -->
+							<div class="trait-group-placeholder add-item"
+								@click.prevent="addSet( pageLocation )"
 							></div>
 							
 						</div>
 
-						<!-- TRAITS -->
-						<div :class="'trait-group ' + set.style"
-							v-for="(set, s) in sets"
-							v-if="set.column === 2"
-						>
-
-							<div id="context-menu-button" class="no-print"></div>
-
-							<div class="trait-group-header"
-								v-html="set.name"
-								contenteditable
-								@blur="editContent( $event, ['set', s, 'name'] )"
-							></div>
-
-							<div class="traits" v-for="column in 2">
-
-								<div class="trait" v-for="(trait, t) in set.traits" v-if="trait.column === column">
-
-									<div id="remove-item" class="no-print"
-										@click.prevent="removeTrait(s,t)"
-									></div>
-
-									<h2 class="inline"
-										v-html="trait.name"
-										contenteditable
-										@blur="editContent( $event, ['set', s, 'trait', t, 'name'] )"
-									></h2>
-									
-									<h2>
-										<span class="c"
-											v-html="trait.value"
-											contenteditable
-											@blur="editContent( $event, ['set', s, 'trait', t, 'name'] )"
-										></span>
-									</h2>
-
-									<hr>
-
-									<div
-										v-html="trait.description"
-										contenteditable
-										@blur="editContent( $event, ['set', s, 'trait', t, 'description'] )"
-									></div>
-
-								</div>
-
-								<!-- BUTTON: ADD TRAIT -->
-								<div id="trait-placeholder" class="add-item no-print"
-									@click.prevent="addTrait( s, column )"
-								></div>
-
-							</div>
-
-						</div>
-
-						<!-- BUTTON: ADD TRAIT GROUP -->
-						<div id="trait-group-placeholder" class="add-item no-print"
-							@click.prevent="addSet(2)"
-						></div>
-
-					</div>
-
-				</div> <!-- .content -->
+					</div> <!-- .columns -->
+				</div> <!-- .page-inner -->
 			</div> <!-- .page -->
 		</div> <!-- .pages -->
-	</article>`,
+	</section>`,
 
 	methods: {
 
@@ -281,15 +209,13 @@ Vue.component('characterSheet', {
 			return {
 				name:         this.name,
 				description:  this.description,
-				distinctions: this.distinctions,
-				attributes:   this.attributes,
-				sets:         this.sets,
+				traitSets:    this.traitSets,
 				image:        this.image,
 			}
 		},
 
 		editContent( event, location ) {
-			let content = event.target.innerText;
+			let content = event.target.innerHTML;
 
 			switch ( location[0] ) {
 				case 'name':
@@ -298,61 +224,16 @@ Vue.component('characterSheet', {
 				case 'description':
 					this.description = this.sanitizeString(content);
 					break;
-				case 'distinctions':
-					let d = location[1];
-					let distinction = this.distinctions[d];
-					switch ( location[2] ) {
-						case 'name':
-							distinction.name = this.sanitizeString(content);
-							break;
-						case 'value':
-							distinction.value = Number(content);
-							break;
-						case 'description':
-							distinction.description = this.sanitizeString(content);
-							break;
-						case 'sfx':
-							let s = location[3];
-							switch ( location[4] ) {
-								case 'name':
-									distinction.sfx[s].name = this.sanitizeString(content);
-									break;
-								case 'description':
-									distinction.sfx[s].description = this.sanitizeString(content);
-									break;
-								default: break;
-							}
-						default: break;
-					}
-					this.$set(this.distinctions, d, distinction);
-					break;
-				case 'attributes':
-					let a = location[1];
-					let attribute = this.attributes[a];
-					switch ( location[2] ) {
-						case 'name':
-							attribute.name = this.sanitizeString(content);
-							break;
-						case 'value':
-							attribute.name = Number(content);
-							break;
-						case 'description':
-							attribute.name = this.sanitizeString(content);
-							break;
-						default: break;
-					}
-					this.$set(this.attributes, a, attribute);
-					break;
-				case 'set':
+				case 'traitSet':
 					let s = location[1];
-					let set = this.sets[s];
+					let traitSet = this.traitSets[s];
 					switch ( location[2] ) {
 						case 'name':
-							set.name = this.sanitizeString(content);
+							traitSet.name = this.sanitizeString(content);
 							break;
 						case 'trait':
 							let t = location[3];
-							let trait = set.traits[t];
+							let trait = traitSet.traits[t];
 							switch ( location[4] ) {
 								case 'name':
 									trait.name = this.sanitizeString(content);
@@ -363,13 +244,24 @@ Vue.component('characterSheet', {
 								case 'description':
 									trait.description = this.sanitizeString(content);
 									break;
+								case 'sfx':
+									let f = location[3];
+									switch ( location[4] ) {
+										case 'name':
+											trait.sfx[f].name = this.sanitizeString(content);
+											break;
+										case 'description':
+											trait.sfx[f].description = this.sanitizeString(content);
+											break;
+										default: break;
+									}
 								default: break;
 							}
-							set.traits[t] = trait;
+							traitSet.traits[t] = trait;
 							break;
 						default: break;
 					}
-					this.$set(this.sets, s, set);
+					this.$set(this.traitSets, s, traitSet);
 					break;
 				default:
 					break;
@@ -416,18 +308,18 @@ Vue.component('characterSheet', {
 
 		},
 		
-		addSet( columnID ) {
+		addSet( location ) {
 
-			this.sets.push({
+			this.traitSets.push({
 				name: 'New trait group',
 				style: 'default',
-				column: columnID,
+				location: location ?? 'left',
 				traits: [
 					{
 						name: 'New trait',
 						value: 6,
 						description: 'Trait description',
-						column: 1
+						location: 'left',
 					}
 				],
 			});
@@ -436,55 +328,35 @@ Vue.component('characterSheet', {
 
 		},
 		
-		addTrait( setID, columnID ) {
+		addTrait( traitSetID, location ) {
 
-			let set = this.sets[setID];
+			let traitSet = this.traitSets[traitSetID];
 
-			set.traits.push({
+			traitSet.traits.push({
 				name: 'New trait',
 				value: 6,
 				description: 'Trait description',
-				column: columnID
+				location: location ?? 'left'
 			});
 
-			this.$set(this.sets, setID, set);
+			this.$set(this.traitSets, traitSetID, traitSet);
 
 			this.$emit('edited', this.export() );
 
 		},
 		
-		removeTrait( setID, traitID ) {
+		removeTrait( traitSetID, traitID ) {
 
-			let set = this.sets[setID];
+			let traitSet = this.traitSets[traitSetID];
 
-			set.traits.splice(traitID, 1);
+			traitSet.traits.splice(traitID, 1);
 
-			this.$set(this.sets, setID, set);
-
-			this.$emit('edited', this.export() );
-
-		},
-		
-		addAttribute() {
-
-			this.attributes.push({
-				name: 'Attribute',
-				value: 8,
-				description: 'Description'
-			});
+			this.$set(this.traitSets, traitSetID, traitSet);
 
 			this.$emit('edited', this.export() );
 
 		},
 		
-		removeAttribute( attributeID ) {
-
-			this.attributes.splice(attributeID, 1);
-
-			this.$emit('edited', this.export() );
-
-		},
-
 	}
 
 });
