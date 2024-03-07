@@ -7,8 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		el: '#cortex-tools',
 
 		data: {
+
+			// CONTENT
 			baseURL: window.location.href,
 			character: null,
+
+			// VIEW
+			selected: null,
+			editable: true,
+
 		},
 
 		computed: {
@@ -20,17 +27,41 @@ document.addEventListener('DOMContentLoaded', () => {
 		
 			<header class="header">
 
-				<!-- <div id="disclaimer">
-					<div id="logo" class="non-serialized">
-						<a href="https://cortexrpg.com" target="_blank"><img src="images/Community_Cortex_PRIMED_BY_LBG.png"></a>
-					</div>
-					<div id="legal"> 
-						<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at CortexRPG.com </p>
-						<p>Cortex is ©️ 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission.</p>
-						<p>If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.</p>
-					</div>
-				</div> -->
-			
+				<div class="header-collapsed-content">
+				</div>
+
+				<div class="header-expanded-content">
+
+					<section class="controls">
+
+						<!-- CHARACTER EDITOR -->
+						<character-editor
+							ref="characterEditor"
+							v-if="character"
+							:character="character"
+							:selected="selected"
+							:editable="editable"
+							@edited="setCharacter"
+						></character-editor>
+
+					</section>
+
+					<footer class="footer">
+
+						<div class="footer-logo">
+							<a href="https://cortexrpg.com" target="_blank"><img src="images/cortex_community_logo_white.png"></a>
+						</div>
+
+						<div class="footer-legal">
+								<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at CortexRPG.com </p>
+								<p>Cortex is ©️ 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission.</p>
+								<p>If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.</p>
+						</div>
+
+					</footer>
+
+				</div>
+				
 			</header>
 
 			<main class="main">
@@ -39,8 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
 				<character-sheet
 					v-if="character"
 					:character="character"
-					:editable="true"
-					@edited="setCharacter"
+					:selected="selected"
+					:editable="editable"
+					@addTraitSet="addTraitSet"
+					@addTrait="addTrait"
+					@select="select"
 				></character-sheet>
 
 			</main>
@@ -81,6 +115,24 @@ document.addEventListener('DOMContentLoaded', () => {
 			setCharacter( character ) {
 				this.character = character;
 				this.saveLocal();
+			},
+
+			select( selector ) {
+
+				if ( cortexFunctions.arraysMatch( this.selected, selector ) ) {
+					this.selected = [];
+					return;
+				}
+
+				this.selected = selector;
+			},
+
+			addTraitSet( location ) {
+				this.$refs.characterEditor.addTraitSet( location );
+			},
+
+			addTrait( traitSetID, location ) {
+				this.$refs.characterEditor.addTrait( traitSetID, location );
 			},
 
 			async loadLocal() {

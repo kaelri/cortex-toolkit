@@ -2,15 +2,31 @@ Vue.component('characterSheet', {
 
 	props: {
 		character: Object,
-		editable:  Boolean
+		editable:  Boolean,
+		selected:  Array
 	},
 
 	data: function() {
-		let data = structuredClone(this.character);
-		return data;
+		return {};
 	},
 
 	computed: {
+
+		name() {
+			return this.character?.name ?? '';
+		},
+
+		description() {
+			return this.character?.description ?? '';
+		},
+
+		portrait() {
+			return this.character?.portrait ?? null;
+		},
+
+		traitSets() {
+			return this.character?.traitSets ?? [];
+		},
 
 		distinctions() {
 			return this.traitSets.find( traitSet => traitSet.style === 'distinctions' );
@@ -37,12 +53,12 @@ Vue.component('characterSheet', {
 				<div class="page-inner">
 
 					<!-- CHARACTER NAME -->
-					<div class="title-container">
+					<div :class="{'title-container': true, 'selected': isSelected(['name'])}"
+						@click.prevent="select([ 'name' ])"
+					>
 
 						<div class="title"
 							v-html="name"
-							contenteditable
-							@blur="editContent( $event, ['name'] )"
 						></div>
 
 						<div class="title-decoration">
@@ -53,10 +69,10 @@ Vue.component('characterSheet', {
 
 					<!-- CHARACTER DESCRIPTION -->
 					<div class="subtitle"
-						v-html="description"
-						contenteditable
-						@blur="editContent( $event, ['description'] )"
-					></div>
+						@click.prevent="select([ 'description' ])"
+					>
+						<span v-html="description"></span>
+					</div>
 
 					<!-- COLUMNS -->
 					<div class="columns">
@@ -64,9 +80,10 @@ Vue.component('characterSheet', {
 						<div v-for="pageLocation in ['left', 'right']" :class="'column-' + pageLocation">
 
 							<!-- IMAGE -->
-							<div class="portrait" v-if="pageLocation === 'right'">
+							<div class="portrait" v-if="pageLocation === 'right'"
+								@click.prevent="select([ 'portrait' ])"
+							>
 								<div class="portrait-circle" width=100% height=100%>
-									<div class="edit-image"></div>
 									<img src="" width="110%" draggable="false" class="image"></img>
 								</div>
 							</div>
@@ -87,22 +104,15 @@ Vue.component('characterSheet', {
 								<div v-for="( attribute, a ) in attributes"
 									:class="{ 'attribute': true, 'vertical': attributes.length > 5 }"
 									:style="getAttributeStyle( a )"
+									@click.prevent="select([ 'trait', attributesID, a ])"
 								>
 
 									<span class="c"
 										v-html="attribute.value"
-										contenteditable
-										@blur="editContent( $event, ['traitSet', attributesID, 'trait', a,'value'] )"
 									></span>
 
 									<div
 										v-html="attribute.name"
-										contenteditable
-										@blur="editContent( $event, ['traitSet', attributesID, 'trait', a,'name'] )"
-									></div>
-
-									<div class="remove-item"
-										@click.prevent="removeTrait( attributesID, a)"
 									></div>
 
 								</div>
@@ -115,38 +125,34 @@ Vue.component('characterSheet', {
 							</div>
 
 							<!-- TRAITS -->
-							<div :class="'trait-group style-' + traitSet.style"
+							<div :class="'trait-set style-' + traitSet.style"
 								v-for="(traitSet, s) in traitSets"
 								v-if="traitSet.location === pageLocation"
 							>
 
-								<div class="trait-group-header"
-									v-html="traitSet.name"
-									contenteditable
-									@blur="editContent( $event, ['traitSet', s, 'name'] )"
-								></div>
+								<div class="trait-set-header"
+									@click.prevent="select([ 'traitSet', s ])"
+								>
+									<div v-text="traitSet.name"></div>
+								</div>
 
 								<div class="trait-columns">
 									<div class="trait-column" v-for="traitSetLocation in ['left', 'right']">
 
-										<div class="trait" v-for="(trait, t) in traitSet.traits" v-if="trait.location === traitSetLocation">
-
-											<div class="remove-item"
-												@click.prevent="removeTrait(s,t)"
-											></div>
+										<div class="trait"
+											v-for="(trait, t) in traitSet.traits"
+											v-if="trait.location === traitSetLocation"
+											@click.prevent="select([ 'trait', s, t ])"
+										>
 
 											<h2 class="trait-title">
 
 												<span class="trait-name"
 													v-html="trait.name"
-													contenteditable
-													@blur="editContent( $event, ['traitSet', s, 'trait', t, 'name'] )"
 												></span>
 											
 												<span class="trait-value c"
 													v-html="trait.value"
-													contenteditable
-													@blur="editContent( $event, ['traitSet', s, 'trait', t, 'value'] )"
 												></span>
 
 											</h2>
@@ -156,8 +162,6 @@ Vue.component('characterSheet', {
 											<div
 												class="trait-description"
 												v-html="trait.description"
-												contenteditable
-												@blur="editContent( $event, ['traitSet', s, 'trait', t, 'description'] )"
 											></div>
 
 											<ul class="trait-sfx" v-if="trait.sfx && trait.sfx.length">
@@ -165,14 +169,10 @@ Vue.component('characterSheet', {
 
 													<span class="trait-sfx-name"
 														v-html="sfx.name"
-														contenteditable
-														@blur="editContent( $event, ['traitSets', t, 'sfx', s, 'name'] )"
 													></span>:
 
 													<span class="trait-sfx-description"
 														v-html="sfx.description"
-														contenteditable
-														@blur="editContent( $event, ['traitSets', t, 'sfx', s, 'description'] )"
 													></span>
 
 												</li>
@@ -191,8 +191,8 @@ Vue.component('characterSheet', {
 							</div>
 
 							<!-- BUTTON: ADD TRAIT GROUP -->
-							<div class="trait-group-placeholder add-item"
-								@click.prevent="addSet( pageLocation )"
+							<div class="trait-set-placeholder add-item"
+								@click.prevent="addTraitSet( pageLocation )"
 							></div>
 							
 						</div>
@@ -205,78 +205,8 @@ Vue.component('characterSheet', {
 
 	methods: {
 
-		export() {
-			return {
-				name:         this.name,
-				description:  this.description,
-				traitSets:    this.traitSets,
-				image:        this.image,
-			}
-		},
-
-		editContent( event, location ) {
-			let content = event.target.innerHTML;
-
-			switch ( location[0] ) {
-				case 'name':
-					this.name = this.sanitizeString(content);
-					break;
-				case 'description':
-					this.description = this.sanitizeString(content);
-					break;
-				case 'traitSet':
-					let s = location[1];
-					let traitSet = this.traitSets[s];
-					switch ( location[2] ) {
-						case 'name':
-							traitSet.name = this.sanitizeString(content);
-							break;
-						case 'trait':
-							let t = location[3];
-							let trait = traitSet.traits[t];
-							switch ( location[4] ) {
-								case 'name':
-									trait.name = this.sanitizeString(content);
-									break;
-								case 'value':
-									trait.value = Number(content);
-									break;
-								case 'description':
-									trait.description = this.sanitizeString(content);
-									break;
-								case 'sfx':
-									let f = location[3];
-									switch ( location[4] ) {
-										case 'name':
-											trait.sfx[f].name = this.sanitizeString(content);
-											break;
-										case 'description':
-											trait.sfx[f].description = this.sanitizeString(content);
-											break;
-										default: break;
-									}
-								default: break;
-							}
-							traitSet.traits[t] = trait;
-							break;
-						default: break;
-					}
-					this.$set(this.traitSets, s, traitSet);
-					break;
-				default:
-					break;
-			}
-
-			this.$emit('edited', this.export() );
-
-		},
-
-		sanitizeString( value ) {
-
-			value = String(value).trim();
-
-			return value;
-
+		isSelected( selector ) {
+			return cortexFunctions.arraysMatch( this.selected, selector );
 		},
 
 		getAttributeStyle( a ) {
@@ -308,54 +238,17 @@ Vue.component('characterSheet', {
 
 		},
 		
-		addSet( location ) {
-
-			this.traitSets.push({
-				name: 'New trait group',
-				style: 'default',
-				location: location ?? 'left',
-				traits: [
-					{
-						name: 'New trait',
-						value: 6,
-						description: 'Trait description',
-						location: 'left',
-					}
-				],
-			});
-
-			this.$emit('edited', this.export() );
-
+		addTraitSet( location ) {
+			this.$emit( 'addTraitSet', location );
 		},
-		
+
 		addTrait( traitSetID, location ) {
-
-			let traitSet = this.traitSets[traitSetID];
-
-			traitSet.traits.push({
-				name: 'New trait',
-				value: 6,
-				description: 'Trait description',
-				location: location ?? 'left'
-			});
-
-			this.$set(this.traitSets, traitSetID, traitSet);
-
-			this.$emit('edited', this.export() );
-
+			this.$emit( 'addTrait', traitSetID, location );
 		},
-		
-		removeTrait( traitSetID, traitID ) {
 
-			let traitSet = this.traitSets[traitSetID];
-
-			traitSet.traits.splice(traitID, 1);
-
-			this.$set(this.traitSets, traitSetID, traitSet);
-
-			this.$emit('edited', this.export() );
-
-		},
+		select( selector ) {
+			this.$emit( 'select', selector );
+		}
 		
 	}
 

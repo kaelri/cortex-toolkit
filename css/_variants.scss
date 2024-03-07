@@ -56,18 +56,18 @@
 
 
 /* Roles */
-.trait-group.roles {
+.trait-set.roles {
 	flex-wrap: wrap;
 //    display: block;
 }
-.trait-group.roles > div {
+.trait-set.roles > div {
 	flex: 64px;
 	width: 64px;
 //    border: 1px solid red;
 	position: relative;
 	padding-top: 4mm;
 }
-.trait-group.roles .trait-group-header {
+.trait-set.roles .trait-set-header {
 	//flex: 0 0 100%;
 	//flex-basis: 100%;
 	//flex-grow: 4;
@@ -148,18 +148,18 @@
 
 
 /* Values */
-.trait-group.values {
+.trait-set.values {
 	flex-wrap: wrap;
 //    display: block;
 }
-.trait-group.values > div {
+.trait-set.values > div {
 	flex: 64px;
 	width: 64px;
 //    border: 1px solid red;
 	position: relative;
 	padding-top: 4mm;
 }
-.trait-group.values .trait-group-header {
+.trait-set.values .trait-set-header {
 	//flex: 0 0 100%;
 	//flex-basis: 100%;
 	//flex-grow: 4;
@@ -256,12 +256,12 @@
 }
 
 /* Detailed values */
-//.trait-group.detailed-values
+//.trait-set.detailed-values
 //{
 //    flex-wrap: wrap;
 ////    display: block;
 //}
-//.trait-group.detailed-values > div
+//.trait-set.detailed-values > div
 //{
 //    flex: 64px;
 //    width: 64px;
@@ -359,7 +359,7 @@
 	background-color: #D7ECDD;
 	flex-wrap: wrap;
 }
-.signature-asset .trait-group-header {
+.signature-asset .trait-set-header {
 	flex: 100%;
 	column-span: all;
 	writing-mode: unset;
@@ -377,7 +377,7 @@
 	font-weight: 500;
 	color: black;
 }
-.signature-asset.trait-group .trait {
+.signature-asset.trait-set .trait {
 	text-align: justify;
 	width: calc(100% - 10pt);
 	margin-top: 2mm;
@@ -410,7 +410,7 @@
 	border: 0;
 	flex-wrap: wrap;
 }
-.resources .trait-group-header {
+.resources .trait-set-header {
 	flex: 100%;
 	column-span: all;
 	writing-mode: unset;
@@ -432,7 +432,7 @@
 .resources .trait {
 	line-height: 5mm;
 }
-.resources hr, .resources.trait-group hr + div {
+.resources hr, .resources.trait-set hr + div {
 	display: none;
 }
 .resources .trait > div + h2:before {
@@ -471,7 +471,7 @@
 .stress {
 	flex-wrap: wrap;
 }
-.stress .trait-group-header {
+.stress .trait-set-header {
 	flex: 100%;
 	column-span: all;
 	writing-mode: unset;
