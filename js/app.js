@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 							:selected="selected"
 							:editable="editable"
 							@edited="setCharacter"
+							@select="select"
 						></character-editor>
 
 					</section>
@@ -106,7 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				//+ Check for errors
 
-				// character.id = crypto.randomUUID();
+				character.id = crypto.randomUUID();
+				character.modified = ( new Date() ).getTime();
 
 				return character;
 
@@ -158,6 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
 			},
 
 			saveLocal() {
+
+				this.character.modified = ( new Date() ).getTime();
+
 				localStorage.setItem('cortexToolsData', JSON.stringify({
 					character: this.character,
 				}));

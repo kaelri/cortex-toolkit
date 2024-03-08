@@ -6,10 +6,6 @@ Vue.component('characterSheet', {
 		selected:  Array
 	},
 
-	data: function() {
-		return {};
-	},
-
 	computed: {
 
 		name() {
@@ -38,7 +34,6 @@ Vue.component('characterSheet', {
 
 		attributesID() {
 			return this.traitSets.findIndex( traitSet => traitSet.location === 'attributes' );
-		
 		}
 
 	},
@@ -52,27 +47,29 @@ Vue.component('characterSheet', {
 			<div class="page">
 				<div class="page-inner">
 
-					<!-- CHARACTER NAME -->
-					<div :class="{'title-container': true, 'selected': isSelected(['name'])}"
+					<header :class="{'page-header': true, 'selected': isSelected(['name'])}"
 						@click.prevent="select([ 'name' ])"
 					>
 
-						<div class="title"
-							v-html="name"
-						></div>
+						<!-- CHARACTER NAME -->
+						<div class="title-container">
 
-						<div class="title-decoration">
-							<svg height="4" width="100%"><line x1="0" y1="0" x2="10000" y2="0" style="stroke:#C50852;stroke-width:4pt"/></svg>
+							<div class="title"
+								v-html="name"
+							></div>
+
+							<div class="title-decoration">
+								<svg height="4" width="100%"><line x1="0" y1="0" x2="10000" y2="0" style="stroke:#C50852;stroke-width:4pt"/></svg>
+							</div>
+
 						</div>
 
-					</div>
+						<!-- CHARACTER DESCRIPTION -->
+						<div class="subtitle">
+							<span v-html="renderText(description)"></span>
+						</div>
 
-					<!-- CHARACTER DESCRIPTION -->
-					<div class="subtitle"
-						@click.prevent="select([ 'description' ])"
-					>
-						<span v-html="description"></span>
-					</div>
+					</header>
 
 					<!-- COLUMNS -->
 					<div class="columns">
@@ -111,7 +108,7 @@ Vue.component('characterSheet', {
 										v-html="attribute.value"
 									></span>
 
-									<div
+									<div class="attribute-name"
 										v-html="attribute.name"
 									></div>
 
@@ -120,7 +117,9 @@ Vue.component('characterSheet', {
 								<!-- BUTTON: ADD ATTRIBUTE -->
 								<div class="attribute-placeholder add-item"
 									@click.prevent="addTrait( attributesID )"
-								></div>
+								>
+									<span><i class="far fa-square-plus"></i></span>
+								</div>
 								
 							</div>
 
@@ -133,13 +132,13 @@ Vue.component('characterSheet', {
 								<div class="trait-set-header"
 									@click.prevent="select([ 'traitSet', s ])"
 								>
-									<div v-text="traitSet.name"></div>
+									<div v-html="traitSet.name"></div>
 								</div>
 
 								<div class="trait-columns">
 									<div class="trait-column" v-for="traitSetLocation in ['left', 'right']">
 
-										<div class="trait"
+										<div :class="{ 'trait': true, 'selected': isSelected(['trait', s, t]) }"
 											v-for="(trait, t) in traitSet.traits"
 											v-if="trait.location === traitSetLocation"
 											@click.prevent="select([ 'trait', s, t ])"
@@ -161,7 +160,7 @@ Vue.component('characterSheet', {
 
 											<div
 												class="trait-description"
-												v-html="trait.description"
+												v-html="renderText(trait.description)"
 											></div>
 
 											<ul class="trait-sfx" v-if="trait.sfx && trait.sfx.length">
@@ -172,7 +171,7 @@ Vue.component('characterSheet', {
 													></span>:
 
 													<span class="trait-sfx-description"
-														v-html="sfx.description"
+														v-html="renderText(sfx.description)"
 													></span>
 
 												</li>
@@ -183,7 +182,9 @@ Vue.component('characterSheet', {
 										<!-- BUTTON: ADD TRAIT -->
 										<div class="trait-placeholder add-item"
 											@click.prevent="addTrait( s, traitSetLocation )"
-										></div>
+										>
+											<span><i class="far fa-square-plus"></i></span>
+										</div>
 
 									</div> <!-- .trait-column -->
 								</div> <!-- .trait-columns -->
@@ -193,7 +194,9 @@ Vue.component('characterSheet', {
 							<!-- BUTTON: ADD TRAIT GROUP -->
 							<div class="trait-set-placeholder add-item"
 								@click.prevent="addTraitSet( pageLocation )"
-							></div>
+							>
+								<span><i class="far fa-square-plus"></i></span>
+							</div>
 							
 						</div>
 
@@ -209,14 +212,20 @@ Vue.component('characterSheet', {
 			return cortexFunctions.arraysMatch( this.selected, selector );
 		},
 
+		renderText( text ) {
+			text = text.replace( /d(\d)/g, '<span class="c">$1</span>' );
+			text = text.replace( /([^\w])PP([^\w])/g, '$1<span class="pp">PP</span>$2' );
+			return text;
+		},
+
 		getAttributeStyle( a ) {
 
 			let cssLeft, cssTop;
 
 			if ( this.attributes.length === 1 ) {
 
-				cssLeft = ((115 + 176) * 0.5 + 3.5) + 'mm'        
-				cssTop  = '120mm'
+				cssLeft = ((115 + 176) * 0.5 + 3.5) + 'mm';
+				cssTop  = '120mm';
 
 			} else {
 
@@ -227,11 +236,11 @@ Vue.component('characterSheet', {
 				let height = 10;
 				let top = 107.5;
 				
-				let x = (right - left) * alpha + left + 3.5
-				cssLeft = x + 'mm'
+				let x = (right - left) * alpha + left + 3.5;
+				cssLeft = x + 'mm';
 				
-				let y =  Math.sin(alpha * 3.1415926535) * height + top - 3
-				cssTop = y + 'mm'
+				let y =  Math.sin(alpha * 3.1415926535) * height + top - 3;
+				cssTop = y + 'mm';
 			}
 
 			return `left: ${cssLeft}; top: ${cssTop};`;
