@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 							:character="character"
 							:selected="selected"
 							:editable="editable"
-							@edited="setCharacter"
+							@update="updateCharacter"
 							@select="select"
 						></character-editor>
 
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			},
 
-			setCharacter( character ) {
+			updateCharacter( character ) {
 				this.character = character;
 				this.saveLocal();
 			},
@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				}
 
 				this.selected = selector;
+
 			},
 
 			addTraitSet( location ) {

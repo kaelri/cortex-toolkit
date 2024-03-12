@@ -252,14 +252,31 @@ hr {
 	
 }
 
-.editor-group {
+.character-editor {
+	display: flex;
+	flex-direction: column;
+}
+
+.editor-groups {
+	flex: 1;
 	position: relative;
+}
+
+.editor-group {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 	opacity: 0;
-	left: 5rem;
-	transition: opacity .2s, left .2s;
+	transform: translateX(5rem);
+	transition: opacity .2s, transform .2s;
+	&:not(.open) {
+		pointer-events: none;
+	}
 	&.open {
 		opacity: 1;
-		left: 0;
+		transform: translateX(0);
 	}
 }
 
@@ -275,7 +292,8 @@ hr {
 		// font-size: smaller;
 		// text-transform: uppercase;
 		margin-bottom: .25rem;
-		color: color-mix(in srgb, var(--color-interactive), white 50%);
+		// color: color-mix(in srgb, var(--color-interactive), white 50%);
+		color: var(--color-primary);
 	}
 
 	input[type="text"],

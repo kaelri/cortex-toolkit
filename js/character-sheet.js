@@ -213,8 +213,9 @@ Vue.component('characterSheet', {
 		},
 
 		renderText( text ) {
-			text = text.replace( /d(\d)/g, '<span class="c">$1</span>' );
-			text = text.replace( /([^\w])PP([^\w])/g, '$1<span class="pp">PP</span>$2' );
+			text = text.replace( /d(\d+)/g, '<span class="c">$1</span>' );
+			text = text.replace( '<span class="c">12</span>', '<span class="c">2</span>' );
+			text = text.replace( /([^A-Za-z])PP([^A-Za-z])/gi, '$1<span class="pp">PP</span>$2' );
 			return text;
 		},
 
