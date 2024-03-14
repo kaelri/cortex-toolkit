@@ -2,7 +2,6 @@ Vue.component('characterSheet', {
 
 	props: {
 		character: Object,
-		editable:  Boolean,
 		selected:  Array
 	},
 
@@ -129,7 +128,7 @@ Vue.component('characterSheet', {
 								v-if="traitSet.location === pageLocation"
 							>
 
-								<div class="trait-set-header"
+								<div :class="{'trait-set-header': true, 'selected': isSelected(['traitSet', s])}"
 									@click.prevent="select([ 'traitSet', s ])"
 								>
 									<div v-html="traitSet.name"></div>

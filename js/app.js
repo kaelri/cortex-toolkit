@@ -7,14 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		el: '#cortex-tools',
 
 		data: {
-
-			// CONTENT
-			baseURL: window.location.href,
+			baseURL:   window.location.href,
 			character: null,
-
-			// VIEW
-			selected: null,
-			editable: true,
+			selected:  null,
 
 		},
 
@@ -40,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
 							v-if="character"
 							:character="character"
 							:selected="selected"
-							:editable="editable"
 							@update="updateCharacter"
 							@select="select"
 						></character-editor>
@@ -72,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
 					v-if="character"
 					:character="character"
 					:selected="selected"
-					:editable="editable"
 					@addTraitSet="addTraitSet"
 					@addTrait="addTrait"
 					@select="select"

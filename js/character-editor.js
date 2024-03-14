@@ -2,7 +2,6 @@ Vue.component('characterEditor', {
 
 	props: {
 		character: Object,
-		editable:  Boolean,
 		selected:  Array
 	},
 
@@ -104,9 +103,7 @@ Vue.component('characterEditor', {
 				return this.character.name;
 			},
 			set( name ) {
-				let character = structuredClone( this.character );
-				character.name = name;
-				this.update( character );
+				this.setCharacterProperty( 'name', name );
 			}
 		},
 		
@@ -115,9 +112,7 @@ Vue.component('characterEditor', {
 				return this.character.description;
 			},
 			set( description ) {
-				let character = structuredClone( this.character );
-				character.description = description;
-				this.update( character );
+				this.setCharacterProperty( 'description', description );
 			}
 		},
 
@@ -131,7 +126,7 @@ Vue.component('characterEditor', {
 				<li v-text="title" @click.prevent="clearSelected"></li>
 				<li v-if="selectedType === 'name'">Name &amp; Description</li>
 				<li v-if="selectedType === 'portrait'">Portrait</li>
-				<li v-if="selectedType === 'traitSet' || selectedType === 'trait'" v-text="selectedTraitSet.name"></li>
+				<li v-if="selectedType === 'traitSet' || selectedType === 'trait'" v-text="selectedTraitSet.name" @click.prevent="selectTraitSet( selectedTraitSetID )"></li>
 				<li v-if="selectedType === 'trait'" v-text="selectedTrait.name"></li>
 			</ul>
 		</nav>
@@ -139,7 +134,7 @@ Vue.component('characterEditor', {
 		<div class="editor-groups">
 
 			<!-- NAME & DESCRIPTION -->
-			<section :class="{ 'editor-group': true, 'open': selectedType === 'name' }">
+			<section :class="{ 'editor-group': true, 'open': selectedType === 'name', 'no-scroll': true }">
 
 				<div class="editor-fields">
 
@@ -178,6 +173,16 @@ Vue.component('characterEditor', {
 
 		clearSelected() {
 			this.$emit('select', []);
+		},
+
+		selectTraitSet( traitSetID ) {
+			this.$emit('select', [ 'traitSet', traitSetID ]);
+		},
+
+		setCharacterProperty( key, value ) {
+			let character = structuredClone( this.character );
+			character[ key ] = value;
+			this.update( character );
 		},
 
 		addTraitSet( location ) {

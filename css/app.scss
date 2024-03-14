@@ -13,7 +13,7 @@
 	
 	--page-width:    210mm;
 	--page-height:   297.1mm;
-	--sidebar-width: 15rem;
+	--sidebar-width: 20rem;
 
 	--font-primary:   'Open Sans', sans-serif;
 	--font-secondary: 'Alegreya Sans SC', sans-serif;
@@ -23,8 +23,11 @@
 	--color-secondary:   hsl(137, 36%, 88%); // Green
 	--color-interactive: hsl(204, 71%, 47%); // Blue
 	--color-separator:   hsl(  0,  0%, 83%); // Gray
+	--color-input: 	     hsl(  0,  0%, 15%); // White
 
 	--highlight-radius: .5em;
+
+	--z-sidebar-scroll-indicator: 300;
 
 }
 
@@ -208,11 +211,14 @@ hr {
 	display: flex;
 	height: 100%;
 	flex-direction: column;
+	row-gap: 1rem;
 	padding: 1rem;
 }
 
 .controls {
 	flex: 1;
+	display: flex;
+	flex-direction: column;
 }
 
 .breadcrumbs {
@@ -253,6 +259,7 @@ hr {
 }
 
 .character-editor {
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 }
@@ -267,16 +274,82 @@ hr {
 	top: 0;
 	left: 0;
 	bottom: 0;
-	right: 0;
+	right: 1rem;
 	opacity: 0;
 	transform: translateX(5rem);
 	transition: opacity .2s, transform .2s;
+	overflow: hidden;
 	&:not(.open) {
 		pointer-events: none;
 	}
 	&.open {
 		opacity: 1;
 		transform: translateX(0);
+	}
+
+	&::before,
+	&::after {
+		position: absolute;
+		display: block;
+		left: 0;
+		right: 0;
+		z-index: var(--z-sidebar-scroll-indicator);
+		color: white;
+		text-align: center;
+		padding: .25em .25em 1em;
+		font: var(--fa-font-solid);
+		line-height: 1;
+		pointer-events: none;
+		opacity: 1;
+		transition: opacity .2s;
+	}
+
+	&::before {
+		top: 0;
+		background: linear-gradient( to bottom, black, color-mix(in srgb, black, transparent 100% ) );
+		content: '\f106';
+	}
+
+	&::after {
+		bottom: 0;
+		background: linear-gradient( to top, black, color-mix(in srgb, black, transparent 100% ) );
+		content: '\f107';
+	}
+
+	&.no-scroll::before,
+	&.scroll-at-top::before {
+		opacity: 0;
+	}
+
+	&.no-scroll::after,
+	&.scroll-at-bottom::after {
+		opacity: 0;
+	}
+
+	> div {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		// right: 0;
+		right: -2em;
+		padding-right: 2em;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		// overflow: hidden;
+		/* width */
+		::-webkit-scrollbar {
+			width: 1em;
+		}
+		::-webkit-scrollbar-track {
+			background: transparent;
+		}
+		::-webkit-scrollbar-thumb {
+			background: var(--color-interactive);
+		}
+		::-webkit-scrollbar-thumb:hover {
+			background: var(--color-interactive);
+		}
 	}
 }
 
@@ -304,6 +377,8 @@ hr {
 		outline: none;
 		padding: .25rem;
 		font-family: inherit;
+		background: var(--color-input);
+		color: white;
 	}
 
 	textarea {
@@ -509,6 +584,9 @@ hr {
 	margin-left: 0;
 	padding-left: 0;
 	margin-bottom: 0;
+	display: flex;
+	flex-direction: column;
+	row-gap: 12pt;
 
 	li {
 		padding-left: 1.6em;
