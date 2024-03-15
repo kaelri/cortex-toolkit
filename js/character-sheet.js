@@ -76,7 +76,7 @@ Vue.component('characterSheet', {
 						<div v-for="pageLocation in ['left', 'right']" :class="'column-' + pageLocation">
 
 							<!-- IMAGE -->
-							<div class="portrait" v-if="pageLocation === 'right'"
+							<div :class="{ 'portrait': true, 'selected': isSelected(['portrait']) }" v-if="pageLocation === 'right'"
 								@click.prevent="select([ 'portrait' ])"
 							>
 								<div class="portrait-circle" width=100% height=100%>
@@ -85,43 +85,56 @@ Vue.component('characterSheet', {
 							</div>
 
 							<!-- ATTRIBUTES -->
-							<div class="attribute-curve" xmlns="http://www.w3.org/2000/svg"
-								:style="'display: ' + ( attributes.length >= 2 ? 'block' : 'none' ) + ';'"
-								v-if="pageLocation === 'right'"
-							>
-								<svg viewBox="0 0 62 62" width="62mm" height="30mm" preserveAspectRatio="xMidYMid slice">
-									<path d="M -17 -25 A 32 32 0 0 0 79 0" stroke="#C50852" stroke-width="0.5mm" fill="transparent" vector-effect="non-scaling-stroke"/>
-								</svg>
-							</div>
+							<div :class="{ 'attributes': true, 'vertical': attributes.length > 5 }" v-if="pageLocation === 'right'">
 
-							<div :class="{ 'attributes': true, 'vertical': attributes.length > 5 }"
-								v-if="pageLocation === 'right'"
-							>
-								<div v-for="( attribute, a ) in attributes"
-									:class="{ 'attribute': true, 'vertical': attributes.length > 5 }"
-									:style="getAttributeStyle( a )"
-									@click.prevent="select([ 'trait', attributesID, a ])"
-								>
+								<div class="attributes-grid">
 
-									<span class="c"
-										v-html="attribute.value"
-									></span>
+									<div class="attribute-curve" xmlns="http://www.w3.org/2000/svg"
+										:style="'display: ' + ( attributes.length >= 2 ? 'block' : 'none' ) + ';'"
+										v-if="pageLocation === 'right'"
+									>
+										<svg viewBox="0 0 62 62" width="62mm" height="30mm" preserveAspectRatio="xMidYMid slice">
+											<path d="M -17 -25 A 32 32 0 0 0 79 0" stroke="#C50852" stroke-width="0.5mm" fill="transparent" vector-effect="non-scaling-stroke"/>
+										</svg>
 
-									<div class="attribute-name"
-										v-html="attribute.name"
-									></div>
+									</div>
+
+									<div class="attributes-items"
+										v-if="pageLocation === 'right'"
+									>
+										<div v-for="( attribute, a ) in attributes"
+											:class="{ 'attribute': true, 'selected': isSelected(['trait', attributesID, a]) }"
+											:style="getAttributeStyle( a )"
+											@click.prevent="select([ 'trait', attributesID, a ])"
+										>
+
+											<span class="c"
+												v-html="renderDieValue(attribute.value)"
+											></span>
+
+											<div class="attribute-name"
+												v-html="attribute.name"
+											></div>
+
+										</div>
+
+									</div>
 
 								</div>
 
 								<!-- BUTTON: ADD ATTRIBUTE -->
-								<div class="attribute-placeholder add-item"
-									@click.prevent="addTrait( attributesID )"
+								<div class="preview-button-container"
+									v-if="pageLocation === 'right'"
 								>
-									<span><i class="far fa-square-plus"></i></span>
+									<div class="preview-button"
+										@click.prevent="addTrait( attributesID )"
+									>
+										<span><i class="fas fa-plus"></i> New Attribute</span>
+									</div>
 								</div>
-								
-							</div>
 
+							</div>
+								
 							<!-- TRAITS -->
 							<div :class="'trait-set style-' + traitSet.style"
 								v-for="(traitSet, s) in traitSets"
@@ -150,7 +163,7 @@ Vue.component('characterSheet', {
 												></span>
 											
 												<span class="trait-value c"
-													v-html="trait.value"
+													v-html="renderDieValue(trait.value)"
 												></span>
 
 											</h2>
@@ -179,10 +192,12 @@ Vue.component('characterSheet', {
 										</div>
 
 										<!-- BUTTON: ADD TRAIT -->
-										<div class="trait-placeholder add-item"
-											@click.prevent="addTrait( s, traitSetLocation )"
-										>
-											<span><i class="far fa-square-plus"></i></span>
+										<div class="preview-button-container">
+											<div class="preview-button"
+												@click.prevent="addTrait( s, traitSetLocation )"
+											>
+												<span><i class="fas fa-plus"></i> New Trait</span>
+											</div>
 										</div>
 
 									</div> <!-- .trait-column -->
@@ -191,10 +206,12 @@ Vue.component('characterSheet', {
 							</div>
 
 							<!-- BUTTON: ADD TRAIT GROUP -->
-							<div class="trait-set-placeholder add-item"
-								@click.prevent="addTraitSet( pageLocation )"
-							>
-								<span><i class="far fa-square-plus"></i></span>
+							<div class="preview-button-container">
+								<div class="trait-set-placeholder preview-button"
+									@click.prevent="addTraitSet( pageLocation )"
+								>
+									<span><i class="fas fa-plus"></i> New Trait Set</span>
+								</div>
 							</div>
 							
 						</div>
@@ -212,38 +229,36 @@ Vue.component('characterSheet', {
 		},
 
 		renderText( text ) {
-			text = text.replace( /d(\d+)/g, '<span class="c">$1</span>' );
-			text = text.replace( '<span class="c">12</span>', '<span class="c">2</span>' );
+			text = text.replace( /d\d*(\d)/g, '<span class="c">$1</span>' );
+			// text = text.replace( '<span class="c">1(\d)</span>', '<span class="c">$1</span>' );
 			text = text.replace( /([^A-Za-z])PP([^A-Za-z])/gi, '$1<span class="pp">PP</span>$2' );
 			return text;
 		},
 
+		renderDieValue( value ) {
+			return cortexFunctions.getDieDisplayValue( value );
+		},
+
+
 		getAttributeStyle( a ) {
 
-			let cssLeft, cssTop;
+			let top    = 7;
+			let left   = 8;
+			let right  = left + 61;
+			let height = 10;
+
+			let alpha;
 
 			if ( this.attributes.length === 1 ) {
-
-				cssLeft = ((115 + 176) * 0.5 + 3.5) + 'mm';
-				cssTop  = '120mm';
-
+				alpha = .5;
 			} else {
-
-				let alpha = a / (this.attributes.length-1);
-
-				let left = 115;
-				let right = 176;
-				let height = 10;
-				let top = 107.5;
-				
-				let x = (right - left) * alpha + left + 3.5;
-				cssLeft = x + 'mm';
-				
-				let y =  Math.sin(alpha * 3.1415926535) * height + top - 3;
-				cssTop = y + 'mm';
+				alpha = a / ( this.attributes.length - 1 );
 			}
 
-			return `left: ${cssLeft}; top: ${cssTop};`;
+			let x = (right - left) * alpha + left + 3.5;
+			let y = Math.sin(alpha * Math.PI) * height + top - 3;
+			
+			return `left: ${x}mm; top: ${y}mm;`;
 
 		},
 		

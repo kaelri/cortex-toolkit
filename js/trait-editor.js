@@ -70,6 +70,22 @@ Vue.component('traitEditor', {
 				</div>
 
 				<div class="editor-field">
+
+					<label>Trait Value</label>
+
+					<ul class="editor-values">
+						<li
+							v-for="value in [4,6,8,10,12]"
+							:class="{ 'active': value === trait.value }"
+							@click.prevent="toggleTraitValue( value )"
+						>
+							<span class="c" v-html="getDieDisplayValue(value)"></span>
+						</li>
+					</ul>
+
+				</div>
+
+				<div class="editor-field">
 					<label>Description</label>
 					<textarea v-model="description"></textarea>
 				</div>
@@ -87,9 +103,16 @@ Vue.component('traitEditor', {
 						:traitID="traitID"
 						:effectID="effectID"
 						@update="update"
+						@removeEffect="removeEffect"
 					></sfx-editor>
 
-					<button @click.prevent="addEffect"><i class="fas fa-plus"></i> Add SFX</button>
+					<div class="editor-subgroup">
+						<button class="editor-button editor-button-add editor-button-tertiary" @click.prevent="addEffect"><i class="fas fa-plus"></i> New SFX</button>
+					</div>
+
+					<div class="editor-group-remove">
+						<button class="editor-button editor-button-remove" @click.prevent="removeTrait"><i class="fas fa-trash"></i> Remove trait</button>
+					</div>
 
 				</div>
 
@@ -116,6 +139,20 @@ Vue.component('traitEditor', {
 
 		},
 
+		toggleTraitValue( value ) {
+
+			if ( value === this.trait.value ) {
+				value = null;
+			}
+
+			this.setTraitProperty( 'value', value );
+
+		},
+
+		removeTrait() {
+			this.$emit( 'removeTrait', this.traitSetID, this.traitID );
+		},
+
 		addEffect() {
 
 			let character = structuredClone( this.character );
@@ -126,6 +163,19 @@ Vue.component('traitEditor', {
 				name: 'New SFX',
 				description: 'SFX description',
 			});
+
+			this.update( character );
+
+		},
+
+		removeEffect( effectID ) {
+
+			let character = structuredClone( this.character );
+			let s = this.traitSetID;
+			let t = this.traitID;
+			let f = effectID;
+
+			character.traitSets[s].traits[t].sfx.splice(f, 1);
 
 			this.update( character );
 
@@ -152,7 +202,7 @@ Vue.component('traitEditor', {
 				return;
 			}
 
-			if ( distance === max ) {
+			if ( distance >= max ) {
 				this.scrollPosition = 'bottom';
 				return;
 			}
@@ -160,6 +210,10 @@ Vue.component('traitEditor', {
 			this.scrollPosition = 'middle';
 			return;
 
+		},
+
+		getDieDisplayValue( value ) {
+			return cortexFunctions.getDieDisplayValue( value );
 		},
 
 	}

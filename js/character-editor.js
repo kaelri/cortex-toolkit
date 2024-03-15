@@ -82,7 +82,7 @@ Vue.component('characterEditor', {
 			}
 
 			let s = this.selectedTraitSetID;
-			return this.character.traitSets[s];
+			return this.character.traitSets[s] ?? null;
 
 		},
 
@@ -94,7 +94,7 @@ Vue.component('characterEditor', {
 
 			let s = this.selectedTraitSetID;
 			let t = this.selectedTraitID;
-			return this.character.traitSets[s].traits[t];
+			return this.character.traitSets[s].traits[t] ?? null;
 
 		},
 
@@ -126,7 +126,7 @@ Vue.component('characterEditor', {
 				<li v-text="title" @click.prevent="clearSelected"></li>
 				<li v-if="selectedType === 'name'">Name &amp; Description</li>
 				<li v-if="selectedType === 'portrait'">Portrait</li>
-				<li v-if="selectedType === 'traitSet' || selectedType === 'trait'" v-text="selectedTraitSet.name" @click.prevent="selectTraitSet( selectedTraitSetID )"></li>
+				<li v-if="selectedType === 'traitSet' || selectedType === 'trait'" v-text="selectedTraitSet.name" @click.prevent="select([ 'traitSet', selectedTraitSetID ])"></li>
 				<li v-if="selectedType === 'trait'" v-text="selectedTrait.name"></li>
 			</ul>
 		</nav>
@@ -161,6 +161,7 @@ Vue.component('characterEditor', {
 				:traitSetID="item.traitSetID"
 				:traitID="item.traitID"
 				@update="update"
+				@removeTrait="removeTrait"
 			></trait-editor>
 
 		</div>
@@ -171,12 +172,16 @@ Vue.component('characterEditor', {
 
 	methods: {
 
+		isSelected( selector ) {
+			return cortexFunctions.arraysMatch( this.selected, selector );
+		},
+
 		clearSelected() {
 			this.$emit('select', []);
 		},
 
-		selectTraitSet( traitSetID ) {
-			this.$emit('select', [ 'traitSet', traitSetID ]);
+		select( selector ) {
+			this.$emit('select', selector);
 		},
 
 		setCharacterProperty( key, value ) {
@@ -205,6 +210,9 @@ Vue.component('characterEditor', {
 
 			this.update( character );
 
+			let newTraitSetID = character.traitSets.length - 1;
+			this.$emit('select', [ 'traitSet', traitSetID ]);
+
 		},
 
 		removeSet( traitSetID ) {
@@ -229,10 +237,22 @@ Vue.component('characterEditor', {
 			});
 
 			this.update( character );
+			
+			let newTraitID = character.traitSets[traitSetID].traits.length - 1;
+			this.$emit('select', [ 'trait', traitSetID, newTraitID ]);
 
 		},
 
 		removeTrait( traitSetID, traitID ) {
+
+			// If we’re removing the trait that is currently selected, switch to the previous trait, or the parent trait set if no other traits remain.
+			if ( this.isSelected(['trait', traitSetID, traitID]) ) {
+				if ( this.character.traitSets[traitSetID].traits.length > 1) {
+					this.select([ 'trait', traitSetID, traitID - 1 ]);
+				} else {
+					this.select( 'traitSet', traitSetID );
+				}
+			}
 
 			let character = structuredClone( this.character );
 

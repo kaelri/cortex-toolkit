@@ -60,6 +60,8 @@ Vue.component('sfxEditor', {
 				<textarea v-model="description"></textarea>
 			</div>
 
+			<button class="editor-button editor-button-remove editor-button-tertiary" @click.prevent="removeEffect"><i class="fas fa-trash"></i> Remove SFX</button>
+
 		</div>
 
 	</section>`,
@@ -81,6 +83,10 @@ Vue.component('sfxEditor', {
 
 		update( character ) {
 			this.$emit( 'update', character );
+		},
+
+		removeEffect() {
+			this.$emit( 'removeEffect', this.effectID );
 		},
 
 	}

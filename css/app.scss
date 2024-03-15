@@ -23,6 +23,7 @@
 	--color-secondary:   hsl(137, 36%, 88%); // Green
 	--color-interactive: hsl(204, 71%, 47%); // Blue
 	--color-separator:   hsl(  0,  0%, 83%); // Gray
+	--color-inactive: 	 hsl(  0,  0%, 40%); // White
 	--color-input: 	     hsl(  0,  0%, 15%); // White
 
 	--highlight-radius: .5em;
@@ -128,33 +129,55 @@ hr {
 
 // INTERFACE
 
-.add-item {
-	@extend %no-print;
-	width: 0%;
-	margin: 0;
-	left: 50%;
-	height: 32px;
-	position: relative;
-	page-break-inside: avoid;
-	break-inside: avoid;
-	font-style: normal;
-	font-size: 32px;
+%button {
+	border: none;
+	outline: none;
+	background: var(--button-color);
+	color: white;
+	font-family: var(--font-heading);
+	font-weight: bold;
+	font-size: smaller;
+	text-transform: uppercase;
 	line-height: 1;
-	background: white;
-	color: var(--color-interactive);
+	white-space: nowrap;
+	padding: .5em;
 	cursor: pointer;
-	> span {
-		display: block;
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
-		opacity: 0.5;
-		transition: color .2s, opacity .2s;
-	}
-	&:hover > span {
-		opacity: 1;
-	}
+}
+
+%button-secondary {
+	background: transparent;
+	border: 1px solid var(--button-color);
+	color: var(--button-color);
+}
+
+%button-tertiary {
+	background: transparent;
+	// border: 1px solid var(--button-color);
+	color: inherit;
+}
+
+.preview-button-container {
+	margin-top: 1rem;
+	text-align: center;
+}
+
+.preview-button {
+	@extend %button;
+	@extend %no-print;
+	--button-color: var(--color-interactive);
+
+	// position: absolute;
+	// top: 100%;
+	// left: 50%;
+	// transform: translateX(-50%);
+}
+
+.preview-button-secondary {
+	@extend %button-secondary;
+}
+
+.preview-button-tertiary {
+	@extend %button-tertiary;
 }
 
 %editable {
@@ -169,10 +192,11 @@ hr {
 		left: calc( -1 * var(--highlight-radius) );
 		right: calc( -1 * var(--highlight-radius) );
 		border-radius: var(--highlight-radius);
-		transition: opacity .2s;
+		transition: background-color .2s, border-color .2s;
 		opacity: 0;
 		pointer-events: none;
-		background-color: var(--color-interactive);
+		background-color: transparent;
+		border: 2px solid transparent;
 		z-index: 100;
 	}
 	> * {
@@ -180,14 +204,16 @@ hr {
 		z-index: 200;
 	
 	}
-	&:not(.selected):hover {
+	&:hover {
 		&::before {
-			opacity: .17;
+			opacity: 1;
+			background-color: color-mix(in srgb, var(--color-interactive), transparent 83% );
 		}
 	}
 	&.selected {
 		&::before {
-			opacity: .33;
+			opacity: 1;
+			border-color: color-mix(in srgb, var(--color-interactive), transparent 50% );
 		}
 	}
 }
@@ -239,6 +265,9 @@ hr {
 	}
 
 	li {
+		&:first-child {
+			font-weight: bold;
+		}
 		&:not(:last-child) {
 			cursor: pointer;
 		}
@@ -360,13 +389,15 @@ hr {
 
 	label {
 		display: block;
-		// font-weight: bold;
 		font-family: var(--font-secondary);
-		// font-size: smaller;
-		// text-transform: uppercase;
 		margin-bottom: .25rem;
-		// color: color-mix(in srgb, var(--color-interactive), white 50%);
+		font-weight: bold;
 		color: var(--color-primary);
+		.editor-subgroup & {
+			font-size: smaller;
+			text-transform: uppercase;
+			font-weight: normal;
+		}
 	}
 
 	input[type="text"],
@@ -384,6 +415,60 @@ hr {
 	textarea {
 		min-height: 6rem;
 	}
+}
+
+.editor-values {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	column-gap: .5rem;
+	li {
+		cursor: pointer;
+		transition: color .2s;
+		user-select: none;
+
+		> .c {
+			color: var(--color-inactive);
+		}
+		&.active > .c {
+			color: var(--color-primary);
+		}
+	}
+}
+
+.editor-group-remove {
+	margin-top: 2rem;
+}
+
+.editor-button {
+	@extend %button;
+	// background-color: white;
+	// color: black;
+	@extend %no-print;
+	display: block;
+	width: 100%;
+	font-size: .66rem;
+	--button-color: var(--color-interactive);
+}
+
+.editor-button-secondary {
+	@extend %button-secondary;
+}
+
+.editor-button-tertiary {
+	@extend %button-tertiary;
+}
+
+.editor-button-remove {
+	--button-color: var(--color-primary);
+}
+
+.editor-subgroup {
+	margin: .5em 0;
+	border: 2px solid var(--color-input);
+	padding: 1em;
+	border-radius: 5px;
 }
 
 .footer {
@@ -458,6 +543,7 @@ hr {
 	column-gap: 12pt;
 	> * {
 		flex: 1 1 0;
+		position: relative;
 	}
 }
 
@@ -496,7 +582,7 @@ hr {
 		content: "\25cf";
 		font-size: 11pt;
 		position: absolute;
-		margin-top: -2pt;
+		margin-top: -3pt;
 		margin-left: -3px;
 		color: var(--color-primary);
 	}
@@ -547,6 +633,7 @@ hr {
 	display: flex;
 	flex-direction: column;
 	row-gap: 12pt;
+	position: relative;
 	&:not(:first-child) {
 		display: none;
 	}
@@ -618,10 +705,6 @@ hr {
 	font-style: italic;
 }
 
-.trait-placeholder.add-item:before {
-	left: 0%;
-}
-
 // PORTRAIT
 
 .portrait {
@@ -632,6 +715,7 @@ hr {
 	margin: 0 auto;
 	left: 0%;
 	position: relative;
+	line-height: 1;
 	--highlight-radius: 1em;
 	&::before {
 		border-radius: 50%;
@@ -658,6 +742,47 @@ hr {
 
 // ATTRIBUTES
 
+.attributes {
+	position: relative;
+	padding-top: 50pt;
+	&.vertical {
+		padding-top: 90pt;
+	}
+}
+
+.attributes-grid {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: -45pt;
+	height: 85pt;
+}
+
+.attribute-curve {
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 175pt;
+	left: 50%;
+	transform: translateX(-50%);
+	svg {
+		position: absolute;
+		left: 0;
+		top: 0;
+		margin: 0;
+		padding: 0;
+	}
+}
+
+.attributes-items {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
 .attribute,
 .attribute-name {
 	font-family: var(--font-secondary);
@@ -675,6 +800,7 @@ hr {
 
 .attribute {
 	@extend %editable;
+	position: absolute;
 	transform: translate(-50%, 0%);
 }
 
@@ -696,46 +822,10 @@ hr {
 	transform: translate(-50%, -50%);
 }
 
-.attribute-curve {
-	position: absolute;
-	left: 118mm;
-	top: 100mm;
-	margin: 0;
-	padding: 0;
-}
-
-.attributes svg {
-	position: absolute;
-	left: 118mm;
-	top: 109mm;
-	margin: 0;
-	padding: 0;
-}
-
-.attributes {
-	margin-bottom: 24mm;
-}
-
-.attribute-placeholder {
-	position: absolute;
-	width: 16mm;
-	height: 32mm;
-	left: 190mm;
-	top: 100mm;
-}
-
-.attribute {
-	position: absolute;
-}
-
-.attribute.vertical > div {
+.vertical .attribute > div {
 	writing-mode: vertical-lr;
 	transform: rotate(180deg);
 	padding-bottom: 1mm;
-}
-
-.attributes.vertical {
-	margin-bottom: 32mm;
 }
 
 // VARIANTS
