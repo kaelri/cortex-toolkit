@@ -205,7 +205,7 @@ Vue.component('characterSheet', {
 
 							</div>
 
-							<!-- BUTTON: ADD TRAIT GROUP -->
+							<!-- BUTTON: ADD TRAIT SET -->
 							<div class="preview-button-container">
 								<div class="trait-set-placeholder preview-button"
 									@click.prevent="addTraitSet( pageLocation )"

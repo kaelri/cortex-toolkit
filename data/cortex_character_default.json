@@ -6,6 +6,7 @@
 	"traitSets": [
 		{
 			"name": "Distinctions",
+			"description": "Trait set description",
 			"style": "distinctions",
 			"location": "left",
 			"traits": [
@@ -49,6 +50,7 @@
 		},
 		{
 			"name": "Attributes",
+			"description": "Trait set description",
 			"style": "default",
 			"location": "attributes",
 			"traits": [
@@ -61,6 +63,7 @@
 		},
 		{
 			"name": "New trait set",
+			"description": "Trait set description",
 			"style": "default",
 			"location": "left",
 			"traits": [

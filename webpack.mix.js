@@ -7,6 +7,7 @@ mix
 	'js/functions.js',
 	'js/character-sheet.js',
 	'js/character-editor.js',
+	'js/trait-set-editor.js',
 	'js/trait-editor.js',
 	'js/sfx-editor.js',
 	'js/app.js'

@@ -123,10 +123,21 @@ Vue.component('characterEditor', {
 
 		<nav class="breadcrumbs">
 			<ul>
+
+				<!-- HOME -->
 				<li v-text="title" @click.prevent="clearSelected"></li>
+
+				<!-- NAME & DESCRIPTION -->
 				<li v-if="selectedType === 'name'">Name &amp; Description</li>
+
+				<!-- PORTRAIT -->
 				<li v-if="selectedType === 'portrait'">Portrait</li>
-				<li v-if="selectedType === 'traitSet' || selectedType === 'trait'" v-text="selectedTraitSet.name" @click.prevent="select([ 'traitSet', selectedTraitSetID ])"></li>
+
+				<!-- TRAIT SET -->
+				<li v-if="selectedType === 'traitSet'" v-text="selectedTraitSet.name"></li>
+
+				<!-- TRAIT -->
+				<li v-if="selectedType === 'trait'" v-text="selectedTraitSet.name" @click.prevent="select([ 'traitSet', selectedTraitSetID ])"></li>
 				<li v-if="selectedType === 'trait'" v-text="selectedTrait.name"></li>
 			</ul>
 		</nav>
@@ -152,6 +163,17 @@ Vue.component('characterEditor', {
 
 			</section>
 		
+			<!-- TRAIT SETS -->
+			<trait-set-editor
+				v-for="(traitSet, traitSetID) in character.traitSets"
+				:key="traitSetID"
+				:selected="selected"
+				:character="character"
+				:traitSetID="traitSetID"
+				@update="update"
+				@removeTraitSet="removeTraitSet"
+			></trait-set-editor>
+
 			<!-- TRAITS -->
 			<trait-editor
 				v-for="item in allTraits"
@@ -195,7 +217,8 @@ Vue.component('characterEditor', {
 			let character = structuredClone( this.character );
 
 			character.traitSets.push({
-				name: 'New trait group',
+				name: 'New trait set',
+				description: 'Trait set description',
 				style: 'default',
 				location: location ?? 'left',
 				traits: [
@@ -215,11 +238,15 @@ Vue.component('characterEditor', {
 
 		},
 
-		removeSet( traitSetID ) {
+		removeTraitSet( traitSetID ) {
+
+			if ( this.isSelected(['traitSet', traitSetID]) ) {
+				this.clearSelected();
+			}
 
 			let character = structuredClone( this.character );
 
-			character.traitSets.splice( traitSetID, 1 );
+			character.traitSets.splice(traitSetID, 1);
 
 			this.update( character );
 
