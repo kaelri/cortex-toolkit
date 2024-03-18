@@ -2,9 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	new Vue({
 
-		name: 'cortex-tools',
+		name: 'cortex-toolkit',
 
-		el: '#cortex-tools',
+		el: '#cortex-toolkit',
 
 		data: {
 			baseURL:   window.location.href,
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		},
 
 		/*html*/
-		template: `<article id="cortex-tools">
+		template: `<article id="cortex-toolkit">
 		
 			<header class="header">
 				<div class="header-inner">
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		watch: {
 			character( character ) {
-				pageTitle = 'Cortex Tools';
+				pageTitle = 'Cortex Toolkit';
 				if ( character.name && character.name.length ) {
 					pageTitle = `${character.name} | ${pageTitle}`;
 				}
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				let character = null;
 
-				let localJSON = localStorage.getItem('cortexToolsData');
+				let localJSON = localStorage.getItem('cortexToolkitData');
 				if ( localJSON && localJSON.length ) {
 
 					let localData = JSON.parse(localJSON);
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				this.character.modified = ( new Date() ).getTime();
 
-				localStorage.setItem('cortexToolsData', JSON.stringify({
+				localStorage.setItem('cortexToolkitData', JSON.stringify({
 					character: this.character,
 				}));
 			},

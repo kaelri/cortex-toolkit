@@ -1,5 +1,5 @@
 {
-	"name": "cortex-tools",
+	"name": "cortex-toolkit",
 	"version": "0.0.1",
 	"devDependencies": {
 		"laravel-mix": "^6.0.49",
