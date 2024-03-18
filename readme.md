@@ -8,7 +8,7 @@ Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex
   - [ ] JSON import/export
   - [ ] Trait set styles
   - [ ] Portrait drag/zoom
-- [ ] Switch editor panel vertical alignment depending on whether the element is in the top or bottom half of the page.
+- [x] Switch editor panel vertical alignment depending on whether the element is in the top or bottom half of the page.
 - [ ] Load/save multiple characters
 - [ ] Document character sheet schema for interoperability with other Cortex utilities
 - [ ] Dice pool roller utility

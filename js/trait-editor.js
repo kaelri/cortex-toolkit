@@ -5,11 +5,13 @@ Vue.component('traitEditor', {
 		open:       Boolean,
 		traitSetID: Number,
 		traitID:    Number,
+		viewY:      Number,
 	},
 
 	data() {
 		return {
 			scrollPosition: 'none',
+			anchorPosition: 'top',
 		}
 	},
 
@@ -48,10 +50,32 @@ Vue.component('traitEditor', {
 			}
 		},
 
+		scrollable() {
+			return Boolean( this.trait.sfx.length > 0 );
+		},
+
+		cssClass() {
+
+			let cssClass = {
+				'editor': true,
+				'open': this.open,
+				'scrollable': this.scrollable
+			}
+
+			cssClass[ 'anchor-position-' + this.anchorPosition ] = true;
+
+			if ( this.scrollable ) {
+				cssClass[ 'scroll-position-' + this.scrollPosition ] = true;
+			}
+
+			return cssClass;
+
+		}
+
 	},
 
 	/*html*/
-	template: `<section :class="{'editor': true, 'open': open, 'scrollable': true, 'scroll-at-top': scrollPosition === 'top', 'scroll-at-bottom': scrollPosition === 'bottom', 'no-scroll': scrollPosition === 'none' }">
+	template: `<aside :class="cssClass" @click.stop="">
 
 		<div class="editor-arrow"></div>
 
@@ -60,66 +84,70 @@ Vue.component('traitEditor', {
 			<button class="editor-delete" @click.stop="removeTrait"><i class="fas fa-trash"></i></button>
 		</div>
 
-		<div class="editor-inner" @scroll="checkScroll">
+		<div class="editor-inner">
+			<div @scroll="checkScrollPosition">
 	
-			<div class="editor-fields">
+				<div class="editor-fields">
 
-				<div class="editor-field">
-					<label>Trait Name</label>
-					<input type="text" v-model="name" ref="inputName">
-				</div>
+					<div class="editor-field">
+						<label>Trait Name</label>
+						<input type="text" v-model="name" ref="inputName">
+					</div>
 
-				<div class="editor-field">
+					<div class="editor-field">
 
-					<label>Trait Value</label>
+						<label>Trait Value</label>
 
-					<ul class="editor-values">
-						<li
-							v-for="value in [4,6,8,10,12]"
-							:class="{ 'active': value === trait.value }"
-							@click.stop="toggleTraitValue( value )"
-						>
-							<span class="c" v-html="getDieDisplayValue(value)"></span>
-						</li>
-					</ul>
+						<ul class="editor-values">
+							<li
+								v-for="value in [4,6,8,10,12]"
+								:class="{ 'active': value === trait.value }"
+								@click.stop="toggleTraitValue( value )"
+							>
+								<span class="c" v-html="getDieDisplayValue(value)"></span>
+							</li>
+						</ul>
 
-				</div>
+					</div>
 
-				<div class="editor-field">
-					<label>Description</label>
-					<textarea v-model="description"></textarea>
-				</div>
+					<div class="editor-field">
+						<label>Description</label>
+						<textarea v-model="description"></textarea>
+					</div>
 
-				<!-- SFX -->
-				<div class="editor-field">
+					<!-- SFX -->
+					<div class="editor-field">
 
-					<label>SFX</label>
+						<label>SFX</label>
 
-					<sfx-editor
-						v-for="(effect, effectID) in trait.sfx"
-						:key="traitSetID + '-' + traitID + '-' + effectID"
-						:character="character"
-						:traitSetID="traitSetID"
-						:traitID="traitID"
-						:effectID="effectID"
-						@update="update"
-						@removeEffect="removeEffect"
-					></sfx-editor>
+						<sfx-editor
+							v-for="(effect, effectID) in trait.sfx"
+							:key="traitSetID + '-' + traitID + '-' + effectID"
+							:character="character"
+							:traitSetID="traitSetID"
+							:traitID="traitID"
+							:effectID="effectID"
+							@update="update"
+							@removeEffect="removeEffect"
+						></sfx-editor>
 
-					<div class="editor-subgroup">
-						<button class="editor-button editor-button-add editor-button-tertiary" @click.stop="addEffect"><i class="fas fa-plus"></i> New SFX</button>
+						<div class="editor-subgroup">
+							<button class="editor-button editor-button-add editor-button-tertiary" @click.stop="addEffect"><i class="fas fa-plus"></i> New SFX</button>
+						</div>
+
 					</div>
 
 				</div>
 
 			</div>
-
 		</div>
-	</section>`,
+
+	</aside>`,
 
 	mounted() {
 
-		this.checkScroll();
+		this.checkAnchorPosition();
+		this.checkScrollPosition();
 
 		if ( this.open ) {
 			this.$refs.inputName.focus();
@@ -128,11 +156,21 @@ Vue.component('traitEditor', {
 	},
 
 	watch: {
+
+		character() {
+			this.checkAnchorPosition();
+		},
+
+		viewY() {
+			this.checkAnchorPosition();
+		},
+		
 		open( isOpen, wasOpen ) {
 			if ( isOpen && !wasOpen ) {
 				this.$refs.inputName.focus();
 			}
 		}
+
 	},
 
 	methods: {
@@ -199,9 +237,23 @@ Vue.component('traitEditor', {
 			this.$emit( 'update', character );
 		},
 
-		checkScroll() {
+		checkAnchorPosition() {
+			
+			let windowHeight = (window.innerHeight || html.clientHeight);
+			let traitPosition = this.$el.parentElement.getBoundingClientRect();
+			let traitMidpoint = traitPosition.top + (traitPosition.height / 2); 
 
-			let element = this.$el.querySelector('.editor-inner');
+			if ( traitMidpoint < (windowHeight / 2) ) {
+				this.anchorPosition = 'top';
+			} else {
+				this.anchorPosition = 'bottom';
+			}
+
+		},
+
+		checkScrollPosition() {
+
+			let element = this.$el.querySelector('.editor-inner > div');
 
 			let distance = element.scrollTop;
 			let max      = element.scrollHeight - element.clientHeight;

@@ -18,7 +18,7 @@ Vue.component('portraitEditor', {
 	},
 
 	/*html*/
-	template: `<aside :class="{ 'editor': true, 'editor-character': true, 'open': open, 'scrollable': false }">
+	template: `<aside :class="{ 'editor': true, 'editor-portrait': true, 'open': open, 'scrollable': false, 'anchor-position-top': true }" @click.stop="">
 
 		<div class="editor-arrow"></div>
 
@@ -28,31 +28,34 @@ Vue.component('portraitEditor', {
 		</div>
 
 		<div class="editor-inner">
+			<div>
 
-			<div class="editor-fields">
+				<div class="editor-fields">
 
-				<div class="editor-field">
+					<div class="editor-field">
 
-					<label>Portrait</label>
+						<label>Portrait</label>
 
-					<img class="portrait-preview"
-						v-if="hasImage"
-						:src="character?.portrait?.url"
-						@click.prevent="uploadStart"
-					>
+						<img class="portrait-preview"
+							v-if="hasImage"
+							:src="character?.portrait?.url"
+							@click.prevent="uploadStart"
+						>
 
-					<button
-						class="editor-button"
-						@click.prevent="uploadStart"
-					><i class="fas fa-plus"></i> Upload {{ hasImage ? 'New' : '' }} Image</button>
+						<button
+							class="editor-button"
+							@click.prevent="uploadStart"
+						><i class="fas fa-plus"></i> Upload {{ hasImage ? 'New' : '' }} Image</button>
 
-					<input class="portrait-input" type="file" ref="inputFile" @change="uploadProcess">
+						<input class="portrait-input" type="file" ref="inputFile" @change="uploadProcess">
+
+					</div>
 
 				</div>
-
+				
 			</div>
-
 		</div>
+
 	</aside>`,
 
 	methods: {

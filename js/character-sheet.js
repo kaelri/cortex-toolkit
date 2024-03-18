@@ -2,7 +2,8 @@ Vue.component('characterSheet', {
 
 	props: {
 		character: Object,
-		selected:  Array
+		selected:  Array,
+		viewY:     Number,
 	},
 
 	computed: {
@@ -38,7 +39,7 @@ Vue.component('characterSheet', {
 	},
 
 	/*html*/
-	template: `<section class="character-sheet">
+	template: `<section class="character-sheet" @click.stop="clearSelected">
 	
 		<div class="pages">
 
@@ -149,6 +150,7 @@ Vue.component('characterSheet', {
 												:open="isSelected(['trait', attributesID, a])"
 												:traitSetID="attributesID"
 												:traitID="a"
+												:viewY="viewY"
 												@select="select"
 												@update="update"
 												@removeTrait="removeTrait"
@@ -192,6 +194,7 @@ Vue.component('characterSheet', {
 										:character="character"
 										:open="isSelected(['traitSet', s])"
 										:traitSetID="s"
+										:viewY="viewY"
 										@select="select"
 										@update="update"
 										@removeTraitSet="removeTraitSet"
@@ -250,6 +253,7 @@ Vue.component('characterSheet', {
 												:open="isSelected(['trait', s, t])"
 												:traitSetID="s"
 												:traitID="t"
+												:viewY="viewY"
 												@select="select"
 												@update="update"
 												@removeTrait="removeTrait"
@@ -358,6 +362,7 @@ Vue.component('characterSheet', {
 						value: 6,
 						description: 'Trait description',
 						location: 'left',
+						sfx: [],
 					}
 				],
 			});
@@ -421,10 +426,6 @@ Vue.component('characterSheet', {
 
 			this.update( character );
 
-		},
-
-		dragPortrait( event ) {
-			console.log(event);
 		},
 
 		update( character ) {

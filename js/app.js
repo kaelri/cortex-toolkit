@@ -7,13 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
 		el: '#cortex-toolkit',
 
 		data: {
-			baseURL:   window.location.href,
 			character: null,
 			selected:  null,
+			viewY:     null,
 
 		},
 
 		computed: {
+
+			baseURL() {
+				return window.location.href;
+			}
 
 		},
 
@@ -26,13 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
 				</div>
 			</header>
 
-			<main class="main">
+			<main class="main" ref="main" @scroll="setViewY">
 			
 				<!-- CHARACTER SHEET -->
 				<character-sheet
 					v-if="character"
 					:character="character"
 					:selected="selected"
+					:viewY="viewY"
 					@select="select"
 					@update="updateCharacter"
 				></character-sheet>
@@ -57,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		
 		mounted() {
 
+			this.setViewY();
 			this.loadLocal();
 
 		},
@@ -72,6 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		},
 
 		methods: {
+
+			// VIEW
+
+			setViewY( event ) {
+				this.viewY = this.$refs.main.scrollTop;
+			},
 
 			// MANAGEMENT
 

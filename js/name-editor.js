@@ -32,7 +32,7 @@ Vue.component('nameEditor', {
 	},
 
 	/*html*/
-	template: `<aside :class="{ 'editor': true, 'editor-character': true, 'open': open, 'scrollable': false }">
+	template: `<aside :class="{ 'editor': true, 'editor-character': true, 'open': open, 'scrollable': false }" @click.stop="">
 
 		<div class="editor-arrow"></div>
 
@@ -41,22 +41,25 @@ Vue.component('nameEditor', {
 		</div>
 
 		<div class="editor-inner">
+			<div>
 
-			<div class="editor-fields">
+				<div class="editor-fields">
 
-				<div class="editor-field">
-					<label>Character Name</label>
-					<input type="text" v-model="name" ref="inputName">
-				</div>
+					<div class="editor-field">
+						<label>Character Name</label>
+						<input type="text" v-model="name" ref="inputName">
+					</div>
 
-				<div class="editor-field">
-					<label>Description</label>
-					<textarea v-model="description"></textarea>
+					<div class="editor-field">
+						<label>Description</label>
+						<textarea v-model="description"></textarea>
+					</div>
+
 				</div>
 
 			</div>
-
 		</div>
+		
 	</aside>`,
 
 	watch: {

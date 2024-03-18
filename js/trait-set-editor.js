@@ -4,11 +4,13 @@ Vue.component('traitSetEditor', {
 		character:  Object,
 		open:       Boolean,
 		traitSetID: Number,
+		viewY:      Number,
 	},
 
 	data() {
 		return {
 			scrollPosition: 'none',
+			anchorPosition: 'top',
 		}
 	},
 
@@ -37,10 +39,24 @@ Vue.component('traitSetEditor', {
 			}
 		},
 
+		cssClass() {
+
+			let cssClass = {
+				'editor': true,
+				'open': this.open,
+				'scrollable': false,
+			}
+
+			cssClass[ 'anchor-position-' + this.anchorPosition ] = true;
+
+			return cssClass;
+
+		}
+
 	},
 
 	/*html*/
-	template: `<section :class="{'editor': true, 'open': open, 'scrollable': false, 'scroll-at-top': scrollPosition === 'top', 'scroll-at-bottom': scrollPosition === 'bottom', 'no-scroll': scrollPosition === 'none' }">
+	template: `<aside :class="cssClass" @click.stop="">
 
 		<div class="editor-arrow"></div>
 
@@ -49,41 +65,54 @@ Vue.component('traitSetEditor', {
 			<button class="editor-delete" @click.stop="removeTraitSet"><i class="fas fa-trash"></i></button>
 		</div>
 
-		<div class="editor-inner" @scroll="checkScroll">
+		<div class="editor-inner">
+			<div>
 
-			<div class="editor-fields">
+				<div class="editor-fields">
 
-				<div class="editor-field">
-					<label>Trait Set Name</label>
-					<input type="text" v-model="name" ref="inputName">
-				</div>
+					<div class="editor-field">
+						<label>Trait Set Name</label>
+						<input type="text" v-model="name" ref="inputName">
+					</div>
 
-				<div class="editor-field">
-					<label>Description</label>
-					<textarea v-model="description"></textarea>
+					<div class="editor-field">
+						<label>Description</label>
+						<textarea v-model="description"></textarea>
+					</div>
+
 				</div>
 
 			</div>
-
 		</div>
-	</section>`,
+
+	</aside>`,
 
 	mounted() {
 
-		this.checkScroll();
+		this.checkAnchorPosition();
 
 		if ( this.open ) {
 			this.$refs.inputName.focus();
 		}
-		
+
 	},
 
 	watch: {
+
+		character() {
+			this.checkAnchorPosition();
+		},
+
+		viewY() {
+			this.checkAnchorPosition();
+		},
+		
 		open( isOpen, wasOpen ) {
 			if ( isOpen && !wasOpen ) {
 				this.$refs.inputName.focus();
 			}
 		}
+
 	},
 
 	methods: {
@@ -111,30 +140,17 @@ Vue.component('traitSetEditor', {
 			this.$emit( 'update', character );
 		},
 
-		checkScroll() {
+		checkAnchorPosition() {
+			
+			let windowHeight = (window.innerHeight || html.clientHeight);
+			let traitPosition = this.$el.parentElement.getBoundingClientRect();
+			let traitMidpoint = traitPosition.top + (traitPosition.height / 2); 
 
-			let element = this.$el.querySelector('.editor-inner');
-
-			let distance = element.scrollTop;
-			let max      = element.scrollHeight - element.clientHeight;
-
-			if ( max <= 0 ) {
-				this.scrollPosition = 'none';
-				return;
+			if ( traitMidpoint < (windowHeight / 2) ) {
+				this.anchorPosition = 'top';
+			} else {
+				this.anchorPosition = 'bottom';
 			}
-
-			if ( distance === 0 ) {
-				this.scrollPosition = 'top';
-				return;
-			}
-
-			if ( distance >= max ) {
-				this.scrollPosition = 'bottom';
-				return;
-			}
-
-			this.scrollPosition = 'middle';
-			return;
 
 		},
 
