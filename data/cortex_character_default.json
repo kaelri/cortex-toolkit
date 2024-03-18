@@ -57,7 +57,8 @@
 				{
 					"name": "Attribute 1",
 					"value": 8,
-					"description": "Trait description"
+					"description": "Trait description",
+					"sfx": []
 				}
 			]
 		},
@@ -71,13 +72,14 @@
 					"name": "New trait",
 					"value": 6,
 					"description": "Trait description",
-					"location": "left"
+					"location": "left",
+					"sfx": []
 				}
 			]
 		}
 	],
 	"portrait": {
-		"value": "",
+		"url": "",
 		"x": 0,
 		"y": 0,
 		"zoom": 1

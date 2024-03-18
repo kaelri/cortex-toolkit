@@ -2,7 +2,7 @@ Vue.component('traitEditor', {
 
 	props: {
 		character:  Object,
-		selected:   Array,
+		open:       Boolean,
 		traitSetID: Number,
 		traitID:    Number,
 	},
@@ -19,14 +19,6 @@ Vue.component('traitEditor', {
 			let s = this.traitSetID;
 			let t = this.traitID;
 			return this.character.traitSets[s].traits[t];
-		},
-
-		selector() {
-			return [ 'trait', this.traitSetID, this.traitID ];
-		},
-
-		active() {
-			return cortexFunctions.arraysMatch( this.selected, this.selector );
 		},
 
 		name: {
@@ -59,14 +51,22 @@ Vue.component('traitEditor', {
 	},
 
 	/*html*/
-	template: `<section :class="{'editor-group': true, 'open': active, 'scroll-at-top': scrollPosition === 'top', 'scroll-at-bottom': scrollPosition === 'bottom', 'no-scroll': scrollPosition === 'none' }">
-		<div class="editor-group-inner" @scroll="checkScroll">
+	template: `<section :class="{'editor': true, 'open': open, 'scrollable': true, 'scroll-at-top': scrollPosition === 'top', 'scroll-at-bottom': scrollPosition === 'bottom', 'no-scroll': scrollPosition === 'none' }">
+
+		<div class="editor-arrow"></div>
+
+		<div class="editor-controls">
+			<button @click.stop="select([])"><i class="fas fa-times"></i></button>
+			<button class="editor-delete" @click.stop="removeTrait"><i class="fas fa-trash"></i></button>
+		</div>
+
+		<div class="editor-inner" @scroll="checkScroll">
 	
 			<div class="editor-fields">
 
 				<div class="editor-field">
 					<label>Trait Name</label>
-					<input type="text" v-model="name">
+					<input type="text" v-model="name" ref="inputName">
 				</div>
 
 				<div class="editor-field">
@@ -77,7 +77,7 @@ Vue.component('traitEditor', {
 						<li
 							v-for="value in [4,6,8,10,12]"
 							:class="{ 'active': value === trait.value }"
-							@click.prevent="toggleTraitValue( value )"
+							@click.stop="toggleTraitValue( value )"
 						>
 							<span class="c" v-html="getDieDisplayValue(value)"></span>
 						</li>
@@ -107,11 +107,7 @@ Vue.component('traitEditor', {
 					></sfx-editor>
 
 					<div class="editor-subgroup">
-						<button class="editor-button editor-button-add editor-button-tertiary" @click.prevent="addEffect"><i class="fas fa-plus"></i> New SFX</button>
-					</div>
-
-					<div class="editor-group-remove">
-						<button class="editor-button editor-button-remove" @click.prevent="removeTrait"><i class="fas fa-trash"></i> Remove trait</button>
+						<button class="editor-button editor-button-add editor-button-tertiary" @click.stop="addEffect"><i class="fas fa-plus"></i> New SFX</button>
 					</div>
 
 				</div>
@@ -122,10 +118,28 @@ Vue.component('traitEditor', {
 	</section>`,
 
 	mounted() {
+
 		this.checkScroll();
+
+		if ( this.open ) {
+			this.$refs.inputName.focus();
+		}
+
+	},
+
+	watch: {
+		open( isOpen, wasOpen ) {
+			if ( isOpen && !wasOpen ) {
+				this.$refs.inputName.focus();
+			}
+		}
 	},
 
 	methods: {
+
+		select( selector ) {
+			this.$emit( 'select', selector );
+		},
 
 		setTraitProperty( key, value ) {
 
@@ -187,7 +201,7 @@ Vue.component('traitEditor', {
 
 		checkScroll() {
 
-			let element = this.$el.querySelector('.editor-group-inner');
+			let element = this.$el.querySelector('.editor-inner');
 
 			let distance = element.scrollTop;
 			let max      = element.scrollHeight - element.clientHeight;
@@ -202,7 +216,7 @@ Vue.component('traitEditor', {
 				return;
 			}
 
-			if ( distance >= max ) {
+			if ( distance >= (max - 1) ) { // slight buffer 
 				this.scrollPosition = 'bottom';
 				return;
 			}

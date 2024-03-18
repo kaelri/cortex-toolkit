@@ -2,7 +2,7 @@ Vue.component('traitSetEditor', {
 
 	props: {
 		character:  Object,
-		selected:   Array,
+		open:       Boolean,
 		traitSetID: Number,
 	},
 
@@ -17,14 +17,6 @@ Vue.component('traitSetEditor', {
 		traitSet() {
 			let s = this.traitSetID;
 			return this.character.traitSets[s];
-		},
-
-		selector() {
-			return [ 'traitSet', this.traitSetID ];
-		},
-
-		active() {
-			return cortexFunctions.arraysMatch( this.selected, this.selector );
 		},
 
 		name: {
@@ -48,14 +40,22 @@ Vue.component('traitSetEditor', {
 	},
 
 	/*html*/
-	template: `<section :class="{'editor-group': true, 'open': active, 'scroll-at-top': scrollPosition === 'top', 'scroll-at-bottom': scrollPosition === 'bottom', 'no-scroll': scrollPosition === 'none' }">
-		<div class="editor-group-inner" @scroll="checkScroll">
-	
+	template: `<section :class="{'editor': true, 'open': open, 'scrollable': false, 'scroll-at-top': scrollPosition === 'top', 'scroll-at-bottom': scrollPosition === 'bottom', 'no-scroll': scrollPosition === 'none' }">
+
+		<div class="editor-arrow"></div>
+
+		<div class="editor-controls">
+			<button @click.stop="select([])"><i class="fas fa-times"></i></button>
+			<button class="editor-delete" @click.stop="removeTraitSet"><i class="fas fa-trash"></i></button>
+		</div>
+
+		<div class="editor-inner" @scroll="checkScroll">
+
 			<div class="editor-fields">
 
 				<div class="editor-field">
 					<label>Trait Set Name</label>
-					<input type="text" v-model="name">
+					<input type="text" v-model="name" ref="inputName">
 				</div>
 
 				<div class="editor-field">
@@ -69,10 +69,28 @@ Vue.component('traitSetEditor', {
 	</section>`,
 
 	mounted() {
+
 		this.checkScroll();
+
+		if ( this.open ) {
+			this.$refs.inputName.focus();
+		}
+		
+	},
+
+	watch: {
+		open( isOpen, wasOpen ) {
+			if ( isOpen && !wasOpen ) {
+				this.$refs.inputName.focus();
+			}
+		}
 	},
 
 	methods: {
+
+		select( selector ) {
+			this.$emit( 'select', selector );
+		},
 
 		setTraitSetProperty( key, value ) {
 
@@ -95,7 +113,7 @@ Vue.component('traitSetEditor', {
 
 		checkScroll() {
 
-			let element = this.$el.querySelector('.editor-group-inner');
+			let element = this.$el.querySelector('.editor-inner');
 
 			let distance = element.scrollTop;
 			let max      = element.scrollHeight - element.clientHeight;

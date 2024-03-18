@@ -21,42 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		template: `<article id="cortex-tools">
 		
 			<header class="header">
-
-				<div class="header-collapsed-content">
-				</div>
-
-				<div class="header-expanded-content">
-
-					<section class="controls">
-
-						<!-- CHARACTER EDITOR -->
-						<character-editor
-							ref="characterEditor"
-							v-if="character"
-							:character="character"
-							:selected="selected"
-							@update="updateCharacter"
-							@select="select"
-						></character-editor>
-
-					</section>
-
-					<footer class="footer">
-
-						<div class="footer-logo">
-							<a href="https://cortexrpg.com" target="_blank"><img src="images/cortex_community_logo_white.png"></a>
-						</div>
-
-						<div class="footer-legal">
-								<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at CortexRPG.com </p>
-								<p>Cortex is ©️ 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission.</p>
-								<p>If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.</p>
-						</div>
-
-					</footer>
+				<div class="header-inner">
 
 				</div>
-				
 			</header>
 
 			<main class="main">
@@ -66,12 +33,25 @@ document.addEventListener('DOMContentLoaded', () => {
 					v-if="character"
 					:character="character"
 					:selected="selected"
-					@addTraitSet="addTraitSet"
-					@addTrait="addTrait"
 					@select="select"
+					@update="updateCharacter"
 				></character-sheet>
 
 			</main>
+
+			<aside class="about">
+
+				<div class="about-logo">
+					<a href="https://cortexrpg.com" target="_blank"><img src="images/cortex_community_logo_white.png"></a>
+				</div>
+
+				<div class="about-legal">
+					<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at CortexRPG.com </p>
+					<p>Cortex is ©️ 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission.</p>
+					<p>If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.</p>
+				</div>
+
+			</aside>
 
 		</article>`,
 		
@@ -92,6 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		},
 
 		methods: {
+
+			// MANAGEMENT
 
 			async createDefaultCharacter() {
 
@@ -121,14 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				this.selected = selector;
 
-			},
-
-			addTraitSet( location ) {
-				this.$refs.characterEditor.addTraitSet( location );
-			},
-
-			addTrait( traitSetID, location ) {
-				this.$refs.characterEditor.addTrait( traitSetID, location );
 			},
 
 			async loadLocal() {

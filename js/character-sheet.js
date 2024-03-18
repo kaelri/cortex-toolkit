@@ -46,27 +46,40 @@ Vue.component('characterSheet', {
 			<div class="page">
 				<div class="page-inner">
 
-					<header :class="{'page-header': true, 'selected': isSelected(['name'])}"
-						@click.prevent="select([ 'name' ])"
-					>
+					<header class="page-header">
 
-						<!-- CHARACTER NAME -->
-						<div class="title-container">
+						<div :class="{'page-header-inner': true, 'selected': isSelected(['name'])}"
+							@click.stop="select([ 'name' ])"
+						>
+							<div>
 
-							<div class="title"
-								v-html="name"
-							></div>
+								<!-- CHARACTER NAME -->
+								<div class="title-container">
 
-							<div class="title-decoration">
-								<svg height="4" width="100%"><line x1="0" y1="0" x2="10000" y2="0" style="stroke:#C50852;stroke-width:4pt"/></svg>
+									<div class="title"
+										v-html="name"
+									></div>
+
+									<div class="title-decoration">
+										<svg height="4" width="100%"><line x1="0" y1="0" x2="10000" y2="0" style="stroke:#C50852;stroke-width:4pt"/></svg>
+									</div>
+
+								</div>
+
+								<!-- CHARACTER DESCRIPTION -->
+								<div class="subtitle">
+									<span v-html="renderText(description)"></span>
+								</div>
+
 							</div>
-
 						</div>
 
-						<!-- CHARACTER DESCRIPTION -->
-						<div class="subtitle">
-							<span v-html="renderText(description)"></span>
-						</div>
+						<name-editor
+							:character="character"
+							:open="isSelected(['name'])"
+							@select="select"
+							@update="update"
+						></name-editor>
 
 					</header>
 
@@ -76,12 +89,21 @@ Vue.component('characterSheet', {
 						<div v-for="pageLocation in ['left', 'right']" :class="'column-' + pageLocation">
 
 							<!-- IMAGE -->
-							<div :class="{ 'portrait': true, 'selected': isSelected(['portrait']) }" v-if="pageLocation === 'right'"
-								@click.prevent="select([ 'portrait' ])"
-							>
-								<div class="portrait-circle" width=100% height=100%>
-									<img src="" width="110%" draggable="false" class="image"></img>
+							<div class="portrait" v-if="pageLocation === 'right'">
+
+								<div :class="{ 'portrait-inner': true, 'selected': isSelected(['portrait']) }"
+									@click.stop="select([ 'portrait' ])"
+								>
+									<div class="portrait-circle" width="100%" height="100%" :style="'background-image: url(' + portrait.url + ');'"></div>
 								</div>
+
+								<portrait-editor
+									:character="character"
+									:open="isSelected(['portrait'])"
+									@select="select"
+									@update="update"
+								></portrait-editor>
+	
 							</div>
 
 							<!-- ATTRIBUTES -->
@@ -103,18 +125,34 @@ Vue.component('characterSheet', {
 										v-if="pageLocation === 'right'"
 									>
 										<div v-for="( attribute, a ) in attributes"
-											:class="{ 'attribute': true, 'selected': isSelected(['trait', attributesID, a]) }"
+											class="attribute"
 											:style="getAttributeStyle( a )"
-											@click.prevent="select([ 'trait', attributesID, a ])"
 										>
 
-											<span class="c"
-												v-html="renderDieValue(attribute.value)"
-											></span>
+											<div class="attribute-inner"
+												:class="{ 'attribute-inner': true, 'selected': isSelected(['trait', attributesID, a]) }"
+												@click.stop="select([ 'trait', attributesID, a ])"
+											>
 
-											<div class="attribute-name"
-												v-html="attribute.name"
-											></div>
+												<span class="c"
+													v-html="renderDieValue(attribute.value)"
+												></span>
+
+												<div class="attribute-name"
+													v-html="attribute.name"
+												></div>
+
+											</div>
+
+											<trait-editor
+												:character="character"
+												:open="isSelected(['trait', attributesID, a])"
+												:traitSetID="attributesID"
+												:traitID="a"
+												@select="select"
+												@update="update"
+												@removeTrait="removeTrait"
+											></trait-editor>
 
 										</div>
 
@@ -127,7 +165,7 @@ Vue.component('characterSheet', {
 									v-if="pageLocation === 'right'"
 								>
 									<div class="preview-button"
-										@click.prevent="addTrait( attributesID )"
+										@click.stop="addTrait( attributesID )"
 									>
 										<span><i class="fas fa-plus"></i> New Attribute</span>
 									</div>
@@ -141,60 +179,88 @@ Vue.component('characterSheet', {
 								v-if="traitSet.location === pageLocation"
 							>
 
-								<div :class="{'trait-set-header': true, 'selected': isSelected(['traitSet', s])}"
-									@click.prevent="select([ 'traitSet', s ])"
-								>
-									<div v-html="traitSet.name"></div>
+								<div class="trait-set-header">
+									<div :class="{'trait-set-header-inner': true, 'selected': isSelected(['traitSet', s])}"
+										@click.stop="select([ 'traitSet', s ])"
+									>
+
+										<div v-html="traitSet.name"></div>
+
+									</div>
+
+									<trait-set-editor
+										:character="character"
+										:open="isSelected(['traitSet', s])"
+										:traitSetID="s"
+										@select="select"
+										@update="update"
+										@removeTraitSet="removeTraitSet"
+									></trait-set-editor>
+
 								</div>
 
 								<div class="trait-columns">
 									<div class="trait-column" v-for="traitSetLocation in ['left', 'right']">
 
-										<div :class="{ 'trait': true, 'selected': isSelected(['trait', s, t]) }"
+										<div class="trait"
 											v-for="(trait, t) in traitSet.traits"
 											v-if="trait.location === traitSetLocation"
-											@click.prevent="select([ 'trait', s, t ])"
 										>
+											<div :class="{ 'trait-inner': true, 'selected': isSelected(['trait', s, t]) }"
+												@click.stop="select([ 'trait', s, t ])"
+											>
 
-											<h2 class="trait-title">
+												<h2 class="trait-title">
 
-												<span class="trait-name"
-													v-html="trait.name"
-												></span>
-											
-												<span class="trait-value c"
-													v-html="renderDieValue(trait.value)"
-												></span>
-
-											</h2>
-
-											<hr>
-
-											<div
-												class="trait-description"
-												v-html="renderText(trait.description)"
-											></div>
-
-											<ul class="trait-sfx" v-if="trait.sfx && trait.sfx.length">
-												<li v-for="(sfx, s) in trait.sfx">
-
-													<span class="trait-sfx-name"
-														v-html="sfx.name"
-													></span>:
-
-													<span class="trait-sfx-description"
-														v-html="renderText(sfx.description)"
+													<span class="trait-name"
+														v-html="trait.name"
+													></span>
+												
+													<span class="trait-value c"
+														v-html="renderDieValue(trait.value)"
 													></span>
 
-												</li>
-											</ul>
+												</h2>
+
+												<hr>
+
+												<div
+													class="trait-description"
+													v-html="renderText(trait.description)"
+												></div>
+
+												<ul class="trait-sfx" v-if="trait.sfx && trait.sfx.length">
+													<li v-for="(sfx, s) in trait.sfx">
+
+														<span class="trait-sfx-name"
+															v-html="sfx.name"
+														></span>:
+
+														<span class="trait-sfx-description"
+															v-html="renderText(sfx.description)"
+														></span>
+
+													</li>
+												</ul>
+
+											</div>
+
+											<trait-editor
+												:character="character"
+												:open="isSelected(['trait', s, t])"
+												:traitSetID="s"
+												:traitID="t"
+												@select="select"
+												@update="update"
+												@removeTrait="removeTrait"
+											></trait-editor>
 
 										</div>
 
 										<!-- BUTTON: ADD TRAIT -->
 										<div class="preview-button-container">
 											<div class="preview-button"
-												@click.prevent="addTrait( s, traitSetLocation )"
+												@click.stop="addTrait( s, traitSetLocation )"
 											>
 												<span><i class="fas fa-plus"></i> New Trait</span>
 											</div>
@@ -208,7 +274,7 @@ Vue.component('characterSheet', {
 							<!-- BUTTON: ADD TRAIT SET -->
 							<div class="preview-button-container">
 								<div class="trait-set-placeholder preview-button"
-									@click.prevent="addTraitSet( pageLocation )"
+									@click.stop="addTraitSet( pageLocation )"
 								>
 									<span><i class="fas fa-plus"></i> New Trait Set</span>
 								</div>
@@ -224,6 +290,8 @@ Vue.component('characterSheet', {
 
 	methods: {
 
+		// PRESENTATION
+
 		isSelected( selector ) {
 			return cortexFunctions.arraysMatch( this.selected, selector );
 		},
@@ -232,6 +300,7 @@ Vue.component('characterSheet', {
 			text = text.replace( /d\d*(\d)/g, '<span class="c">$1</span>' );
 			// text = text.replace( '<span class="c">1(\d)</span>', '<span class="c">$1</span>' );
 			text = text.replace( /([^A-Za-z])PP([^A-Za-z])/gi, '$1<span class="pp">PP</span>$2' );
+			text = text.replace( "\n", '<br>' );
 			return text;
 		},
 
@@ -262,18 +331,106 @@ Vue.component('characterSheet', {
 
 		},
 		
-		addTraitSet( location ) {
-			this.$emit( 'addTraitSet', location );
-		},
-
-		addTrait( traitSetID, location ) {
-			this.$emit( 'addTrait', traitSetID, location );
-		},
+		// SELECTING
 
 		select( selector ) {
 			this.$emit( 'select', selector );
-		}
+		},
+
+		clearSelected() {
+			this.$emit('select', []);
+		},
+
+		// EDITING
+
+		addTraitSet( location ) {
+
+			let character = structuredClone( this.character );
+
+			character.traitSets.push({
+				name: 'New trait set',
+				description: 'Trait set description',
+				style: 'default',
+				location: location ?? 'left',
+				traits: [
+					{
+						name: 'New trait',
+						value: 6,
+						description: 'Trait description',
+						location: 'left',
+					}
+				],
+			});
+
+			this.update( character );
+
+			let newTraitSetID = character.traitSets.length - 1;
+			this.select([ 'traitSet', newTraitSetID ]);
+
+		},
+
+		removeTraitSet( traitSetID ) {
+
+			// if ( this.isSelected(['traitSet', traitSetID]) ) {
+				this.clearSelected();
+			// }
+
+			let character = structuredClone( this.character );
+
+			character.traitSets.splice(traitSetID, 1);
+
+			this.update( character );
+
+		},
 		
+		addTrait( traitSetID, location ) {
+
+			let character = structuredClone( this.character );
+
+			character.traitSets[traitSetID].traits.push({
+				name: 'New trait',
+				value: 6,
+				description: 'Trait description',
+				location: location ?? 'left',
+				sfx: [],
+			});
+
+			this.update( character );
+			
+			let newTraitID = character.traitSets[traitSetID].traits.length - 1;
+			this.select([ 'trait', traitSetID, newTraitID ]);
+
+		},
+
+		removeTrait( traitSetID, traitID ) {
+
+			/*// If we’re removing the trait that is currently selected, switch to the previous trait, or the parent trait set if no other traits remain.
+			if ( this.isSelected(['trait', traitSetID, traitID]) ) {
+				if ( this.character.traitSets[traitSetID].traits.length > 1) {
+					this.select([ 'trait', traitSetID, traitID - 1 ]);
+				} else {
+					this.select( 'traitSet', traitSetID );
+				}
+			} else {*/
+				this.clearSelected();
+			/*}*/
+
+			let character = structuredClone( this.character );
+
+			character.traitSets[traitSetID].traits.splice(traitID, 1);
+
+			this.update( character );
+
+		},
+
+		dragPortrait( event ) {
+			console.log(event);
+		},
+
+		update( character ) {
+			this.$emit( 'update', character );
+		}
+
 	}
 
 });
