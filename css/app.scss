@@ -654,54 +654,65 @@ hr {
 	position: absolute;
 	z-index: var(--z-editor);
 	width: 20rem;
-	background: black;
+	background: hsla(0, 0%, 0%, 0.9);
+	backdrop-filter: blur(10px);
 	font-size: 1rem;
 	color: white;
 	padding: 1rem 3rem 1rem 1rem;
-	border-radius: 1rem;
-	opacity: 0;
-	transition: opacity .2s, transform .2s;
+	border-radius: .5rem;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-	&:not(.open) {
-		pointer-events: none;
+	&,
+	&.editor-enter-active,
+	&.editor-leave-active {
+		transition: opacity 1s ease, transform 1s ease;
 	}
-	&.open {
+	&,
+	&.editor-enter-to,
+	&.editor-leave-from {
 		opacity: 1;
+		transform: translate(0, 0) scale(1);
+		pointer-events: auto;
+	}
+	&.editor-enter-from,
+	&.editor-leave-to,
+	&[style*="display: none"] {
+		opacity: 0;
+		transform: translate( var(--animation-offset-x), var(--animation-offset-y) ) scale(0.8);
+		pointer-events: none;
 	}
 
 	&.editor-character {
 		top: calc( 100% + 1rem );
-		transform: translateY(-2rem);
-		&.open {
-			transform: translateY(0);
-		}
+		transform-origin: top left;
+		--animation-offset-x: 0;
+		--animation-offset-y: -2rem;
 	}
 
 	.column-left & {
 		left: calc( 100% + 1rem );
-		transform: translateX(-2rem);
+		--animation-offset-x: -2rem;
+		--animation-offset-y: 0;
 		&.anchor-position-top {
 			top: calc( -1 * var(--highlight-radius) );
+			transform-origin: top left;
 		}
 		&.anchor-position-bottom {
 			bottom: calc( -1 * var(--highlight-radius) );
-		}
-		&.open {
-			transform: translateX(0);
+			transform-origin: bottom left;
 		}
 	}
 
 	.column-right & {
 		right: calc( 100% + 1rem );
-		transform: translateX(2rem);
+		--animation-offset-x: 2rem;
+		--animation-offset-y: 0;
 		&.anchor-position-top {
 			top: calc( -1 * var(--highlight-radius) );
+			transform-origin: top right;
 		}
 		&.anchor-position-bottom {
 			bottom: calc( -1 * var(--highlight-radius) );
-		}
-		&.open {
-			transform: translateX(0);
+			transform-origin: bottom right;
 		}
 	}
 

@@ -1,16 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-	new Vue({
+	app = Vue.createApp({
 
 		name: 'cortex-toolkit',
 
-		el: '#cortex-toolkit',
-
-		data: {
-			character: null,
-			selected:  null,
-			viewY:     null,
-
+		data() {
+			return {
+				character: null,
+				selected:  null,
+				viewY:     null,
+			}
 		},
 
 		computed: {
@@ -150,6 +149,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		}
 
-	});
+	})
+	.component('character-sheet',  CharacterSheet )
+	.component('name-editor',      NameEditor )
+	.component('portrait-editor',  PortraitEditor )
+	.component('trait-editor',     TraitEditor )
+	.component('trait-set-editor', TraitSetEditor )
+	.component('sfx-editor',       SfxEditor )
+	.mount('#cortex-toolkit');
 
 });

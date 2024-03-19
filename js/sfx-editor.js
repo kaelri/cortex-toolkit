@@ -1,4 +1,4 @@
-Vue.component('sfxEditor', {
+const SfxEditor = {
 
 	props: {
 		character:  Object,
@@ -91,4 +91,4 @@ Vue.component('sfxEditor', {
 
 	}
 
-});
+}

@@ -1,8 +1,8 @@
-Vue.component('portraitEditor', {
+const PortraitEditor = {
 
 	props: {
 		character: Object,
-		open:      Boolean
+		open:      Boolean,
 	},
 
 	data() {
@@ -100,4 +100,4 @@ Vue.component('portraitEditor', {
 
 	}
 
-});
+}

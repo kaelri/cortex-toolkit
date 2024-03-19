@@ -1,8 +1,8 @@
-Vue.component('nameEditor', {
+const NameEditor = {
 
 	props: {
 		character: Object,
-		open: Boolean
+		open:      Boolean,
 	},
 
 	data() {
@@ -84,8 +84,12 @@ Vue.component('nameEditor', {
 
 		update( character ) {
 			this.$emit( 'update', character );
+		},
+
+		doNothing() {
+			// This is intentional! 
 		}
 
 	}
 
-});
+}

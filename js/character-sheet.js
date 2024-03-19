@@ -1,4 +1,4 @@
-Vue.component('characterSheet', {
+const CharacterSheet = {
 
 	props: {
 		character: Object,
@@ -75,12 +75,15 @@ Vue.component('characterSheet', {
 							</div>
 						</div>
 
-						<name-editor
-							:character="character"
-							:open="isSelected(['name'])"
-							@select="select"
-							@update="update"
-						></name-editor>
+						<transition name="editor" appear>
+							<name-editor
+								:character="character"
+								:open="isSelected(['name'])"
+								v-show="isSelected(['name'])"
+								@select="select"
+								@update="update"
+							></name-editor>
+						</transition>
 
 					</header>
 
@@ -98,12 +101,15 @@ Vue.component('characterSheet', {
 									<div class="portrait-circle" width="100%" height="100%" :style="'background-image: url(' + portrait.url + ');'"></div>
 								</div>
 
-								<portrait-editor
-									:character="character"
-									:open="isSelected(['portrait'])"
-									@select="select"
-									@update="update"
-								></portrait-editor>
+								<transition name="editor" appear>
+									<portrait-editor
+										:character="character"
+										:open="isSelected(['portrait'])"
+										v-show="isSelected(['portrait'])"
+										@select="select"
+										@update="update"
+									></portrait-editor>
+								</transition>
 	
 							</div>
 
@@ -145,16 +151,19 @@ Vue.component('characterSheet', {
 
 											</div>
 
-											<trait-editor
-												:character="character"
-												:open="isSelected(['trait', attributesID, a])"
-												:traitSetID="attributesID"
-												:traitID="a"
-												:viewY="viewY"
-												@select="select"
-												@update="update"
-												@removeTrait="removeTrait"
-											></trait-editor>
+											<transition name="editor" appear>
+												<trait-editor
+													:character="character"
+													:open="isSelected(['trait', attributesID, a])"
+													v-show="isSelected(['trait', attributesID, a])"
+													:traitSetID="attributesID"
+													:traitID="a"
+													:viewY="viewY"
+													@select="select"
+													@update="update"
+													@removeTrait="removeTrait"
+												></trait-editor>
+											</transition>
 
 										</div>
 
@@ -190,15 +199,18 @@ Vue.component('characterSheet', {
 
 									</div>
 
-									<trait-set-editor
-										:character="character"
-										:open="isSelected(['traitSet', s])"
-										:traitSetID="s"
-										:viewY="viewY"
-										@select="select"
-										@update="update"
-										@removeTraitSet="removeTraitSet"
-									></trait-set-editor>
+									<transition name="editor" appear>
+										<trait-set-editor
+											:character="character"
+											:open="isSelected(['traitSet', s])"
+											v-show="isSelected(['traitSet', s])"
+											:traitSetID="s"
+											:viewY="viewY"
+											@select="select"
+											@update="update"
+											@removeTraitSet="removeTraitSet"
+										></trait-set-editor>
+									</transition>
 
 								</div>
 
@@ -248,16 +260,19 @@ Vue.component('characterSheet', {
 
 											</div>
 
-											<trait-editor
-												:character="character"
-												:open="isSelected(['trait', s, t])"
-												:traitSetID="s"
-												:traitID="t"
-												:viewY="viewY"
-												@select="select"
-												@update="update"
-												@removeTrait="removeTrait"
-											></trait-editor>
+											<transition name="editor" appear>
+												<trait-editor
+													:character="character"
+													:open="isSelected(['trait', s, t])"
+													v-show="isSelected(['trait', s, t])"
+													:traitSetID="s"
+													:traitID="t"
+													:viewY="viewY"
+													@select="select"
+													@update="update"
+													@removeTrait="removeTrait"
+												></trait-editor>
+											</transition>
 
 										</div>
 
@@ -434,4 +449,4 @@ Vue.component('characterSheet', {
 
 	}
 
-});
+}

@@ -1,10 +1,10 @@
-Vue.component('traitEditor', {
+const TraitEditor = {
 
 	props: {
 		character:  Object,
-		open:       Boolean,
 		traitSetID: Number,
 		traitID:    Number,
+		open:       Boolean,
 		viewY:      Number,
 	},
 
@@ -284,4 +284,4 @@ Vue.component('traitEditor', {
 
 	}
 
-});
+};
