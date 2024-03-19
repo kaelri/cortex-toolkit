@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		data() {
 			return {
-				character: null,
-				selected:  null,
-				viewY:     null,
+				character:             null,
+				selectedCharacterPart: null,
+				viewY:                 null,
 			}
 		},
 
@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				<character-sheet
 					v-if="character"
 					:character="character"
-					:selected="selected"
+					:selectedCharacterPart="selectedCharacterPart"
 					:viewY="viewY"
-					@select="select"
+					@selectCharacterPart="selectCharacterPart"
 					@update="updateCharacter"
 				></character-sheet>
 
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			// VIEW
 
-			setViewY( event ) {
+			setViewY() {
 				this.viewY = this.$refs.main.scrollTop;
 			},
 
@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				let character = await fetch( this.baseURL + 'data/cortex_character_default.json' )
 				.then( response => response.json() );
-
 				//+ Check for errors
 
 				character.id = crypto.randomUUID();
@@ -105,14 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
 				this.saveLocal();
 			},
 
-			select( selector ) {
+			selectCharacterPart( selector ) {
 
-				if ( cortexFunctions.arraysMatch( this.selected, selector ) ) {
-					this.selected = [];
+				if ( cortexFunctions.arraysMatch( this.selectedCharacterPart, selector ) ) {
+					this.selectedCharacterPart = [];
 					return;
 				}
 
-				this.selected = selector;
+				this.selectedCharacterPart = selector;
 
 			},
 

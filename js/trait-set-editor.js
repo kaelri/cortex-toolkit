@@ -61,7 +61,7 @@ const TraitSetEditor = {
 		<div class="editor-arrow"></div>
 
 		<div class="editor-controls">
-			<button @click.stop="select([])"><i class="fas fa-times"></i></button>
+			<button @click.stop="selectCharacterPart([])"><i class="fas fa-times"></i></button>
 			<button class="editor-delete" @click.stop="removeTraitSet"><i class="fas fa-trash"></i></button>
 		</div>
 
@@ -92,7 +92,7 @@ const TraitSetEditor = {
 		this.checkAnchorPosition();
 
 		if ( this.open ) {
-			this.$refs.inputName.focus();
+			this.focusFirstInput();
 		}
 
 	},
@@ -109,7 +109,7 @@ const TraitSetEditor = {
 		
 		open( isOpen, wasOpen ) {
 			if ( isOpen && !wasOpen ) {
-				this.$refs.inputName.focus();
+				this.focusFirstInput();
 			}
 		}
 
@@ -117,13 +117,18 @@ const TraitSetEditor = {
 
 	methods: {
 
-		select( selector ) {
-			this.$emit( 'select', selector );
+		selectCharacterPart( selector ) {
+			this.$emit( 'selectCharacterPart', selector );
 		},
 
+		async focusFirstInput() {
+			await Vue.nextTick();
+			this.$refs.inputName.focus();
+		},
+ 
 		setTraitSetProperty( key, value ) {
 
-			let character = structuredClone( this.character );
+			let character = this.character;
 			let s = this.traitSetID;
 
 			character.traitSets[s][ key ] = value;

@@ -70,7 +70,7 @@ const SfxEditor = {
 
 		setEffectProperty( key, value ) {
 
-			let character = structuredClone( this.character );
+			let character = this.character;
 			let s = this.traitSetID;
 			let t = this.traitID;
 			let f = this.effectID;

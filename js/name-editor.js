@@ -37,7 +37,7 @@ const NameEditor = {
 		<div class="editor-arrow"></div>
 
 		<div class="editor-controls">
-			<button @click.stop="select([])"><i class="fas fa-times"></i></button>
+			<button @click.stop="selectCharacterPart([])"><i class="fas fa-times"></i></button>
 		</div>
 
 		<div class="editor-inner">
@@ -65,19 +65,24 @@ const NameEditor = {
 	watch: {
 		open( isOpen, wasOpen ) {
 			if ( isOpen && !wasOpen ) {
-				this.$refs.inputName.focus();
+				this.focusFirstInput();
 			}
 		}
 	},
 
 	methods: {
 
-		select( selector ) {
-			this.$emit( 'select', selector );
+		selectCharacterPart( selector ) {
+			this.$emit( 'selectCharacterPart', selector );
 		},
 
+		async focusFirstInput() {
+			await Vue.nextTick();
+			this.$refs.inputName.focus();
+		},
+ 
 		setCharacterProperty( key, value ) {
-			let character = structuredClone( this.character );
+			let character = this.character;
 			character[ key ] = value;
 			this.update( character );
 		},

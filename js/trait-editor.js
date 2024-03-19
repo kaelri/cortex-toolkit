@@ -80,7 +80,7 @@ const TraitEditor = {
 		<div class="editor-arrow"></div>
 
 		<div class="editor-controls">
-			<button @click.stop="select([])"><i class="fas fa-times"></i></button>
+			<button @click.stop="selectCharacterPart([])"><i class="fas fa-times"></i></button>
 			<button class="editor-delete" @click.stop="removeTrait"><i class="fas fa-trash"></i></button>
 		</div>
 
@@ -150,7 +150,7 @@ const TraitEditor = {
 		this.checkScrollPosition();
 
 		if ( this.open ) {
-			this.$refs.inputName.focus();
+			this.focusFirstInput();
 		}
 
 	},
@@ -167,7 +167,7 @@ const TraitEditor = {
 		
 		open( isOpen, wasOpen ) {
 			if ( isOpen && !wasOpen ) {
-				this.$refs.inputName.focus();
+				this.focusFirstInput();
 			}
 		}
 
@@ -175,13 +175,18 @@ const TraitEditor = {
 
 	methods: {
 
-		select( selector ) {
-			this.$emit( 'select', selector );
+		selectCharacterPart( selector ) {
+			this.$emit( 'selectCharacterPart', selector );
 		},
 
+		async focusFirstInput() {
+			await Vue.nextTick();
+			this.$refs.inputName.focus();
+		},
+ 
 		setTraitProperty( key, value ) {
 
-			let character = structuredClone( this.character );
+			let character = this.character;
 			let s = this.traitSetID;
 			let t = this.traitID;
 
@@ -207,7 +212,7 @@ const TraitEditor = {
 
 		addEffect() {
 
-			let character = structuredClone( this.character );
+			let character = this.character;
 			let s = this.traitSetID;
 			let t = this.traitID;
 
@@ -222,7 +227,7 @@ const TraitEditor = {
 
 		removeEffect( effectID ) {
 
-			let character = structuredClone( this.character );
+			let character = this.character;
 			let s = this.traitSetID;
 			let t = this.traitID;
 			let f = effectID;

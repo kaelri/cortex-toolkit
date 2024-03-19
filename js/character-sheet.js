@@ -1,9 +1,9 @@
 const CharacterSheet = {
 
 	props: {
-		character: Object,
-		selected:  Array,
-		viewY:     Number,
+		character:             Object,
+		selectedCharacterPart: Array,
+		viewY:                 Number,
 	},
 
 	computed: {
@@ -50,7 +50,7 @@ const CharacterSheet = {
 					<header class="page-header">
 
 						<div :class="{'page-header-inner': true, 'selected': isSelected(['name'])}"
-							@click.stop="select([ 'name' ])"
+							@click.stop="selectCharacterPart([ 'name' ])"
 						>
 							<div>
 
@@ -80,7 +80,7 @@ const CharacterSheet = {
 								:character="character"
 								:open="isSelected(['name'])"
 								v-show="isSelected(['name'])"
-								@select="select"
+								@selectCharacterPart="selectCharacterPart"
 								@update="update"
 							></name-editor>
 						</transition>
@@ -96,7 +96,7 @@ const CharacterSheet = {
 							<div class="portrait" v-if="pageLocation === 'right'">
 
 								<div :class="{ 'portrait-inner': true, 'selected': isSelected(['portrait']) }"
-									@click.stop="select([ 'portrait' ])"
+									@click.stop="selectCharacterPart([ 'portrait' ])"
 								>
 									<div class="portrait-circle" width="100%" height="100%" :style="'background-image: url(' + portrait.url + ');'"></div>
 								</div>
@@ -106,7 +106,7 @@ const CharacterSheet = {
 										:character="character"
 										:open="isSelected(['portrait'])"
 										v-show="isSelected(['portrait'])"
-										@select="select"
+										@selectCharacterPart="selectCharacterPart"
 										@update="update"
 									></portrait-editor>
 								</transition>
@@ -138,7 +138,7 @@ const CharacterSheet = {
 
 											<div class="attribute-inner"
 												:class="{ 'attribute-inner': true, 'selected': isSelected(['trait', attributesID, a]) }"
-												@click.stop="select([ 'trait', attributesID, a ])"
+												@click.stop="selectCharacterPart([ 'trait', attributesID, a ])"
 											>
 
 												<span class="c"
@@ -159,7 +159,7 @@ const CharacterSheet = {
 													:traitSetID="attributesID"
 													:traitID="a"
 													:viewY="viewY"
-													@select="select"
+													@selectCharacterPart="selectCharacterPart"
 													@update="update"
 													@removeTrait="removeTrait"
 												></trait-editor>
@@ -185,14 +185,14 @@ const CharacterSheet = {
 							</div>
 								
 							<!-- TRAITS -->
+							<template v-for="(traitSet, s) in traitSets" :key="s">
 							<div :class="'trait-set style-' + traitSet.style"
-								v-for="(traitSet, s) in traitSets"
 								v-if="traitSet.location === pageLocation"
 							>
 
 								<div class="trait-set-header">
 									<div :class="{'trait-set-header-inner': true, 'selected': isSelected(['traitSet', s])}"
-										@click.stop="select([ 'traitSet', s ])"
+										@click.stop="selectCharacterPart([ 'traitSet', s ])"
 									>
 
 										<div v-html="traitSet.name"></div>
@@ -206,7 +206,7 @@ const CharacterSheet = {
 											v-show="isSelected(['traitSet', s])"
 											:traitSetID="s"
 											:viewY="viewY"
-											@select="select"
+											@selectCharacterPart="selectCharacterPart"
 											@update="update"
 											@removeTraitSet="removeTraitSet"
 										></trait-set-editor>
@@ -217,12 +217,12 @@ const CharacterSheet = {
 								<div class="trait-columns">
 									<div class="trait-column" v-for="traitSetLocation in ['left', 'right']">
 
+										<template v-for="(trait, t) in traitSet.traits" :key="t">
 										<div class="trait"
-											v-for="(trait, t) in traitSet.traits"
 											v-if="trait.location === traitSetLocation"
 										>
 											<div :class="{ 'trait-inner': true, 'selected': isSelected(['trait', s, t]) }"
-												@click.stop="select([ 'trait', s, t ])"
+												@click.stop="selectCharacterPart([ 'trait', s, t ])"
 											>
 
 												<h2 class="trait-title">
@@ -268,13 +268,14 @@ const CharacterSheet = {
 													:traitSetID="s"
 													:traitID="t"
 													:viewY="viewY"
-													@select="select"
+													@selectCharacterPart="selectCharacterPart"
 													@update="update"
 													@removeTrait="removeTrait"
 												></trait-editor>
 											</transition>
 
 										</div>
+										</template>
 
 										<!-- BUTTON: ADD TRAIT -->
 										<div class="preview-button-container">
@@ -289,6 +290,7 @@ const CharacterSheet = {
 								</div> <!-- .trait-columns -->
 
 							</div>
+							</template>
 
 							<!-- BUTTON: ADD TRAIT SET -->
 							<div class="preview-button-container">
@@ -312,7 +314,7 @@ const CharacterSheet = {
 		// PRESENTATION
 
 		isSelected( selector ) {
-			return cortexFunctions.arraysMatch( this.selected, selector );
+			return cortexFunctions.arraysMatch( this.selectedCharacterPart, selector );
 		},
 
 		renderText( text ) {
@@ -352,19 +354,21 @@ const CharacterSheet = {
 		
 		// SELECTING
 
-		select( selector ) {
-			this.$emit( 'select', selector );
+		selectCharacterPart( selector ) {
+			this.$emit( 'selectCharacterPart', selector );
 		},
 
 		clearSelected() {
-			this.$emit('select', []);
+			this.$emit('selectCharacterPart', []);
 		},
 
 		// EDITING
 
 		addTraitSet( location ) {
 
-			let character = structuredClone( this.character );
+			console.log(this.character);
+
+			let character = this.character;
 
 			character.traitSets.push({
 				name: 'New trait set',
@@ -385,7 +389,7 @@ const CharacterSheet = {
 			this.update( character );
 
 			let newTraitSetID = character.traitSets.length - 1;
-			this.select([ 'traitSet', newTraitSetID ]);
+			this.selectCharacterPart([ 'traitSet', newTraitSetID ]);
 
 		},
 
@@ -395,7 +399,7 @@ const CharacterSheet = {
 				this.clearSelected();
 			// }
 
-			let character = structuredClone( this.character );
+			let character = this.character;
 
 			character.traitSets.splice(traitSetID, 1);
 
@@ -405,7 +409,7 @@ const CharacterSheet = {
 		
 		addTrait( traitSetID, location ) {
 
-			let character = structuredClone( this.character );
+			let character = this.character;
 
 			character.traitSets[traitSetID].traits.push({
 				name: 'New trait',
@@ -418,7 +422,7 @@ const CharacterSheet = {
 			this.update( character );
 			
 			let newTraitID = character.traitSets[traitSetID].traits.length - 1;
-			this.select([ 'trait', traitSetID, newTraitID ]);
+			this.selectCharacterPart([ 'trait', traitSetID, newTraitID ]);
 
 		},
 
@@ -427,7 +431,7 @@ const CharacterSheet = {
 			/*// If we’re removing the trait that is currently selected, switch to the previous trait, or the parent trait set if no other traits remain.
 			if ( this.isSelected(['trait', traitSetID, traitID]) ) {
 				if ( this.character.traitSets[traitSetID].traits.length > 1) {
-					this.select([ 'trait', traitSetID, traitID - 1 ]);
+					this.selectCharacterPart([ 'trait', traitSetID, traitID - 1 ]);
 				} else {
 					this.select( 'traitSet', traitSetID );
 				}
@@ -435,7 +439,7 @@ const CharacterSheet = {
 				this.clearSelected();
 			/*}*/
 
-			let character = structuredClone( this.character );
+			let character = this.character;
 
 			character.traitSets[traitSetID].traits.splice(traitID, 1);
 

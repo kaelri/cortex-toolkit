@@ -23,7 +23,7 @@ const PortraitEditor = {
 		<div class="editor-arrow"></div>
 
 		<div class="editor-controls">
-			<button @click.stop="select([])"><i class="fas fa-times"></i></button>
+			<button @click.stop="selectCharacterPart([])"><i class="fas fa-times"></i></button>
 			<button v-if="hasImage" class="editor-delete" @click.stop="setImageURL('')"><i class="fas fa-trash"></i></button>
 		</div>
 
@@ -60,8 +60,8 @@ const PortraitEditor = {
 
 	methods: {
 
-		select( selector ) {
-			this.$emit( 'select', selector );
+		selectCharacterPart( selector ) {
+			this.$emit( 'selectCharacterPart', selector );
 		},
 
 		uploadStart() {
@@ -69,7 +69,7 @@ const PortraitEditor = {
 		},
 
 		setImageURL( url ) {
-			let character = structuredClone( this.character );
+			let character = this.character;
 			character.portrait.url = url;
 			this.update( character );
 		},

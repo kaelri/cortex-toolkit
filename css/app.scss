@@ -661,23 +661,14 @@ hr {
 	padding: 1rem 3rem 1rem 1rem;
 	border-radius: .5rem;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-	&,
 	&.editor-enter-active,
 	&.editor-leave-active {
-		transition: opacity 1s ease, transform 1s ease;
-	}
-	&,
-	&.editor-enter-to,
-	&.editor-leave-from {
-		opacity: 1;
-		transform: translate(0, 0) scale(1);
-		pointer-events: auto;
+		transition: opacity .2s ease, transform .2s ease;
 	}
 	&.editor-enter-from,
-	&.editor-leave-to,
-	&[style*="display: none"] {
+	&.editor-leave-to {
 		opacity: 0;
-		transform: translate( var(--animation-offset-x), var(--animation-offset-y) ) scale(0.8);
+		transform: translate( var(--animation-offset-x), var(--animation-offset-y) ) scale(0.9);
 		pointer-events: none;
 	}
 
