@@ -11,6 +11,16 @@ const TraitSetEditor = {
 		return {
 			scrollPosition: 'none',
 			anchorPosition: 'top',
+			styleOptions: [
+				{ id: 'default',              label: 'Default' },
+				{ id: 'two-columns-compact',  label: 'Two Columns (Compact)' },
+				{ id: 'two-columns-detailed', label: 'Two Columns (Detailed)' },
+				{ id: 'distinctions',         label: 'Distinctions' },
+				{ id: 'attributes',           label: 'Attributes' },
+				{ id: 'assets',               label: 'Assets' },
+				{ id: 'resources',            label: 'Resources' },
+				{ id: 'stress',               label: 'Stress' },
+			]
 		}
 	},
 
@@ -36,6 +46,15 @@ const TraitSetEditor = {
 			},
 			set( description ) {
 				this.setTraitSetProperty( 'description', description );
+			}
+		},
+
+		style: {
+			get() {
+				return this.traitSet.style;
+			},
+			set( style ) {
+				this.setTraitSetProperty( 'style', style );
 			}
 		},
 
@@ -73,6 +92,13 @@ const TraitSetEditor = {
 					<div class="editor-field">
 						<label>Trait Set Name</label>
 						<input type="text" v-model="name" ref="inputName">
+					</div>
+
+					<div class="editor-field" v-if="traitSet.location !== 'attributes'">
+						<label>Style</label>
+						<select v-model="style">
+							<option v-for="option in styleOptions" :value="option.id" :selected="option.id === style">{{ option.label }}</option>
+						</select>
 					</div>
 
 					<div class="editor-field">

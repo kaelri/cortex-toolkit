@@ -184,20 +184,22 @@ const CharacterSheet = {
 
 							</div>
 								
-							<!-- TRAITS -->
+							<!-- TRAIT SETS -->
 							<template v-for="(traitSet, s) in traitSets" :key="s">
-							<div :class="'trait-set style-' + traitSet.style"
+							
+							<div :class="'trait-set trait-set-style-' + traitSet.style"
 								v-if="traitSet.location === pageLocation"
 							>
 
 								<div class="trait-set-header">
-									<div :class="{'trait-set-header-inner': true, 'selected': isSelected(['traitSet', s])}"
-										@click.stop="selectCharacterPart([ 'traitSet', s ])"
-									>
 
-										<div v-html="traitSet.name"></div>
-
-									</div>
+									<transition appear>
+										<div :class="{'trait-set-header-inner': true, 'selected': isSelected(['traitSet', s])}"
+											@click.stop="selectCharacterPart([ 'traitSet', s ])"
+										>
+											<div v-html="traitSet.name"></div>
+										</div>
+									</transition>
 
 									<transition name="editor" appear>
 										<trait-set-editor
@@ -218,63 +220,64 @@ const CharacterSheet = {
 									<div class="trait-column" v-for="traitSetLocation in ['left', 'right']">
 
 										<template v-for="(trait, t) in traitSet.traits" :key="t">
-										<div class="trait"
-											v-if="trait.location === traitSetLocation"
-										>
-											<div :class="{ 'trait-inner': true, 'selected': isSelected(['trait', s, t]) }"
-												@click.stop="selectCharacterPart([ 'trait', s, t ])"
-											>
+											<div class="trait"
+													v-if="trait.location === traitSetLocation"
+												>
 
-												<h2 class="trait-title">
+												<transition name="trait" appear>
+													<div :class="{ 'trait-inner': true, 'selected': isSelected(['trait', s, t]) }"
+														@click.stop="selectCharacterPart([ 'trait', s, t ])"
+													>
 
-													<span class="trait-name"
-														v-html="trait.name"
-													></span>
-												
-													<span class="trait-value c"
-														v-html="renderDieValue(trait.value)"
-													></span>
+														<h2 class="trait-title">
 
-												</h2>
+															<span class="trait-name"
+																v-html="trait.name"
+															></span>
+														
+															<span class="trait-value c"
+																v-html="renderDieValue(trait.value)"
+															></span>
 
-												<hr>
+														</h2>
 
-												<div
-													class="trait-description"
-													v-html="renderText(trait.description)"
-												></div>
+														<div
+															class="trait-description"
+															v-html="renderText(trait.description)"
+														></div>
 
-												<ul class="trait-sfx" v-if="trait.sfx && trait.sfx.length">
-													<li v-for="(sfx, s) in trait.sfx">
+														<ul class="trait-sfx" v-if="trait.sfx && trait.sfx.length">
+															<li v-for="(sfx, s) in trait.sfx">
 
-														<span class="trait-sfx-name"
-															v-html="sfx.name"
-														></span>:
+																<span class="trait-sfx-name"
+																	v-html="sfx.name"
+																></span>:
 
-														<span class="trait-sfx-description"
-															v-html="renderText(sfx.description)"
-														></span>
+																<span class="trait-sfx-description"
+																	v-html="renderText(sfx.description)"
+																></span>
 
-													</li>
-												</ul>
+															</li>
+														</ul>
+
+													</div>
+												</transition>
+
+												<transition name="editor" appear>
+													<trait-editor
+														:character="character"
+														:open="isSelected(['trait', s, t])"
+														v-show="isSelected(['trait', s, t])"
+														:traitSetID="s"
+														:traitID="t"
+														:viewY="viewY"
+														@selectCharacterPart="selectCharacterPart"
+														@update="update"
+														@removeTrait="removeTrait"
+													></trait-editor>
+												</transition>
 
 											</div>
-
-											<transition name="editor" appear>
-												<trait-editor
-													:character="character"
-													:open="isSelected(['trait', s, t])"
-													v-show="isSelected(['trait', s, t])"
-													:traitSetID="s"
-													:traitID="t"
-													:viewY="viewY"
-													@selectCharacterPart="selectCharacterPart"
-													@update="update"
-													@removeTrait="removeTrait"
-												></trait-editor>
-											</transition>
-
-										</div>
 										</template>
 
 										<!-- BUTTON: ADD TRAIT -->
@@ -366,8 +369,6 @@ const CharacterSheet = {
 
 		addTraitSet( location ) {
 
-			console.log(this.character);
-
 			let character = this.character;
 
 			character.traitSets.push({
@@ -439,11 +440,11 @@ const CharacterSheet = {
 				this.clearSelected();
 			/*}*/
 
-			let character = this.character;
-
-			character.traitSets[traitSetID].traits.splice(traitID, 1);
-
-			this.update( character );
+			setTimeout( () => {
+				let character = this.character;
+				character.traitSets[traitSetID].traits.splice(traitID, 1);
+				this.update( character );
+			}, 200 );
 
 		},
 

@@ -86,10 +86,10 @@ const PortraitEditor = {
 			let reader = new FileReader();
 			reader.readAsDataURL(file);
 			reader.onload = () => {
-			  this.setImageURL( reader.result );
+				this.setImageURL( reader.result );
 			};
 			reader.onerror = (error) => {
-			  console.log('Portrait error: ', error);
+				console.log('Portrait error: ', error);
 			};
 
 		},

@@ -120,16 +120,18 @@ const TraitEditor = {
 
 						<label>SFX</label>
 
-						<sfx-editor
-							v-for="(effect, effectID) in trait.sfx"
-							:key="traitSetID + '-' + traitID + '-' + effectID"
-							:character="character"
-							:traitSetID="traitSetID"
-							:traitID="traitID"
-							:effectID="effectID"
-							@update="update"
-							@removeEffect="removeEffect"
-						></sfx-editor>
+						<transition-group appear>
+							<sfx-editor
+								v-for="(effect, effectID) in trait.sfx"
+								:key="traitSetID + '-' + traitID + '-' + effectID"
+								:character="character"
+								:traitSetID="traitSetID"
+								:traitID="traitID"
+								:effectID="effectID"
+								@update="update"
+								@removeEffect="removeEffect"
+							></sfx-editor>
+						</transition-group>
 
 						<div class="editor-subgroup">
 							<button class="editor-button editor-button-add editor-button-tertiary" @click.stop="addEffect"><i class="fas fa-plus"></i> New SFX</button>
