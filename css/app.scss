@@ -69,6 +69,7 @@ $fa-font-path: '../node_modules/@fortawesome/fontawesome-free/webfonts';
 
 body,
 html {
+	font-size: 16px;
 	@media print {
 		width: var(--page-width);
 		height: var(--page-height);

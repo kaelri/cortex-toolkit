@@ -39,6 +39,9 @@
 	> * {
 		flex: 1 1 0;
 		position: relative;
+		display: flex;
+		flex-direction: column;
+		row-gap: 1rem;
 	}
 }
 
@@ -286,7 +289,6 @@
 
 .preview-button-container {
 	@extend %no-print;
-	margin-top: 1rem;
 	text-align: center;
 }
 

@@ -92,7 +92,7 @@ const CharacterSheet = {
 
 						<div v-for="pageLocation in ['left', 'right']" :class="'column-' + pageLocation">
 
-							<!-- IMAGE -->
+							<!-- PORTRAIT -->
 							<div class="portrait" v-if="pageLocation === 'right'">
 
 								<div :class="{ 'portrait-inner': true, 'selected': isSelected(['portrait']) }"

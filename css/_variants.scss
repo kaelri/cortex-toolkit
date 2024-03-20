@@ -1,5 +1,4 @@
 .trait-set-style-default {
-	margin-top: 20pt;
 	display: flex;
 
 	.trait-set-header {
@@ -21,7 +20,7 @@
 			text-align: center;
 			text-transform: uppercase;
 			font-style: normal;
-			font-size: 8.6pt;
+			font-size: .717rem;
 		}
 		&.v-enter-active,
 		&.v-leave-active {
@@ -37,9 +36,9 @@
 	.trait-columns {
 		display: flex;
 		align-items: stretch;
-		column-gap: 12pt;
-		margin-top: 0pt;
-		margin-left: 13pt;
+		column-gap: 1rem;
+		margin-top: 0;
+		margin-left: 1.1rem;
 		flex-grow: 1;
 		width: 100%;
 	}
@@ -82,7 +81,7 @@
 		text-transform: uppercase;
 		font-weight: 700;
 		font-style: normal;
-		font-size: 9pt;
+		font-size: .75rem;
 		line-height: 13px;
 		margin: 0;
 		padding-bottom: .5rem;
@@ -93,13 +92,13 @@
 	}		
 	.trait-value {
 		display: inline-block;
-		margin-left: 4pt !important;
-		font-size: 11pt;
+		margin-left: .333rem !important;
+		font-size: .917rem;
 	}	
 	.trait-description {
 		font-style: italic;
 		margin-left: 0 !important;
-		margin-top: 4pt !important;
+		margin-top: .333rem !important;
 	}
 	
 	.trait-sfx {
@@ -109,28 +108,28 @@
 		margin-bottom: 0;
 		display: flex;
 		flex-direction: column;
-		row-gap: 12pt;
+		row-gap: 1rem;
 	
 		li {
 			padding-left: 1.6em;
 			text-indent: -1.6em;
-			margin-top: -1.5pt;
+			margin-top: -.125rem;
 			font-style: normal;
 			margin-right: 0;
-			font-size: 7.75pt;
+			font-size: .646rem;
 			&::before {
 				font-family: var(--font-heading);
 				content: "\25cf";
-				font-size: 14pt;
+				font-size: .875rem;
 				color: var(--color-primary);
 				padding-right: 0.3em;
 				position: relative;
-				top: 1pt;
-				left: -1pt;
+				top: .083rem;
+				left: -.083rem;
 			}
 	
 			+ & {
-				padding-top: 1pt;
+				padding-top: .083rem;
 			}
 	
 		}
@@ -140,7 +139,7 @@
 	.trait-sfx-name {
 		font-style: italic;
 	}
-	
+
 }
 
 .trait-set-style-distinctions {
@@ -151,7 +150,7 @@
 		color: black;
 		text-transform: none;
 		font-weight: 500;
-		font-size: 12pt;
+		font-size: 1rem;
 	}
 
 }
@@ -164,7 +163,7 @@
 		color: black;
 		text-transform: none;
 		font-weight: 500;
-		font-size: 12pt;
+		font-size: 1rem;
 	}
 
 	.trait-sfx {
@@ -176,4 +175,149 @@
 			display: flex;
 		}
 	}
+}
+
+.trait-set-style-assets {
+	border: 1px solid var(--color-primary);
+	background-color: var(--color-secondary);
+
+	.trait-set-header {
+		background: #C50852;
+		padding: 2px 4px;
+		color: white;
+		text-align: center;
+		text-transform: uppercase;
+		font-weight: 700;
+		font-size: .75rem;
+		line-height: 13px;
+		margin: 0;
+	}
+
+	.trait-columns {
+		padding: .5rem;
+	}
+	
+	.trait-column {
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+		row-gap: .25rem;
+		position: relative;
+	}
+
+	.trait-column:not(:first-child) {
+		display: none;
+	}
+
+	.trait-inner {
+		display: flex;
+		column-gap: .5rem;
+		align-items: center;
+	}
+
+	.trait-title {
+		margin: 0;
+		display: flex;
+		column-gap: .5rem;
+		align-items: center;
+		font-family: var(--font-secondary);
+		font-size: 1.2em;
+		line-height: 1;
+		font-weight: 500;
+		color: black;
+	}
+
+	.trait-value {
+		position: relative;
+		transform: translateY(-.15em);
+	}
+
+	.trait-description {
+		flex: 1;
+		overflow: hidden;
+		// white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.trait-sfx {
+		display: none;
+	}
+
+}
+
+.trait-set-style-resources {
+
+	.trait-set-header {
+		color: var(--color-primary);
+		text-transform: uppercase;
+		font-weight: 800;
+		font-size: 1rem;
+		line-height: 13px;
+		padding: .5rem 0 .33rem;
+		margin: 0 0 .33rem;
+		border-bottom: 1px solid var(--color-primary);
+	}
+
+	.trait-column {
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+		row-gap: .25rem;
+		position: relative;
+	}
+
+	.trait-column:not(:first-child) {
+		display: none;
+	}
+
+	.trait {
+	}
+
+	.trait-inner {
+		display: flex;
+		column-gap: .5rem;
+		align-items: center;
+	}
+
+	.trait-title {
+		margin: 0;
+		display: flex;
+		column-gap: .5rem;
+		align-items: center;
+		font-family: var(--font-primary);
+		font-size: .75rem;
+		line-height: 1;
+		font-weight: 400;
+		color: black;
+		padding-left: 1.5rem;
+		&::before {
+			display: block;
+			content: '';
+			width: .5rem;
+			height: .5rem;
+			position: absolute;
+			left: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			background-color: var(--color-primary);
+			border-radius: 50%;
+		}
+	}
+
+	.trait-value {
+		position: relative;
+		transform: translateY(-.15em);
+	}
+
+	.trait-description {
+		flex: 1;
+		overflow: hidden;
+		// white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.trait-sfx {
+		display: none;
+	}
+
 }
