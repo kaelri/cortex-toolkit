@@ -178,7 +178,7 @@ const CharacterSheet = {
 									<div class="preview-button"
 										@click.stop="addTrait( attributesID )"
 									>
-										<span><i class="fas fa-plus"></i> New Attribute</span>
+										<span><i class="fas fa-plus"></i> Attribute</span>
 									</div>
 								</div>
 
@@ -289,7 +289,7 @@ const CharacterSheet = {
 											<div class="preview-button"
 												@click.stop="addTrait( s, traitSetLocation )"
 											>
-												<span><i class="fas fa-plus"></i> New Trait</span>
+												<span><i class="fas fa-plus"></i> Trait</span>
 											</div>
 										</div>
 
@@ -304,7 +304,7 @@ const CharacterSheet = {
 								<div class="preview-button"
 									@click.stop="addTraitSet( pageLocation )"
 								>
-									<span><i class="fas fa-plus"></i> New Trait Set</span>
+									<span><i class="fas fa-plus"></i> Trait Set</span>
 								</div>
 							</div>
 							

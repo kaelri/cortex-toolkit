@@ -94,13 +94,18 @@
 	width: 100%;
 	display: inline;
 	line-height: normal;
+	position: relative;
 	&::before {
-		content: "\25cf";
-		font-size: .9167rem;
+		display: block;
+		content: '';
 		position: absolute;
-		margin-top: -.25rem;
-		margin-left: -3px;
-		color: var(--color-primary);
+		width: .4rem;
+		height: .4rem;
+		top: .35rem;
+		left: 0;
+		transform: translateY(-50%);
+		background-color: var(--color-primary);
+		border-radius: 50%;
 	}
 }
 
