@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			<main class="main" ref="main" @scroll="setViewY">
 			
 				<!-- CHARACTER SHEET -->
+				<transition appear>
 				<character-sheet
 					v-if="character"
 					:character="character"
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					@selectCharacterPart="selectCharacterPart"
 					@update="updateCharacter"
 				></character-sheet>
+				</transition>
 
 			</main>
 
@@ -66,22 +68,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		},
 
-		watch: {
-			character( character ) {
-				pageTitle = 'Cortex Toolkit';
-				if ( character.name && character.name.length ) {
-					pageTitle = `${character.name} | ${pageTitle}`;
-				}
-				document.title = pageTitle;
-			},
-		},
-
 		methods: {
 
 			// VIEW
 
 			setViewY() {
 				this.viewY = this.$refs.main.scrollTop;
+			},
+
+			setPageTitle() {
+				pageTitle = 'Cortex Toolkit';
+				if (this.character && this.character.name.length ) {
+					pageTitle = `${this.character.name} - ${pageTitle}`;
+				}
+				document.title = pageTitle;
 			},
 
 			// MANAGEMENT
@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			updateCharacter( character ) {
 				this.character = character;
 				this.saveLocal();
+				this.setPageTitle();
 			},
 
 			selectCharacterPart( selector ) {
@@ -134,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				}
 
 				this.character = character;
+				this.setPageTitle();
 
 			},
 

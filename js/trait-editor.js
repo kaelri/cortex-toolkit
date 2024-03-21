@@ -133,8 +133,8 @@ const TraitEditor = {
 							></sfx-editor>
 						</transition-group>
 
-						<div class="editor-subgroup">
-							<button class="editor-button editor-button-add editor-button-tertiary" @click.stop="addEffect"><i class="fas fa-plus"></i> New SFX</button>
+						<div class="editor-button-container">
+							<button class="editor-button" @click.stop="addEffect"><i class="fas fa-plus"></i> New SFX</button>
 						</div>
 
 					</div>

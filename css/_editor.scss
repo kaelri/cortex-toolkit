@@ -136,7 +136,7 @@
 	height: 0; 
 	.editor-character & {
 		top: -.5em;
-		left: 2em;
+		left: .75em;
 		border-left: .5em solid transparent;
 		border-right: .5em solid transparent;
 		border-bottom: .5em solid black;
@@ -154,10 +154,10 @@
 		border-left: .5em solid black;
 	}
 	.anchor-position-top & {
-		top: 2em;
+		top: .75em;
 	}
 	.anchor-position-bottom & {
-		bottom: 2em;
+		bottom: .75em;
 	}
 	
 }
@@ -251,27 +251,22 @@
 	margin-top: 2rem;
 }
 
-.editor-button {
-	@extend %button;
-	// background-color: white;
-	// color: black;
-	@extend %no-print;
-	display: block;
-	width: 100%;
-	font-size: .66rem;
-	--button-color: var(--color-interactive);
+.editor-button-container {
+	text-align: center;
 }
 
-.editor-button-secondary {
-	@extend %button-secondary;
+.editor-button {
+	@extend %button;
+	display: inline-block;
+	font-size: .66rem;
+	--button-color: var(--color-interactive);
+	&.editor-button-remove {
+		--button-color: var(--color-primary);
+	}
 }
 
 .editor-button-tertiary {
 	@extend %button-tertiary;
-}
-
-.editor-button-remove {
-	--button-color: var(--color-primary);
 }
 
 .editor-subgroup {

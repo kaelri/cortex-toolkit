@@ -16,7 +16,6 @@ const TraitSetEditor = {
 				{ id: 'two-columns-compact',  label: 'Two Columns (Compact)' },
 				{ id: 'two-columns-detailed', label: 'Two Columns (Detailed)' },
 				{ id: 'distinctions',         label: 'Distinctions' },
-				{ id: 'attributes',           label: 'Attributes' },
 				{ id: 'assets',               label: 'Assets' },
 				{ id: 'resources',            label: 'Resources' },
 				{ id: 'stress',               label: 'Stress' },

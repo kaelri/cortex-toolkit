@@ -5,9 +5,9 @@ Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex
 ## To Do
 
 - [ ] Implement all original functionality:
+  - [x] Trait set styles
   - [ ] JSON import/export
-  - [ ] Trait set styles
-  - [ ] Portrait drag/zoom
+  - [ ] Portrait image position controls
 - [x] Switch editor panel vertical alignment depending on whether the element is in the top or bottom half of the page.
 - [ ] Load/save multiple characters
 - [ ] Document character sheet schema for interoperability with other Cortex utilities

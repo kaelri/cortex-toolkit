@@ -235,9 +235,13 @@ const CharacterSheet = {
 																v-html="trait.name"
 															></span>
 														
-															<span class="trait-value c"
-																v-html="renderDieValue(trait.value)"
-															></span>
+															<div class="trait-value">
+																<span :class="{ 'c': true, 'active': trait.value === 4 }" >4</span>
+																<span :class="{ 'c': true, 'active': trait.value === 6 }" >6</span>
+																<span :class="{ 'c': true, 'active': trait.value === 8 }" >8</span>
+																<span :class="{ 'c': true, 'active': trait.value === 10 }">0</span>
+																<span :class="{ 'c': true, 'active': trait.value === 12 }">2</span>
+															</div>
 
 														</h2>
 
@@ -297,7 +301,7 @@ const CharacterSheet = {
 
 							<!-- BUTTON: ADD TRAIT SET -->
 							<div class="preview-button-container">
-								<div class="trait-set-placeholder preview-button"
+								<div class="preview-button"
 									@click.stop="addTraitSet( pageLocation )"
 								>
 									<span><i class="fas fa-plus"></i> New Trait Set</span>
