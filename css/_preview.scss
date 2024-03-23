@@ -1,7 +1,52 @@
+%editable {
+	.submode-edit & {
+		position: relative;
+		cursor: pointer;
+		&::before {
+			@extend %no-print;
+			display: block;
+			position: absolute;
+			z-index: var(--z-editable-highlight);
+			content: '';
+			top:    calc( -1 * var(--highlight-radius) );
+			bottom: calc( -1 * var(--highlight-radius) );
+			left:   calc( -1 * var(--highlight-radius) );
+			right:  calc( -1 * var(--highlight-radius) );
+			border-radius: var(--highlight-radius);
+			transition: background-color .2s, border-color .2s;
+			opacity: 0;
+			pointer-events: none;
+			background-color: transparent;
+			border: 2px solid transparent;
+		}
+		&:hover::before {
+			opacity: 1;
+			// border-color: color-mix(in srgb, var(--color-interactive), transparent 50% );
+			border-color: var(--color-interactive);
+		}
+		&.selected::before {
+			opacity: 1;
+			background-color: color-mix(in srgb, var(--color-interactive), transparent 83% );
+			// border-color: color-mix(in srgb, var(--color-interactive), transparent 50% );
+			border-color: var(--color-interactive);
+		}
+	}
+}
+
+@mixin print {
+	.submode-print & {
+		@content;
+	}
+	@media print {
+		@content;
+	}
+}
+
+
 .character-sheet {
 	&.v-enter-active,
 	&.v-leave-active {
-		transition: opacity 1s ease, transform 1s ease;
+		transition: opacity .5s ease, transform .5s ease;
 	}
 	&.v-enter-from,
 	&.v-leave-to {
@@ -12,13 +57,18 @@
 
 .pages {
 	position: relative;
-	width: var(--page-width);
-	height: var(--page-height);
-	margin: 0 auto;
-	border: 1px var(--color-separator) solid;
-	border-radius: .25rem;
-	box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.1);
-	overflow: hidden;
+	margin-inline: auto;
+	transition: border-color .2s, box-shadow .2s, width .2s, height .2s;
+	@include print {
+		width: var(--page-width);
+		height: var(--page-height);
+		overflow: hidden;
+		border: 1px transparent solid;
+		border-radius: .25rem; 
+		box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.0);
+		border-color: var(--color-separator);
+		box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.1);
+	}
 	@media print {
 		border: 0 !important;
 		border-radius: 0 !important;
@@ -27,21 +77,27 @@
 }
 
 .page {
-	position: absolute;
-	z-index: var(--z-page);
-	left: 0;
-	top: 0;
-	width: var(--page-width);
-	height: var(--page-height);
 	font-size: .66rem;
 	line-height: 0.9167rem;
 	font-weight: 400;
-	background: white;
+	transition: padding .2s;
+	padding-top: 2rem;
+	@include print {
+		position: absolute;
+		z-index: var(--z-page);
+		left: 0;
+		top: 0;
+		width: var(--page-width);
+		height: var(--page-height);
+		padding: var(--page-margin);
+		background: white;
+	}
 }
 
 .page-inner {
-	padding: 1.9cm;
 	position: relative;
+	margin-inline: auto;
+	width: calc( var(--page-width) - 2 * var(--page-margin) );
 }
 
 .columns {
@@ -167,7 +223,7 @@
 	position: relative;
 	line-height: 1;
 	--highlight-radius: 1em;
-	&::before {
+	.submode-edit &::before {
 		border-radius: 50%;
 	}
 }
@@ -332,12 +388,19 @@
 
 .preview-button-container {
 	@extend %no-print;
-	text-align: center;
-	height: 1.5rem;
-	overflow: hidden;
+	height: 3rem;
+	overflow: visible;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	font-size: 1rem;
+	padding-bottom: 1rem;
+	.page & {
+		font-size: .66rem;
+		padding-bottom: 0;
+		height: 1.5rem;
+	}
+	text-align: center;
 	&.v-enter-active,
 	&.v-leave-active {
 		transition: opacity .2s ease, transform .2s ease, height .2s ease;
@@ -352,7 +415,6 @@
 
 .preview-button {
 	@extend %button;
-	@extend %no-print;
 	--button-color: var(--color-interactive);
 	opacity: .85;
 	transition: opacity .2s;

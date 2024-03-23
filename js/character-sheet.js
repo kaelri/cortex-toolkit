@@ -40,8 +40,21 @@ const CharacterSheet = {
 	},
 
 	/*html*/
-	template: `<section class="character-sheet" @click.stop="clearSelected">
+	template: `<section :class="'character-sheet submode-' + submode" @click.stop="clearSelected">
 	
+		<!-- BUTTON: ADD ATTRIBUTE -->
+		<transition appear>
+		<div class="preview-button-container"
+			v-show="submode === 'print'"
+		>
+			<div class="preview-button"
+				@click.stop="print"
+			>
+				<span><i class="fas fa-print"></i> Print</span>
+			</div>
+		</div>
+		</transition>
+
 		<div class="pages">
 
 			<!-- PAGE -->
@@ -80,7 +93,7 @@ const CharacterSheet = {
 							<name-editor
 								:character="character"
 								:open="isSelected(['name'])"
-								v-show="isSelected(['name'])"
+								v-show="submode === 'edit' && isSelected(['name'])"
 								@selectElement="selectElement"
 								@update="update"
 							></name-editor>
@@ -106,7 +119,7 @@ const CharacterSheet = {
 									<portrait-editor
 										:character="character"
 										:open="isSelected(['portrait'])"
-										v-show="isSelected(['portrait'])"
+										v-show="submode === 'edit' && isSelected(['portrait'])"
 										@selectElement="selectElement"
 										@update="update"
 									></portrait-editor>
@@ -156,7 +169,7 @@ const CharacterSheet = {
 												<trait-editor
 													:character="character"
 													:open="isSelected(['trait', attributesID, a])"
-													v-show="isSelected(['trait', attributesID, a])"
+													v-show="submode === 'edit' && isSelected(['trait', attributesID, a])"
 													:traitSetID="attributesID"
 													:traitID="a"
 													:viewY="viewY"
@@ -209,7 +222,7 @@ const CharacterSheet = {
 										<trait-set-editor
 											:character="character"
 											:open="isSelected(['traitSet', s])"
-											v-show="isSelected(['traitSet', s])"
+											v-show="submode === 'edit' && isSelected(['traitSet', s])"
 											:traitSetID="s"
 											:viewY="viewY"
 											@selectElement="selectElement"
@@ -275,7 +288,7 @@ const CharacterSheet = {
 													<trait-editor
 														:character="character"
 														:open="isSelected(['trait', s, t])"
-														v-show="isSelected(['trait', s, t])"
+														v-show="submode === 'edit' && isSelected(['trait', s, t])"
 														:traitSetID="s"
 														:traitID="t"
 														:viewY="viewY"
@@ -348,7 +361,6 @@ const CharacterSheet = {
 			return cortexFunctions.getDieDisplayValue( value );
 		},
 
-
 		getAttributeStyle( a ) {
 
 			let top    = 7;
@@ -374,7 +386,9 @@ const CharacterSheet = {
 		// SELECTING
 
 		selectElement( selector ) {
-			this.$emit( 'selectElement', selector );
+			if ( this.submode === 'edit' ) {
+				this.$emit( 'selectElement', selector );
+			}
 		},
 
 		clearSelected() {
@@ -466,6 +480,10 @@ const CharacterSheet = {
 
 		update( character ) {
 			this.$emit( 'update', character );
+		},
+
+		print() {
+			window.print();
 		}
 
 	}

@@ -22,8 +22,10 @@ $fa-font-path: '../node_modules/@fortawesome/fontawesome-free/webfonts';
 	
 	--page-width:    210mm;
 	--page-height:   297.1mm;
-	--header-size:   4rem;
-	--sidebar-size:  6rem;
+	--page-margin:   1.9cm;
+	--header-size:   3rem;
+	// --sidebar-size:  6rem;
+	--sidebar-size:  0px;
 
 	--font-primary:   'Open Sans', sans-serif;
 	--font-secondary: 'Alegreya Sans SC', sans-serif;
@@ -81,7 +83,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: var(--font-primary);
-	// background-color: black;
+	background-color: white;
 }
 
 * {
@@ -146,37 +148,6 @@ body {
 %button-tertiary {
 	background: transparent;
 	color: inherit;
-}
-
-%editable {
-	position: relative;
-	cursor: pointer;
-	&::before {
-		@extend %no-print;
-		display: block;
-		position: absolute;
-		z-index: var(--z-editable-highlight);
-		content: '';
-		top:    calc( -1 * var(--highlight-radius) );
-		bottom: calc( -1 * var(--highlight-radius) );
-		left:   calc( -1 * var(--highlight-radius) );
-		right:  calc( -1 * var(--highlight-radius) );
-		border-radius: var(--highlight-radius);
-		transition: background-color .2s, border-color .2s;
-		opacity: 0;
-		pointer-events: none;
-		background-color: transparent;
-		border: 2px solid transparent;
-	}
-	&:hover::before {
-		opacity: 1;
-		border-color: color-mix(in srgb, var(--color-interactive), transparent 50% );
-	}
-	&.selected::before {
-		opacity: 1;
-		background-color: color-mix(in srgb, var(--color-interactive), transparent 83% );
-		border-color: color-mix(in srgb, var(--color-interactive), transparent 50% );
-	}
 }
 
 // COMPONENTS

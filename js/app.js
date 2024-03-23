@@ -6,11 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		data() {
 			return {
-				character: null,
-				viewY:     null,
-				mode:      'character',
-				submode:   'edit',
-				editing:   null,
+				characters: [],
+				character:  null,
+				viewY:      null,
+				mode:       'character',
+				submode:    'edit',
+				editing:    null,
 			}
 		},
 
@@ -25,10 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		/*html*/
 		template: `<header class="header">
 				<div class="header-inner">
-					<nav class="nav-submode" v-if="mode === 'character'">
+					<nav class="nav-mode">
 						<ul>
-							<li @click.stop="setMode('character', 'edit')" :class="{ active: submode === 'edit' }"><span class="nav-submode-icon"><i class="fas fa-pencil"></i></span> Create</li>
-							<li @click.stop="setMode('character', 'play')" :class="{ active: submode === 'play' }"><span class="nav-submode-icon"><i class="fas fa-dice"></i></span> Play</li>
+							<li @click.stop="setMode('roster', null)" :class="{ active: mode === 'roster' }"><div><span class="nav-mode-icon"><i class="fas fa-users"></i></span></div></li>
+							<li @click.stop="setMode('character', 'edit')" :class="{ active: mode === 'character' && submode === 'edit', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-pencil"></i></span> Create</div></li>
+							<li @click.stop="setMode('character', 'play')" :class="{ active: mode === 'character' && submode === 'play', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-dice"></i></span> Play</div></li>
+							<li @click.stop="setMode('character', 'print')" :class="{ active: mode === 'character' && submode === 'print', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-file"></i></span> Print</div></li>
 						</ul>
 					</nav>
 				</div>
@@ -42,17 +45,21 @@ document.addEventListener('DOMContentLoaded', () => {
 			<main class="main" ref="main" @scroll="setViewY">
 			
 				<!-- CHARACTER SHEET -->
-				<transition appear>
-				<character-sheet
-					v-if="mode === 'character' && character"
-					:submode="submode"
-					:character="character"
-					:editing="editing"
-					:viewY="viewY"
-					@selectElement="selectElement"
-					@update="updateCharacter"
-				></character-sheet>
-				</transition>
+				<transition-group appear>
+
+					<character-sheet
+						v-if="mode === 'character' && character"
+						:submode="submode"
+						:character="character"
+						:editing="editing"
+						:viewY="viewY"
+						@selectElement="selectElement"
+						@update="updateCharacter"
+					></character-sheet>
+
+
+
+				</transition-group>
 
 			</main>
 
@@ -82,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			// VIEW
 
 			setMode( mode, submode ) {
+				if ( mode === 'character' && !this.character ) return;
 				this.mode    = mode;
 				this.submode = submode;
 			},

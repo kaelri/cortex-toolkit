@@ -52,19 +52,6 @@
 		position: relative;
 	}
 	
-	.trait-inner {
-		@extend %editable;
-		&.trait-enter-active,
-		&.trait-leave-active {
-			transition: opacity .2s ease, transform .2s ease;
-		}
-		&.trait-enter-from,
-		&.trait-leave-to {
-			opacity: 0;
-			transform: translateY(-1rem);
-		}
-	}
-	
 	.trait-title {
 		font-family: var(--font-heading);
 		color: var(--color-primary);
