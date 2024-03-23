@@ -1,9 +1,10 @@
 const CharacterSheet = {
 
 	props: {
-		character:             Object,
-		selectedCharacterPart: Array,
-		viewY:                 Number,
+		submode:   String,
+		character: Object,
+		editing:   Array,
+		viewY:     Number,
 	},
 
 	computed: {
@@ -50,7 +51,7 @@ const CharacterSheet = {
 					<header class="page-header">
 
 						<div :class="{'page-header-inner': true, 'selected': isSelected(['name'])}"
-							@click.stop="selectCharacterPart([ 'name' ])"
+							@click.stop="selectElement([ 'name' ])"
 						>
 							<div>
 
@@ -80,7 +81,7 @@ const CharacterSheet = {
 								:character="character"
 								:open="isSelected(['name'])"
 								v-show="isSelected(['name'])"
-								@selectCharacterPart="selectCharacterPart"
+								@selectElement="selectElement"
 								@update="update"
 							></name-editor>
 						</transition>
@@ -96,9 +97,9 @@ const CharacterSheet = {
 							<div class="portrait" v-if="pageLocation === 'right'">
 
 								<div :class="{ 'portrait-inner': true, 'selected': isSelected(['portrait']) }"
-									@click.stop="selectCharacterPart([ 'portrait' ])"
+									@click.stop="selectElement([ 'portrait' ])"
 								>
-									<div class="portrait-circle" width="100%" height="100%" :style="'background-image: url(' + portrait.url + ');'"></div>
+									<div :class="'portrait-circle portrait-alignment-' + portrait.alignment" width="100%" height="100%" :style="'background-image: url(' + portrait.url + ');'"></div>
 								</div>
 
 								<transition name="editor" appear>
@@ -106,7 +107,7 @@ const CharacterSheet = {
 										:character="character"
 										:open="isSelected(['portrait'])"
 										v-show="isSelected(['portrait'])"
-										@selectCharacterPart="selectCharacterPart"
+										@selectElement="selectElement"
 										@update="update"
 									></portrait-editor>
 								</transition>
@@ -138,7 +139,7 @@ const CharacterSheet = {
 
 											<div class="attribute-inner"
 												:class="{ 'attribute-inner': true, 'selected': isSelected(['trait', attributesID, a]) }"
-												@click.stop="selectCharacterPart([ 'trait', attributesID, a ])"
+												@click.stop="selectElement([ 'trait', attributesID, a ])"
 											>
 
 												<span class="c"
@@ -159,7 +160,7 @@ const CharacterSheet = {
 													:traitSetID="attributesID"
 													:traitID="a"
 													:viewY="viewY"
-													@selectCharacterPart="selectCharacterPart"
+													@selectElement="selectElement"
 													@update="update"
 													@removeTrait="removeTrait"
 												></trait-editor>
@@ -172,7 +173,9 @@ const CharacterSheet = {
 								</div>
 
 								<!-- BUTTON: ADD ATTRIBUTE -->
+								<transition appear>
 								<div class="preview-button-container"
+									v-show="submode === 'edit'"
 									v-if="pageLocation === 'right'"
 								>
 									<div class="preview-button"
@@ -181,6 +184,7 @@ const CharacterSheet = {
 										<span><i class="fas fa-plus"></i> Attribute</span>
 									</div>
 								</div>
+								</transition>
 
 							</div>
 								
@@ -195,7 +199,7 @@ const CharacterSheet = {
 
 									<transition appear>
 										<div :class="{'trait-set-header-inner': true, 'selected': isSelected(['traitSet', s])}"
-											@click.stop="selectCharacterPart([ 'traitSet', s ])"
+											@click.stop="selectElement([ 'traitSet', s ])"
 										>
 											<div v-html="traitSet.name"></div>
 										</div>
@@ -208,7 +212,7 @@ const CharacterSheet = {
 											v-show="isSelected(['traitSet', s])"
 											:traitSetID="s"
 											:viewY="viewY"
-											@selectCharacterPart="selectCharacterPart"
+											@selectElement="selectElement"
 											@update="update"
 											@removeTraitSet="removeTraitSet"
 										></trait-set-editor>
@@ -226,7 +230,7 @@ const CharacterSheet = {
 
 												<transition name="trait" appear>
 													<div :class="{ 'trait-inner': true, 'selected': isSelected(['trait', s, t]) }"
-														@click.stop="selectCharacterPart([ 'trait', s, t ])"
+														@click.stop="selectElement([ 'trait', s, t ])"
 													>
 
 														<h2 class="trait-title">
@@ -275,7 +279,7 @@ const CharacterSheet = {
 														:traitSetID="s"
 														:traitID="t"
 														:viewY="viewY"
-														@selectCharacterPart="selectCharacterPart"
+														@selectElement="selectElement"
 														@update="update"
 														@removeTrait="removeTrait"
 													></trait-editor>
@@ -285,13 +289,17 @@ const CharacterSheet = {
 										</template>
 
 										<!-- BUTTON: ADD TRAIT -->
-										<div class="preview-button-container">
+										<transition appear>
+										<div class="preview-button-container"
+											v-show="submode === 'edit'"
+										>
 											<div class="preview-button"
 												@click.stop="addTrait( s, traitSetLocation )"
 											>
 												<span><i class="fas fa-plus"></i> Trait</span>
 											</div>
 										</div>
+										</transition>
 
 									</div> <!-- .trait-column -->
 								</div> <!-- .trait-columns -->
@@ -300,13 +308,17 @@ const CharacterSheet = {
 							</template>
 
 							<!-- BUTTON: ADD TRAIT SET -->
-							<div class="preview-button-container">
+							<transition appear>
+							<div class="preview-button-container"
+								v-show="submode === 'edit'"
+							>
 								<div class="preview-button"
 									@click.stop="addTraitSet( pageLocation )"
 								>
 									<span><i class="fas fa-plus"></i> Trait Set</span>
 								</div>
 							</div>
+							</transition>
 							
 						</div>
 
@@ -321,7 +333,7 @@ const CharacterSheet = {
 		// PRESENTATION
 
 		isSelected( selector ) {
-			return cortexFunctions.arraysMatch( this.selectedCharacterPart, selector );
+			return cortexFunctions.arraysMatch( this.editing, selector );
 		},
 
 		renderText( text ) {
@@ -361,12 +373,12 @@ const CharacterSheet = {
 		
 		// SELECTING
 
-		selectCharacterPart( selector ) {
-			this.$emit( 'selectCharacterPart', selector );
+		selectElement( selector ) {
+			this.$emit( 'selectElement', selector );
 		},
 
 		clearSelected() {
-			this.$emit('selectCharacterPart', []);
+			this.$emit('selectElement', []);
 		},
 
 		// EDITING
@@ -394,7 +406,7 @@ const CharacterSheet = {
 			this.update( character );
 
 			let newTraitSetID = character.traitSets.length - 1;
-			this.selectCharacterPart([ 'traitSet', newTraitSetID ]);
+			this.selectElement([ 'traitSet', newTraitSetID ]);
 
 		},
 
@@ -427,7 +439,7 @@ const CharacterSheet = {
 			this.update( character );
 			
 			let newTraitID = character.traitSets[traitSetID].traits.length - 1;
-			this.selectCharacterPart([ 'trait', traitSetID, newTraitID ]);
+			this.selectElement([ 'trait', traitSetID, newTraitID ]);
 
 		},
 
@@ -436,7 +448,7 @@ const CharacterSheet = {
 			/*// If we’re removing the trait that is currently selected, switch to the previous trait, or the parent trait set if no other traits remain.
 			if ( this.isSelected(['trait', traitSetID, traitID]) ) {
 				if ( this.character.traitSets[traitSetID].traits.length > 1) {
-					this.selectCharacterPart([ 'trait', traitSetID, traitID - 1 ]);
+					this.selectElement([ 'trait', traitSetID, traitID - 1 ]);
 				} else {
 					this.select( 'traitSet', traitSetID );
 				}

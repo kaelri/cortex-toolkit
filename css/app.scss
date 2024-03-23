@@ -22,7 +22,8 @@ $fa-font-path: '../node_modules/@fortawesome/fontawesome-free/webfonts';
 	
 	--page-width:    210mm;
 	--page-height:   297.1mm;
-	--sidebar-width: 6rem;
+	--header-size:   4rem;
+	--sidebar-size:  6rem;
 
 	--font-primary:   'Open Sans', sans-serif;
 	--font-secondary: 'Alegreya Sans SC', sans-serif;
@@ -42,13 +43,13 @@ $fa-font-path: '../node_modules/@fortawesome/fontawesome-free/webfonts';
 	--z-attributes-grid:           300;
 	--z-attributes-curve:          400;
 	--z-attributes-items:          500;
-	// --z-attributes-item:           100;
-	--z-editable-highlight:        600;
-	--z-editable-content:          700;
-	--z-header:                    800;
-	--z-editor:                    900;
-	--z-editor-scroll-indicator:  1000;
-	--z-editor-controls:          1100;
+	--z-portrait:                  600;
+	--z-editable-highlight:        700;
+	--z-editable-content:          800;
+	--z-frame:                     900;
+	--z-editor:                   1000;
+	--z-editor-scroll-indicator:  1100;
+	--z-editor-controls:          1200;
 
 }
 
@@ -88,21 +89,6 @@ body {
 	break-inside: avoid-column;	
 	break-before: avoid-column;
 	break-after: avoid-column;
-}
-
-.main {
-	position: absolute;
-	z-index: var(--z-main);
-	left: var(--sidebar-width);
-	right: 0;
-	top: 0;
-	bottom: 0;
-	overflow: auto;
-	padding: 2rem;
-	@media print {
-		left: 0;
-		padding: 0;
-	}
 }
 
 // DIE VALUES
@@ -195,8 +181,7 @@ body {
 
 // COMPONENTS
 
-@import 'header';
-@import 'footer';
+@import 'frame';
 @import 'preview';
 @import 'variants';
 @import 'editor';

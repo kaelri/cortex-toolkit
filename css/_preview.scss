@@ -154,6 +154,7 @@
 
 .portrait {
 	position: relative;
+	// z-index: var(--z-portrait);
 }
 
 .portrait-inner {
@@ -182,6 +183,31 @@
 	border-radius: 50%;
 	background-size: cover;
 	background-position: center;
+	transition: background-position .2s;
+	&.portrait-alignment-top-left {
+		background-position: top left;
+	}
+	&.portrait-alignment-top-center {
+		background-position: top center;
+	}
+	&.portrait-alignment-top-right {
+		background-position: top right;
+	}
+	&.portrait-alignment-center-left {
+		background-position: center left;
+	}
+	&.portrait-alignment-center-right {
+		background-position: center right;
+	}
+	&.portrait-alignment-bottom-left {
+		background-position: bottom left;
+	}
+	&.portrait-alignment-bottom-center {
+		background-position: bottom center;
+	}
+	&.portrait-alignment-bottom-right {
+		background-position: bottom right;
+	}
 }
 
 .portrait-inner img {
@@ -307,14 +333,28 @@
 .preview-button-container {
 	@extend %no-print;
 	text-align: center;
+	height: 1.5rem;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	&.v-enter-active,
+	&.v-leave-active {
+		transition: opacity .2s ease, transform .2s ease, height .2s ease;
+	}
+	&.v-enter-from,
+	&.v-leave-to {
+		height: 0;
+		opacity: 0;
+		// transform: translateY(-100%);
+	}
 }
 
 .preview-button {
 	@extend %button;
 	@extend %no-print;
 	--button-color: var(--color-interactive);
-	display: inline-block;
-	opacity: .5;
+	opacity: .85;
 	transition: opacity .2s;
 	&:hover {
 		opacity: 1;

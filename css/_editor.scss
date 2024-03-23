@@ -287,3 +287,19 @@
 		transform: scale(0.8);
 	}
 }
+
+.editor-portrait-alignment {
+	display: grid;
+	grid-template-columns: repeat(3, 1.5rem);
+	gap: .25em;
+	div {
+		background-color: var(--color-interactive);
+		width: 1.5rem;
+		height: 1.5rem;
+		opacity: .5;
+		cursor: pointer;
+		&.active {
+			opacity: 1;
+		}
+	}
+}

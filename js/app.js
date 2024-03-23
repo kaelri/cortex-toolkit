@@ -6,9 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		data() {
 			return {
-				character:             null,
-				selectedCharacterPart: null,
-				viewY:                 null,
+				character: null,
+				viewY:     null,
+				mode:      'character',
+				submode:   'edit',
+				editing:   null,
 			}
 		},
 
@@ -21,31 +23,40 @@ document.addEventListener('DOMContentLoaded', () => {
 		},
 
 		/*html*/
-		template: `<article id="cortex-toolkit">
-		
-			<header class="header">
+		template: `<header class="header">
 				<div class="header-inner">
-
+					<nav class="nav-submode" v-if="mode === 'character'">
+						<ul>
+							<li @click.stop="setMode('character', 'edit')" :class="{ active: submode === 'edit' }"><span class="nav-submode-icon"><i class="fas fa-pencil"></i></span> Create</li>
+							<li @click.stop="setMode('character', 'play')" :class="{ active: submode === 'play' }"><span class="nav-submode-icon"><i class="fas fa-dice"></i></span> Play</li>
+						</ul>
+					</nav>
 				</div>
 			</header>
+
+			<aside class="sidebar">
+				<div class="sidebar-inner">
+				</div>
+			</aside>
 
 			<main class="main" ref="main" @scroll="setViewY">
 			
 				<!-- CHARACTER SHEET -->
 				<transition appear>
 				<character-sheet
-					v-if="character"
+					v-if="mode === 'character' && character"
+					:submode="submode"
 					:character="character"
-					:selectedCharacterPart="selectedCharacterPart"
+					:editing="editing"
 					:viewY="viewY"
-					@selectCharacterPart="selectCharacterPart"
+					@selectElement="selectElement"
 					@update="updateCharacter"
 				></character-sheet>
 				</transition>
 
 			</main>
 
-			<aside class="about">
+			<footer class="footer">
 
 				<div class="about-logo">
 					<a href="https://cortexrpg.com" target="_blank"><img src="images/cortex_community_logo_white.png"></a>
@@ -57,9 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					<p>If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.</p>
 				</div>
 
-			</aside>
-
-		</article>`,
+			</footer>`,
 		
 		mounted() {
 
@@ -71,6 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		methods: {
 
 			// VIEW
+
+			setMode( mode, submode ) {
+				this.mode    = mode;
+				this.submode = submode;
+			},
 
 			setViewY() {
 				this.viewY = this.$refs.main.scrollTop;
@@ -105,14 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
 				this.setPageTitle();
 			},
 
-			selectCharacterPart( selector ) {
+			selectElement( selector ) {
 
-				if ( cortexFunctions.arraysMatch( this.selectedCharacterPart, selector ) ) {
-					this.selectedCharacterPart = [];
+				if ( cortexFunctions.arraysMatch( this.editing, selector ) ) {
+					this.editing = [];
 					return;
 				}
 
-				this.selectedCharacterPart = selector;
+				this.editing = selector;
 
 			},
 

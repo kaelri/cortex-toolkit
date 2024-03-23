@@ -79,7 +79,7 @@ const TraitSetEditor = {
 		<div class="editor-arrow"></div>
 
 		<div class="editor-controls">
-			<button @click.stop="selectCharacterPart([])"><i class="fas fa-times"></i></button>
+			<button @click.stop="selectElement([])"><i class="fas fa-times"></i></button>
 			<button class="editor-delete" @click.stop="removeTraitSet"><i class="fas fa-trash"></i></button>
 		</div>
 
@@ -142,8 +142,8 @@ const TraitSetEditor = {
 
 	methods: {
 
-		selectCharacterPart( selector ) {
-			this.$emit( 'selectCharacterPart', selector );
+		selectElement( selector ) {
+			this.$emit( 'selectElement', selector );
 		},
 
 		async focusFirstInput() {

@@ -1,0 +1,4 @@
+name: cortex-toolkit
+recipe: lamp
+config:
+  webroot: .

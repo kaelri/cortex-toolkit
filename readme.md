@@ -6,12 +6,12 @@ Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex
 
 - [ ] Implement all original functionality:
   - [x] Trait set styles
+  - [x] Portrait image position controls
   - [ ] JSON import/export
-  - [ ] Portrait image position controls
 - [x] Switch editor panel vertical alignment depending on whether the element is in the top or bottom half of the page.
 - [ ] Load/save multiple characters
-- [ ] Document character sheet schema for interoperability with other Cortex utilities
 - [ ] Dice pool roller utility
+- [ ] Document character sheet schema for interoperability with other Cortex utilities
 - [ ] GM vs. Player mode (lock editing trait sets)
 - [ ] Undo/redo
 - [ ] Styling guide

@@ -13,7 +13,16 @@ const PortraitEditor = {
 
 		hasImage() {
 			return Boolean( this.character.portrait.url.length );
-		}
+		},
+
+		alignment: {
+			get() {
+				return this.character.portrait.alignment;
+			},
+			set( value ) {
+				this.setAlignment( value );
+			}
+		},
 
 	},
 
@@ -23,7 +32,7 @@ const PortraitEditor = {
 		<div class="editor-arrow"></div>
 
 		<div class="editor-controls">
-			<button @click.stop="selectCharacterPart([])"><i class="fas fa-times"></i></button>
+			<button @click.stop="selectElement([])"><i class="fas fa-times"></i></button>
 			<button v-if="hasImage" class="editor-delete" @click.stop="setImageURL('')"><i class="fas fa-trash"></i></button>
 		</div>
 
@@ -51,6 +60,24 @@ const PortraitEditor = {
 
 					</div>
 
+					<div class="editor-field" v-if="hasImage">
+
+						<label>Alignment</label>
+
+						<div class="editor-portrait-alignment">
+							<div @click.stop="setAlignment('top-left')"      :class="{'active': alignment === 'top-left' }"></div>
+							<div @click.stop="setAlignment('top-center')"    :class="{'active': alignment === 'top-center' }"></div>
+							<div @click.stop="setAlignment('top-right')"     :class="{'active': alignment === 'top-right' }"></div>
+							<div @click.stop="setAlignment('center-left')"   :class="{'active': alignment === 'center-left' }"></div>
+							<div @click.stop="setAlignment('center')"        :class="{'active': alignment === 'center' }"></div>
+							<div @click.stop="setAlignment('center-right')"  :class="{'active': alignment === 'center-right' }"></div>
+							<div @click.stop="setAlignment('bottom-left')"   :class="{'active': alignment === 'bottom-left' }"></div>
+							<div @click.stop="setAlignment('bottom-center')" :class="{'active': alignment === 'bottom-center' }"></div>
+							<div @click.stop="setAlignment('bottom-right')"  :class="{'active': alignment === 'bottom-right' }"></div>
+						</div>
+
+					</div>
+
 				</div>
 				
 			</div>
@@ -60,8 +87,8 @@ const PortraitEditor = {
 
 	methods: {
 
-		selectCharacterPart( selector ) {
-			this.$emit( 'selectCharacterPart', selector );
+		selectElement( selector ) {
+			this.$emit( 'selectElement', selector );
 		},
 
 		uploadStart() {
@@ -74,10 +101,17 @@ const PortraitEditor = {
 			this.update( character );
 		},
 
+		setAlignment( alignment ) {
+			let character = this.character;
+			character.portrait.alignment = alignment;
+			this.update( character );
+		},
+
 		uploadProcess( event ) {
 
 			if ( !event.target.files || !event.target.files.length ) {
 				this.setImageURL( '' );
+				this.setAlignment( 'center' );
 				return;
 			}
 			
