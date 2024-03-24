@@ -12,6 +12,8 @@ Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex
 - [x] Load/save multiple characters
 - [x] Portrait **placeholder**
 - [ ] Add **toggle** to enable/disable statements, SFX and “Hinder” for trait sets.
+- [ ] Sub-traits (e.g. Specialties)
+- [ ] Improved two-column trait sets
 - [ ] Add **confirmation** for delete & overwrite.
 - [ ] **Dice roller** utility
   - [ ] Export dice **formula** to [CortexPalGS](https://github.com/lynn0702/CortexPalGS) format
@@ -20,8 +22,12 @@ Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex
 - [ ] **Duplicate** characters, trait sets, traits and SFX.
 - [ ] Document character sheet **schema** for interoperability with other Cortex utilities
 - [ ] **Markdown** character notes
-- [ ] GM vs. Player mode (**lock** editing trait sets)
+- [ ] Templates
+  - [ ] Mark character as Template (**lock** editing trait sets)
+  - [ ] **Select** a template when starting a new character.
+  - [ ] Mark/list templates separately in roster.
 - [ ] Character **icons**
+- [ ] Multi-page print layout
 - [ ] Advanced **portrait** positioning: zoom, x-offset (%), y-offset (%)
 - [ ] **Bulk** import/export
 - [ ] **Mobile**-friendly
@@ -32,7 +38,7 @@ Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex
 
 ## Credits
 
-Thanks to [Lynn Jones](https://github.com/lynn0702) and [Riley Routh](https://www.rileyrouth.com/) for critical feedback and suggestions!
+Thanks to [Lynn Jones](https://github.com/lynn0702) and [Riley Routh](https://www.rileyrouth.com/) for key feedback and suggestions!
 
 ## Legal
 
