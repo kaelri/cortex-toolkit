@@ -486,7 +486,6 @@ const CharacterSheet = {
 		},
 
 		updateCharacter( character ) {
-			console.log('whut?');
 			this.$emit( 'updateCharacter', character );
 		},
 
