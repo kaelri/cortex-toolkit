@@ -18,6 +18,11 @@ window.cortexFunctions = {
 			case 12: return '2';
 			default: return '';
 		}
+	},
+
+	renderDate( timestamp ) {
+		let date = new Date( timestamp );
+		return date.toLocaleString();
 	}
 	
 }

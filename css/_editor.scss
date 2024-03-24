@@ -171,7 +171,6 @@
 	// justify-content: space-between;
 	row-gap: 1rem;
 
-
 	button {
 		--button-color: currentColor;
 		background: transparent;
@@ -255,21 +254,19 @@
 }
 
 .editor-button-container {
-	text-align: center;
+	@extend %button-container;
 }
 
 .editor-button {
 	@extend %button;
-	display: inline-block;
 	font-size: .66rem;
-	--button-color: var(--color-interactive);
 	&.editor-button-remove {
 		--button-color: var(--color-primary);
 	}
 }
 
-.editor-button-tertiary {
-	@extend %button-tertiary;
+.editor-button-secondary {
+	@extend %button-secondary;
 }
 
 .editor-subgroup {

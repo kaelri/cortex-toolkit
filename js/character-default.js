@@ -1,4 +1,4 @@
-{
+const cortexCharacterDefault = {
 	"$schema": "https://cortex.engard.me/data/cortex_character_schema.json",
 	"version": 1,
 	"name": "Name",

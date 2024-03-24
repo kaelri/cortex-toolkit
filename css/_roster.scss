@@ -1,0 +1,137 @@
+.roster {
+	margin-inline: auto;
+	max-width: 36rem;
+	&.v-enter-active,
+	&.v-leave-active {
+		transition: opacity .25s ease, transform .25s ease;
+	}
+	&.v-enter-from,
+	&.v-leave-to {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+}
+
+// BUTTONS
+
+.roster-button-container {
+	@extend %button-container;
+	padding-block: 2rem;
+}
+
+.roster-button {
+	@extend %button;
+	--button-color: var(--color-interactive);
+}
+
+// LIST
+
+.roster-list {
+	list-style: none;
+	margin: 0;
+	margin-block: 2rem;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	row-gap: 2rem;
+}
+
+.roster-item {
+	display: flex;
+	column-gap: 2rem;
+	align-items: center;
+	&.v-enter-active,
+	&.v-leave-active {
+		transition: opacity .2s ease, transform .2s ease;
+	}
+	&.v-enter-from,
+	&.v-leave-to {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+
+	> div:nth-child(1) {
+		flex: 0 0 10rem;
+	}
+
+	> div:nth-child(2) {
+		flex: 1;
+	}
+}
+
+.roster-item-portrait {
+	display: block;
+	width: 100%;
+	border: 4px solid var(--color-primary);
+	overflow: hidden;
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	background-size: cover;
+	background-position: center;
+	transition: background-position .2s;
+	cursor: pointer;
+	&.alignment-top-left {
+		background-position: top left;
+	}
+	&.alignment-top-center {
+		background-position: top center;
+	}
+	&.alignment-top-right {
+		background-position: top right;
+	}
+	&.alignment-center-left {
+		background-position: center left;
+	}
+	&.alignment-center-right {
+		background-position: center right;
+	}
+	&.alignment-bottom-left {
+		background-position: bottom left;
+	}
+	&.alignment-bottom-center {
+		background-position: bottom center;
+	}
+	&.alignment-bottom-right {
+		background-position: bottom right;
+	}
+}
+
+.roster-item-name {
+	margin: 0;
+	font-family: var(--font-heading);
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--color-primary);
+	white-space: nowrap;
+	font-style: normal;
+	line-height: 1.1;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.roster-description {
+	margin: .25rem 0 0;
+	font-size: smaller;
+	font-style: italic;
+}
+
+.roster-date {
+	margin: .5rem 0 0;
+	font-size: smaller;
+	text-transform: uppercase;
+	color: var(--color-label);
+}
+
+.roster-item-button-container {
+	@extend %button-container;
+	font-size: .8rem;
+	padding-block-start: .5rem;
+}
+
+.roster-item-button {
+	@extend %button;
+	&.roster-delete {
+		--button-color: var(--color-primary);
+	}
+}
+

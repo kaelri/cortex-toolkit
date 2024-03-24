@@ -40,7 +40,7 @@ const CharacterSheet = {
 	},
 
 	/*html*/
-	template: `<section :class="'character-sheet submode-' + submode" @click.stop="clearSelected">
+	template: `<section :class="'character-sheet submode-' + submode">
 	
 		<!-- BUTTON: ADD ATTRIBUTE -->
 		<transition appear>

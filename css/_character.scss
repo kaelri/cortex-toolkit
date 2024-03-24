@@ -46,7 +46,7 @@
 .character-sheet {
 	&.v-enter-active,
 	&.v-leave-active {
-		transition: opacity .5s ease, transform .5s ease;
+		transition: opacity .25s ease, transform .25s ease;
 	}
 	&.v-enter-from,
 	&.v-leave-to {
@@ -387,38 +387,14 @@
 // BUTTONS
 
 .preview-button-container {
-	@extend %no-print;
-	height: 3rem;
-	overflow: visible;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 1rem;
+	@extend %button-container;
 	padding-bottom: 1rem;
 	.page & {
 		font-size: .66rem;
 		padding-bottom: 0;
-		height: 1.5rem;
-	}
-	text-align: center;
-	&.v-enter-active,
-	&.v-leave-active {
-		transition: opacity .2s ease, transform .2s ease, height .2s ease;
-	}
-	&.v-enter-from,
-	&.v-leave-to {
-		height: 0;
-		opacity: 0;
-		// transform: translateY(-100%);
 	}
 }
 
 .preview-button {
 	@extend %button;
-	--button-color: var(--color-interactive);
-	opacity: .85;
-	transition: opacity .2s;
-	&:hover {
-		opacity: 1;
-	}
 }

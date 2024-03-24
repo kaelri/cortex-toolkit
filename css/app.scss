@@ -34,9 +34,10 @@ $fa-font-path: '../node_modules/@fortawesome/fontawesome-free/webfonts';
 	--color-primary:     hsl(337, 92%, 40%); // Fuschia
 	--color-secondary:   hsl(137, 36%, 88%); // Green
 	--color-interactive: hsl(204, 71%, 47%); // Blue
-	--color-separator:   hsl(  0,  0%, 83%); // Gray
-	--color-inactive: 	 hsl(  0,  0%, 40%); // White
-	--color-input: 	     hsl(  0,  0%, 15%); // White
+	--color-separator:   hsl(  0,  0%, 83%); //
+	--color-label:       hsl(  0,  0%, 60%); //
+	--color-inactive: 	 hsl(  0,  0%, 40%); //
+	--color-input: 	     hsl(  0,  0%, 15%); //
 
 	--highlight-radius: .5em;
 
@@ -123,10 +124,33 @@ body {
 
 // INTERFACE
 
+%button-container {
+	@extend %no-print;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	column-gap: 1em;
+	font-size: 1rem;
+	text-align: center;
+	height: 3em;
+	overflow: hidden;
+	&.v-enter-active,
+	&.v-leave-active {
+		transition: opacity .2s ease, transform .2s ease;
+	}
+	&.v-enter-from,
+	&.v-leave-to {
+		height: 0;
+		opacity: 0;
+		transform: translateY(-1em);
+	}
+}
+
 %button {
 	border: none;
 	outline: none;
 	background: var(--button-color);
+	--button-color: var(--color-interactive);
 	border-radius: 2px;
 	color: white;
 	font-family: var(--font-heading);
@@ -137,22 +161,22 @@ body {
 	white-space: nowrap;
 	padding: .75em;
 	cursor: pointer;
+	opacity: .85;
+	transition: opacity .2s;
+	&:hover {
+		opacity: 1;
+	}
 }
 
 %button-secondary {
 	background: transparent;
-	border: 1px solid var(--button-color);
 	color: var(--button-color);
-}
-
-%button-tertiary {
-	background: transparent;
-	color: inherit;
 }
 
 // COMPONENTS
 
 @import 'frame';
-@import 'preview';
+@import 'roster';
+@import 'character';
 @import 'variants';
 @import 'editor';

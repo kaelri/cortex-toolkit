@@ -6,12 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		data() {
 			return {
-				characters: [],
-				character:  null,
-				viewY:      null,
-				mode:       'character',
-				submode:    'edit',
-				editing:    null,
+				characters:   [],
+				characterID:  null,
+				viewY:        null,
+				mode:         'roster',
+				submode:      null,
+				editing:      null,
 			}
 		},
 
@@ -19,7 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			baseURL() {
 				return window.location.href;
-			}
+			},
+
+			characterIndex() {
+				return this.characters.findIndex( character => character.id === this.characterID );
+			},
+
+			character() {
+				return this.characters[ this.characterIndex ];
+			},
 
 		},
 
@@ -29,9 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
 					<nav class="nav-mode">
 						<ul>
 							<li @click.stop="setMode('roster', null)" :class="{ active: mode === 'roster' }"><div><span class="nav-mode-icon"><i class="fas fa-users"></i></span></div></li>
-							<li @click.stop="setMode('character', 'edit')" :class="{ active: mode === 'character' && submode === 'edit', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-pencil"></i></span> Create</div></li>
-							<li @click.stop="setMode('character', 'play')" :class="{ active: mode === 'character' && submode === 'play', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-dice"></i></span> Play</div></li>
-							<li @click.stop="setMode('character', 'print')" :class="{ active: mode === 'character' && submode === 'print', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-file"></i></span> Print</div></li>
+							<li @click.stop="setMode('character', 'edit')" :class="{ active: mode === 'character' && submode === 'edit', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-pencil"></i></span> <span class="nav-mode-label">Create</span></div></li>
+							<li @click.stop="setMode('character', 'play')" :class="{ active: mode === 'character' && submode === 'play', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-dice"></i></span> <span class="nav-mode-label">Play</span></div></li>
+							<li @click.stop="setMode('character', 'print')" :class="{ active: mode === 'character' && submode === 'print', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-file"></i></span> <span class="nav-mode-label">Share</span></div></li>
 						</ul>
 					</nav>
 				</div>
@@ -42,13 +50,23 @@ document.addEventListener('DOMContentLoaded', () => {
 				</div>
 			</aside>
 
-			<main class="main" ref="main" @scroll="setViewY">
+			<main class="main" ref="main" @scroll="setViewY"
+				@click.stop="clearSelected"
+			>
 			
 				<!-- CHARACTER SHEET -->
-				<transition-group appear>
+				<transition mode="out-in">
+
+					<roster
+						v-if="mode === 'roster'"
+						:characters="characters"
+						@createCharacter="createCharacter"
+						@loadCharacter="loadCharacter"
+						@deleteCharacter="deleteCharacter"
+					></roster>
 
 					<character-sheet
-						v-if="mode === 'character' && character"
+						v-else-if="mode === 'character' && character"
 						:submode="submode"
 						:character="character"
 						:editing="editing"
@@ -57,9 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 						@update="updateCharacter"
 					></character-sheet>
 
-
-
-				</transition-group>
+				</transition>
 
 			</main>
 
@@ -80,7 +96,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		mounted() {
 
 			this.setViewY();
-			this.loadLocal();
+			this.loadLocalData();
+
+		},
+
+		watch: {
+
+			mode() {
+				this.setPageTitle();
+			},
+
+			characterID() {
+				this.setPageTitle();
+			}
 
 		},
 
@@ -100,31 +128,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			setPageTitle() {
 				pageTitle = 'Cortex Toolkit';
-				if (this.character && this.character.name.length ) {
+				if ( this.mode === 'character' && this.character && this.character.name.length ) {
 					pageTitle = `${this.character.name} - ${pageTitle}`;
 				}
 				document.title = pageTitle;
 			},
 
-			// MANAGEMENT
+			// DATA
 
-			async createDefaultCharacter() {
+			createCharacter() {
 
-				let character = await fetch( this.baseURL + 'data/cortex_character_default.json' )
-				.then( response => response.json() );
-				//+ Check for errors
+				let character = structuredClone( cortexCharacterDefault );
 
-				character.id = crypto.randomUUID();
+				character.id       = crypto.randomUUID();
 				character.modified = ( new Date() ).getTime();
 
-				return character;
+				this.characters.push( character );
+				this.characterID = character.id;
+				this.setMode( 'character', this.submode ?? 'edit' );
+
+				this.saveLocalData();
+
+			},
+
+			deleteCharacter( id ) {
+				
+				let c = this.characters.findIndex( character => character.id === id );
+				if ( c === -1 ) return;
+
+				this.setMode( 'roster', null );
+				this.characterID = null;
+				this.characters.splice( c, 1 );
+				this.setPageTitle();
+
+				this.saveLocalData();
+
+			},
+
+			loadCharacter( id ) {
+
+				this.characterID = id;
+
+				this.setMode( 'character', this.submode ?? 'edit' );
 
 			},
 
 			updateCharacter( character ) {
-				this.character = character;
-				this.saveLocal();
+
+				let c = this.characters.findIndex( savedCharacter => savedCharacter.id === character.id );
+
+				if ( c === -1 ) return;
+
+				character.modified = ( new Date() ).getTime();
+
+				this.characters[c] = character;
 				this.setPageTitle();
+
+				this.saveLocalData();
+
 			},
 
 			selectElement( selector ) {
@@ -138,41 +199,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			},
 
-			async loadLocal() {
+			clearSelected() {
+				this.selectElement([]);
+			},
 
-				let character = null;
+			loadLocalData() {
+
+				let characters = [];
 
 				let localJSON = localStorage.getItem('cortexToolkitData');
 				if ( localJSON && localJSON.length ) {
 
 					let localData = JSON.parse(localJSON);
-					if ( localData ) {
-						character = localData.character;
+					if ( localData && localData.characters ) {
+						characters = localData.characters;
 					}
 	
 				}
 
-				if ( !character ) {
-					character = await this.createDefaultCharacter();
-				}
-
-				this.character = character;
-				this.setPageTitle();
+				this.characters = characters;
 
 			},
 
-			saveLocal() {
-
-				this.character.modified = ( new Date() ).getTime();
+			saveLocalData() {
 
 				localStorage.setItem('cortexToolkitData', JSON.stringify({
-					character: this.character,
+					characters: this.characters,
 				}));
 			},
 
 		}
 
 	})
+	.component('roster',           Roster )
 	.component('character-sheet',  CharacterSheet )
 	.component('name-editor',      NameEditor )
 	.component('portrait-editor',  PortraitEditor )

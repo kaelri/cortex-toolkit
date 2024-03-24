@@ -1,4 +1,4 @@
-# Cortex Prime Character Sheet Toolkit
+# Cortex Prime Toolkit
 
 Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex/sheet.html) by [@tamas-rabel](https://github.com/tamas-rabel/tamas-rabel.github.io).
 

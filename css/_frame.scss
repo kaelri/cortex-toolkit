@@ -37,7 +37,7 @@
 	li {
 		padding: .5rem 1rem;
 		font-size: smaller;
-		color: #999;
+		color: var(--color-label);
 		font-weight: bold;
 		text-transform: uppercase;
 		cursor: pointer;
@@ -50,13 +50,19 @@
 			border-bottom: 2px solid var(--color-interactive);
 		}
 		&.disabled {
-			opacity: .5;
+			opacity: .3;
 		}
 	}
 }
 
 .nav-mode-icon {
 	color: var(--color-primary);
+}
+
+.nav-mode-label {
+	@media screen and (max-width: 600px) {
+		display: none;
+	}
 }
 
 .sidebar {
