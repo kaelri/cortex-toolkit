@@ -73,10 +73,12 @@
 	overflow: hidden;
 	aspect-ratio: 1 / 1;
 	border-radius: 50%;
+	background-color: color-mix(in srgb, var(--color-interactive), transparent 90% );
 	background-size: cover;
 	background-position: center;
 	transition: background-position .2s;
 	cursor: pointer;
+	position: relative;
 	&.alignment-top-left {
 		background-position: top left;
 	}
@@ -101,6 +103,15 @@
 	&.alignment-bottom-right {
 		background-position: bottom right;
 	}
+}
+
+.roster-item-portrait-placeholder {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 4rem;
+	color: color-mix(in srgb, var(--color-interactive), transparent 80% );
 }
 
 .roster-item-name {

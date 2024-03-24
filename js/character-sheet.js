@@ -17,6 +17,10 @@ const CharacterSheet = {
 			return this.character?.description ?? '';
 		},
 
+		pronouns() {
+			return this.character?.pronouns ?? '';
+		},
+
 		portrait() {
 			return this.character?.portrait ?? null;
 		},
@@ -87,8 +91,16 @@ const CharacterSheet = {
 								</div>
 
 								<!-- CHARACTER DESCRIPTION -->
-								<div class="subtitle">
-									<span v-html="renderText(description)"></span>
+								<div class="character-meta">
+						
+									<div class="character-pronouns" v-if="pronouns.length">
+										<span v-html="renderText(pronouns)"></span>
+									</div>
+
+									<div class="character-description" v-if="description.length">
+										<span v-html="renderText(description)"></span>
+									</div>
+			
 								</div>
 
 							</div>
@@ -117,7 +129,9 @@ const CharacterSheet = {
 								<div :class="{ 'portrait-inner': true, 'selected': isSelected(['portrait']) }"
 									@click.stop="selectElement([ 'portrait' ])"
 								>
-									<div :class="'portrait-circle portrait-alignment-' + portrait.alignment" width="100%" height="100%" :style="'background-image: url(' + portrait.url + ');'"></div>
+									<div :class="'portrait-circle portrait-alignment-' + portrait.alignment" width="100%" height="100%" :style="'background-image: url(' + portrait.url + ');'">
+										<div class="portrait-placeholder" v-if="!portrait.url.length"><i class="fas fa-user"></i></div>
+									</div>
 								</div>
 
 								<transition name="editor" appear>

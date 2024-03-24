@@ -166,10 +166,24 @@
 	}
 }
 
-.subtitle {
-	flex-grow: 1;
-	margin-right: .38rem;
+.character-meta {
+	display: flex;
+	align-items: flex-start;
+	column-gap: .5rem;
+	// justify-content: space-between;
+}
+
+.character-description {
 	font-style: italic;
+}
+
+.character-pronouns {
+	font-weight: bold;
+	text-transform: uppercase;
+	&:not(:last-child) {
+		padding-right: .25rem;
+		border-right: 2px solid var(--color-primary);
+	}
 }
 
 // TRAITS
@@ -238,9 +252,11 @@
 	width: 100%;
 	aspect-ratio: 1 / 1;
 	border-radius: 50%;
+	background-color: color-mix(in srgb, var(--color-interactive), transparent 90% );
 	background-size: cover;
 	background-position: center;
 	transition: background-position .2s;
+	position: relative;
 	&.portrait-alignment-top-left {
 		background-position: top left;
 	}
@@ -267,11 +283,13 @@
 	}
 }
 
-.portrait-inner img {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	transform: scale(0.95, 0.95) translate(-6%, -22%);
+.portrait-placeholder {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 10rem;
+	color: color-mix(in srgb, var(--color-interactive), transparent 80% );
 }
 
 .portrait-preview {

@@ -47,6 +47,7 @@ const Roster = {
 							:style="'background-image: url(' + character.portrait.url + ');'"
 							@click.stop="loadCharacter( character.id )"
 						>
+							<div class="roster-item-portrait-placeholder" v-if="!character.portrait.url.length"><i class="fas fa-user"></i></div>
 						</div>
 
 					</div>

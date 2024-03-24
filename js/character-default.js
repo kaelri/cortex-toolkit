@@ -6,6 +6,7 @@ const cortexCharacterDefault = {
 	"modified": 0,
 	"name": "Name",
 	"description": "Description",
+	"pronouns": "",
 	"traitSets": [
 		{
 			"name": "Distinctions",

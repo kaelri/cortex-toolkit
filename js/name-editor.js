@@ -29,6 +29,15 @@ const NameEditor = {
 			}
 		},
 
+		pronouns: {
+			get() {
+				return this.character.pronouns ?? '';
+			},
+			set( pronouns ) {
+				this.setCharacterProperty( 'pronouns', pronouns );
+			}
+		},
+		
 	},
 
 	/*html*/
@@ -48,6 +57,11 @@ const NameEditor = {
 					<div class="editor-field">
 						<label>Character Name</label>
 						<input type="text" v-model="name" ref="inputName">
+					</div>
+
+					<div class="editor-field">
+						<label>Pronouns</label>
+						<input type="text" v-model="pronouns">
 					</div>
 
 					<div class="editor-field">
