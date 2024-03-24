@@ -42,7 +42,6 @@
 	}
 }
 
-
 .character-sheet {
 	&.v-enter-active,
 	&.v-leave-active {
@@ -58,10 +57,11 @@
 .pages {
 	position: relative;
 	margin-inline: auto;
-	transition: border-color .2s, box-shadow .2s, width .2s, height .2s;
+	transition: border-color .2s ease, box-shadow .2s ease, width .2s ease, height .2s ease, margin .2s ease;
 	@include print {
 		width: var(--page-width);
 		height: var(--page-height);
+		margin-top: 2rem;
 		overflow: hidden;
 		border: 1px transparent solid;
 		border-radius: .25rem; 
@@ -73,6 +73,7 @@
 		border: 0 !important;
 		border-radius: 0 !important;
 		box-shadow: none !important;
+		margin-top: 0 !important;
 	}
 }
 
@@ -388,10 +389,8 @@
 
 .preview-button-container {
 	@extend %button-container;
-	padding-bottom: 1rem;
 	.page & {
 		font-size: .66rem;
-		padding-bottom: 0;
 	}
 }
 

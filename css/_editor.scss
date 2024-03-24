@@ -255,11 +255,11 @@
 
 .editor-button-container {
 	@extend %button-container;
+	font-size: .66rem;
 }
 
 .editor-button {
 	@extend %button;
-	font-size: .66rem;
 	&.editor-button-remove {
 		--button-color: var(--color-primary);
 	}

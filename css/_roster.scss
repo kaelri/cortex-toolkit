@@ -16,7 +16,6 @@
 
 .roster-button-container {
 	@extend %button-container;
-	padding-block: 2rem;
 }
 
 .roster-button {
@@ -124,8 +123,8 @@
 
 .roster-item-button-container {
 	@extend %button-container;
-	font-size: .8rem;
-	padding-block-start: .5rem;
+	font-size: .66rem;
+	margin-block-start: .5rem;
 }
 
 .roster-item-button {
