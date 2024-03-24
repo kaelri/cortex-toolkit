@@ -283,10 +283,11 @@ const CharacterSheet = {
 
 														<div
 															class="trait-description"
+															v-if="traitSet.features.includes('description')"
 															v-html="renderText(trait.description)"
 														></div>
 
-														<ul class="trait-sfx" v-if="trait.sfx && trait.sfx.length">
+														<ul class="trait-sfx" v-if="traitSet.features.includes('sfx') && trait.sfx.length">
 															<li v-for="(sfx, s) in trait.sfx">
 
 																<span class="trait-sfx-name"

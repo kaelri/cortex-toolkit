@@ -66,11 +66,20 @@ const TraitSetEditor = {
 			}
 		},
 
+		features : {
+			get() {
+				return this.traitSet.features;
+			},
+			set( value ) {
+				// Do nothing. The @change listener will handle it.
+			}
+		},
+
 		cssClass() {
 
 			let cssClass = {
-				'editor': true,
-				'open': this.open,
+				'editor':     true,
+				'open':       this.open,
 				'scrollable': false,
 			}
 
@@ -117,6 +126,19 @@ const TraitSetEditor = {
 					<div class="editor-field">
 						<label>Singular Noun</label>
 						<input type="text" v-model="noun" placeholder="Trait">
+					</div>
+
+					<div class="editor-field">
+						<div class="editor-toggles">
+							<div><input type="checkbox" value="description" v-model="features" @change="setFeatures($event, 'description')"></div>
+							<div><label>Description</label></div>
+							<div><input type="checkbox" value="sfx" v-model="features" @change="setFeatures($event, 'sfx')"></div>
+							<div><label>SFX</label></div>
+							<div><input type="checkbox" value="hinder" v-model="features" @change="setFeatures($event, 'hinder')"></div>
+							<div><label>Hinder</label></div>
+							<div><input type="checkbox" value="subtraits" v-model="features" @change="setFeatures($event, 'subtraits')"></div>
+							<div><label>Sub-Traits</label></div>
+						</div>
 					</div>
 
 				</div>
@@ -178,6 +200,22 @@ const TraitSetEditor = {
 
 		removeTraitSet() {
 			this.$emit( 'removeTraitSet', this.traitSetID );
+		},
+
+		setFeatures( event, featureID ) {
+
+			let s       = this.traitSetID;
+			let f       = this.character.traitSets[s].features.indexOf(featureID);
+			let checked = event.target.checked;
+
+			if ( checked && f === -1 ) {
+				this.character.traitSets[s].features.push(featureID);
+			} else if ( !checked && f >= 0 ) {
+				this.character.traitSets[s].features.splice( f, 1 );
+			}
+
+			this.updateCharacter( this.character );
+
 		},
 
 		updateCharacter( character ) {

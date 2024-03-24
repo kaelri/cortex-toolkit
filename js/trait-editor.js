@@ -17,6 +17,11 @@ const TraitEditor = {
 
 	computed: {
 
+		traitSet() {
+			let s = this.traitSetID;
+			return this.character.traitSets[s];
+		},
+
 		trait() {
 			let s = this.traitSetID;
 			let t = this.traitID;
@@ -96,7 +101,7 @@ const TraitEditor = {
 
 					<div class="editor-field">
 
-						<label>Trait Value</label>
+						<label>Value</label>
 
 						<ul class="editor-values">
 							<li
@@ -110,13 +115,13 @@ const TraitEditor = {
 
 					</div>
 
-					<div class="editor-field">
+					<div class="editor-field" v-if="traitSet.features.includes('description')">
 						<label>Description</label>
 						<textarea v-model="description"></textarea>
 					</div>
 
 					<!-- SFX -->
-					<div class="editor-field">
+					<div class="editor-field" v-if="traitSet.features.includes('sfx')">
 
 						<label>SFX</label>
 

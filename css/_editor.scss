@@ -283,6 +283,25 @@
 	@extend %button-secondary;
 }
 
+.editor-toggles {
+	display: grid;
+	grid-template-columns: 1.5rem 1fr;
+	gap: .25rem;
+	> div {
+		display: flex;
+		align-items: center;
+	}
+	> div:nth-child(odd) {
+		justify-content: center;
+	}
+	> div:nth-child(even) {
+		justify-content: flex-start;
+	}
+	label {
+		margin: 0;
+	}
+}
+
 .editor-subgroup {
 	margin: .5em 0;
 	border: 2px solid var(--color-input);

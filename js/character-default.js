@@ -11,12 +11,10 @@ const cortexCharacterDefault = {
 		{
 			"name": "Distinctions",
 			"description": "Trait set description",
+			"features": [ 'description', 'sfx', 'hinder' ],
 			"style": "distinctions",
 			"location": "left",
 			"noun": "Distinction",
-			"allowStatement": true,
-			"allowSFX": true,
-			"allowHinder": true,
 			"traits": [
 				{
 					"name": "Distinction 1",
@@ -59,6 +57,7 @@ const cortexCharacterDefault = {
 		{
 			"name": "Attributes",
 			"description": "Trait set description",
+			"features": [],
 			"style": "default",
 			"location": "attributes",
 			"noun": "Attribute",
@@ -77,6 +76,7 @@ const cortexCharacterDefault = {
 		{
 			"name": "New trait set",
 			"description": "Trait set description",
+			"features": [],
 			"style": "default",
 			"location": "left",
 			"noun": "",

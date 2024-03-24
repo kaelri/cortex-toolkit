@@ -171,12 +171,13 @@
 	.trait-set-header {
 		margin: 0;
 		padding-bottom: 1rem;
+		display: flex;
+		justify-content: center;
 	}
 
 	.trait-set-header-inner {
-		display: inline-block;
 		background: black;
-		line-height: 1.5rem;
+		line-height: 1.5em;
 		padding: 0 1rem;
 		color: white;
 		border-radius: .75rem;
@@ -184,7 +185,6 @@
 		text-transform: uppercase;
 		font-weight: 800;
 		font-size: .717rem;
-		line-height: 13px;
 	}
 	
 	.trait-columns {
