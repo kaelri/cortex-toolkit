@@ -30,6 +30,10 @@ Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex
 
 ## Issues
 
+## Credits
+
+Thanks to [Lynn Jones](https://github.com/lynn0702) and [Riley Routh](https://www.rileyrouth.com/) for critical feedback and suggestions!
+
 ## Legal
 
 Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at [CortexRPG.com](https://www.cortexrpg.com).

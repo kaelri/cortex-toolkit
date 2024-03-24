@@ -169,13 +169,7 @@
 .trait-set-style-two-columns-compact {
 
 	.trait-set-header {
-		text-align: center;
-		text-transform: uppercase;
-		font-weight: 800;
-		font-size: .717rem;
-		line-height: 13px;
 		margin: 0;
-		text-align: center;
 		padding-bottom: 1rem;
 	}
 
@@ -186,6 +180,11 @@
 		padding: 0 1rem;
 		color: white;
 		border-radius: .75rem;
+		text-align: center;
+		text-transform: uppercase;
+		font-weight: 800;
+		font-size: .717rem;
+		line-height: 13px;
 	}
 	
 	.trait-columns {
@@ -267,13 +266,16 @@
 	.trait-set-header {
 		background: var(--color-primary);
 		padding: 2px 4px;
+		margin: 0;
+	}
+
+	.trait-set-header-inner {
 		color: white;
 		text-align: center;
 		text-transform: uppercase;
 		font-weight: 700;
 		font-size: .75rem;
 		line-height: 13px;
-		margin: 0;
 	}
 
 	.trait-columns {
@@ -334,14 +336,17 @@
 .trait-set-style-resources {
 
 	.trait-set-header {
+		padding-bottom: .33rem;
+		margin: 0 0 .33rem;
+		border-bottom: 1px solid var(--color-primary);
+	}
+
+	.trait-set-header-inner {
 		color: var(--color-primary);
 		text-transform: uppercase;
 		font-weight: 800;
 		font-size: 1rem;
 		line-height: 13px;
-		padding-bottom: .33rem;
-		margin: 0 0 .33rem;
-		border-bottom: 1px solid var(--color-primary);
 	}
 
 	.trait-column {
