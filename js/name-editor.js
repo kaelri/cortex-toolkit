@@ -84,11 +84,11 @@ const NameEditor = {
 		setCharacterProperty( key, value ) {
 			let character = this.character;
 			character[ key ] = value;
-			this.update( character );
+			this.updateCharacter( character );
 		},
 
-		update( character ) {
-			this.$emit( 'update', character );
+		updateCharacter( character ) {
+			this.$emit( 'updateCharacter', character );
 		},
 
 		doNothing() {

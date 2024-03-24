@@ -128,7 +128,7 @@ const TraitEditor = {
 								:traitSetID="traitSetID"
 								:traitID="traitID"
 								:effectID="effectID"
-								@update="update"
+								@updateCharacter="updateCharacter"
 								@removeEffect="removeEffect"
 							></sfx-editor>
 						</transition-group>
@@ -196,7 +196,7 @@ const TraitEditor = {
 
 			character.traitSets[s].traits[t][ key ] = value;
 
-			this.update( character );
+			this.updateCharacter( character );
 
 		},
 
@@ -225,7 +225,7 @@ const TraitEditor = {
 				description: 'SFX description',
 			});
 
-			this.update( character );
+			this.updateCharacter( character );
 
 		},
 
@@ -238,12 +238,12 @@ const TraitEditor = {
 
 			character.traitSets[s].traits[t].sfx.splice(f, 1);
 
-			this.update( character );
+			this.updateCharacter( character );
 
 		},
 
-		update( character ) {
-			this.$emit( 'update', character );
+		updateCharacter( character ) {
+			this.$emit( 'updateCharacter', character );
 		},
 
 		checkAnchorPosition() {

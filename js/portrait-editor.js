@@ -51,12 +51,14 @@ const PortraitEditor = {
 							@click.prevent="uploadStart"
 						>
 
-						<button
-							class="editor-button"
-							@click.prevent="uploadStart"
-						>
-							<span><i class="fas fa-plus"></i> Upload {{ hasImage ? 'New' : '' }} Image</span>
-						</button>
+						<div class="editor-button-container">
+							<button
+								class="editor-button"
+								@click.prevent="uploadStart"
+							>
+								<span><i class="fas fa-plus"></i> Upload {{ hasImage ? 'New' : '' }} Image</span>
+							</button>
+						</div>
 
 						<input class="portrait-input" type="file" ref="inputFile" @change="uploadProcess">
 
@@ -100,13 +102,13 @@ const PortraitEditor = {
 		setImageURL( url ) {
 			let character = this.character;
 			character.portrait.url = url;
-			this.update( character );
+			this.updateCharacter( character );
 		},
 
 		setAlignment( alignment ) {
 			let character = this.character;
 			character.portrait.alignment = alignment;
-			this.update( character );
+			this.updateCharacter( character );
 		},
 
 		uploadProcess( event ) {
@@ -125,13 +127,13 @@ const PortraitEditor = {
 				this.setImageURL( reader.result );
 			};
 			reader.onerror = (error) => {
-				console.log('Portrait error: ', error);
+				console.error('Portrait error: ', error);
 			};
 
 		},
 
-		update( character ) {
-			this.$emit( 'update', character );
+		updateCharacter( character ) {
+			this.$emit( 'updateCharacter', character );
 		}
 
 	}

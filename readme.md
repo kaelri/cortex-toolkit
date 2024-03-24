@@ -4,17 +4,29 @@ Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex
 
 ## To Do
 
-- [ ] Implement all original functionality:
+- [x] Implement all original functionality:
   - [x] Trait set styles
   - [x] Portrait image position controls
-  - [ ] JSON import/export
+  - [x] JSON import/export
 - [x] Switch editor panel vertical alignment depending on whether the element is in the top or bottom half of the page.
-- [ ] Load/save multiple characters
-- [ ] Dice pool roller utility
-- [ ] Document character sheet schema for interoperability with other Cortex utilities
-- [ ] GM vs. Player mode (lock editing trait sets)
-- [ ] Undo/redo
-- [ ] Styling guide
+- [x] Load/save multiple characters
+- [ ] Portrait **placeholder**
+- [ ] Add **toggle** to enable/disable statements, SFX and “Hinder” for trait sets.
+- [ ] Add **confirmation** for delete & overwrite.
+- [ ] Advanced **portrait** positioning: zoom, x-offset (%), y-offset (%)
+- [ ] **Dice roller** utility
+  - [ ] Export dice **formula** to [CortexPalGS](https://github.com/lynn0702/CortexPalGS) format
+- [ ] **Move** traits/trait sets
+- [ ] **Duplicate** characters, trait sets, traits and SFX.
+- [ ] Document character sheet **schema** for interoperability with other Cortex utilities
+- [ ] **Markdown** character notes
+- [ ] GM vs. Player mode (**lock** editing trait sets)
+- [ ] **Bulk** import/export
+- [ ] **Mobile**-friendly
+- [ ] Edit **history**: short-term undo/redo
+- [ ] **Styling** guide
+
+## Issues
 
 ## Legal
 

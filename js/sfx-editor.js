@@ -81,12 +81,12 @@ const SfxEditor = {
 
 			character.traitSets[s].traits[t].sfx[f][ key ] = value;
 
-			this.update( character );
+			this.updateCharacter( character );
 
 		},
 
-		update( character ) {
-			this.$emit( 'update', character );
+		updateCharacter( character ) {
+			this.$emit( 'updateCharacter', character );
 		},
 
 		removeEffect() {

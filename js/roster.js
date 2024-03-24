@@ -16,13 +16,21 @@ const Roster = {
 	template: `<section class="roster">
 		<div class="roster-inner">
 	
-			<!-- BUTTON: ADD CHARACTER -->
-			<div class="roster-button-container" v-if="characters.length >= 3">
+			<!-- BUTTON: ADD/IMPORT CHARACTER -->
+			<div class="roster-button-container">
+
 				<div class="roster-button"
 					@click.stop="createCharacter"
 				>
 					<span><i class="fas fa-plus"></i> New Character</span>
 				</div>
+
+				<div class="roster-button roster-button-import"
+					@click.stop="importCharacterStart"
+				>
+					<span><i class="fas fa-upload"></i> Import Character</span>
+				</div>
+				
 			</div>
 
 			<!-- CHARACTER LIST -->
@@ -65,8 +73,15 @@ const Roster = {
 								<span><i class="fas fa-plus"></i> Load</span>
 							</div>
 
+							<!-- EXPORT -->
+							<div class="roster-item-button roster-button-export"
+								@click.stop="exportCharacter( character.id )"
+							>
+								<span><i class="fas fa-download"></i> Export</span>
+							</div>
+
 							<!-- DELETE -->
-							<div class="roster-item-button roster-delete"
+							<div class="roster-item-button roster-button-delete"
 								@click.stop="deleteCharacter( character.id )"
 							>
 								<span><i class="fas fa-trash"></i> Delete</span>
@@ -81,14 +96,25 @@ const Roster = {
 
 			</ul>
 
-			<!-- BUTTON: ADD CHARACTER -->
-			<div class="roster-button-container">
+			<!-- BUTTON: ADD/IMPORT CHARACTER -->
+			<!-- <div class="roster-button-container">
+
 				<div class="roster-button"
 					@click.stop="createCharacter"
 				>
 					<span><i class="fas fa-plus"></i> New Character</span>
 				</div>
-			</div>
+
+				<div class="roster-button roster-button-import"
+					@click.stop="importCharacterStart"
+				>
+					<span><i class="fas fa-upload"></i> Import Character</span>
+				</div>
+				
+			</div> -->
+
+			<!-- FILE INPUT -->
+			<input class="roster-input" type="file" ref="inputFile" @change="importCharacter" multiple>
 
 		</div>
 	</section>`,
@@ -103,8 +129,42 @@ const Roster = {
 			this.$emit('loadCharacter', characterID);
 		},
 
+		exportCharacter( characterID ) {
+			this.$emit('exportCharacter', characterID);
+		},
+
 		deleteCharacter( characterID ) {
 			this.$emit('deleteCharacter', characterID);
+		},
+
+		importCharacterStart() {
+			this.$refs.inputFile.click();
+		},
+
+		importCharacter( event ) {
+
+			if ( !event.target.files || !event.target.files.length ) {
+				return;
+			}
+
+			for (let i = 0; i < event.target.files.length; i++) {
+				const file = event.target.files[i];
+				
+				let reader = new FileReader();
+				reader.readAsText(file);
+				reader.onload = () => {
+
+					let character = JSON.parse( reader.result );
+
+					this.$emit('importCharacter', character);
+
+				};
+				reader.onerror = (error) => {
+					console.error('Import error: ', error);
+				};
+
+			}
+
 		},
 
 		renderDate( timestamp ) {

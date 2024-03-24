@@ -52,6 +52,11 @@ const CharacterSheet = {
 			>
 				<span><i class="fas fa-print"></i> Print</span>
 			</div>
+			<div class="preview-button preview-button-export"
+				@click.stop="exportCharacter"
+			>
+				<span><i class="fas fa-download"></i> Export</span>
+			</div>
 		</div>
 		</transition>
 
@@ -95,7 +100,7 @@ const CharacterSheet = {
 								:open="isSelected(['name'])"
 								v-show="submode === 'edit' && isSelected(['name'])"
 								@selectElement="selectElement"
-								@update="update"
+								@updateCharacter="updateCharacter"
 							></name-editor>
 						</transition>
 
@@ -121,7 +126,7 @@ const CharacterSheet = {
 										:open="isSelected(['portrait'])"
 										v-show="submode === 'edit' && isSelected(['portrait'])"
 										@selectElement="selectElement"
-										@update="update"
+										@updateCharacter="updateCharacter"
 									></portrait-editor>
 								</transition>
 	
@@ -174,7 +179,7 @@ const CharacterSheet = {
 													:traitID="a"
 													:viewY="viewY"
 													@selectElement="selectElement"
-													@update="update"
+													@updateCharacter="updateCharacter"
 													@removeTrait="removeTrait"
 												></trait-editor>
 											</transition>
@@ -226,7 +231,7 @@ const CharacterSheet = {
 											:traitSetID="s"
 											:viewY="viewY"
 											@selectElement="selectElement"
-											@update="update"
+											@updateCharacter="updateCharacter"
 											@removeTraitSet="removeTraitSet"
 										></trait-set-editor>
 									</transition>
@@ -293,7 +298,7 @@ const CharacterSheet = {
 														:traitID="t"
 														:viewY="viewY"
 														@selectElement="selectElement"
-														@update="update"
+														@updateCharacter="updateCharacter"
 														@removeTrait="removeTrait"
 													></trait-editor>
 												</transition>
@@ -309,7 +314,7 @@ const CharacterSheet = {
 											<div class="preview-button"
 												@click.stop="addTrait( s, traitSetLocation )"
 											>
-												<span><i class="fas fa-plus"></i> Trait</span>
+												<span><i class="fas fa-plus"></i> {{ traitSet.noun && traitSet.noun.length ? traitSet.noun : 'Trait' }}</span>
 											</div>
 										</div>
 										</transition>
@@ -417,7 +422,7 @@ const CharacterSheet = {
 				],
 			});
 
-			this.update( character );
+			this.updateCharacter( character );
 
 			let newTraitSetID = character.traitSets.length - 1;
 			this.selectElement([ 'traitSet', newTraitSetID ]);
@@ -434,23 +439,25 @@ const CharacterSheet = {
 
 			character.traitSets.splice(traitSetID, 1);
 
-			this.update( character );
+			this.updateCharacter( character );
 
 		},
 		
 		addTrait( traitSetID, location ) {
 
 			let character = this.character;
+			let traitSet = character.traitSets[traitSetID];
+			let noun = ( traitSet.noun && traitSet.noun.length ) ? traitSet.noun : 'Trait';
 
 			character.traitSets[traitSetID].traits.push({
-				name: 'New trait',
+				name: 'New ' + noun,
 				value: 6,
 				description: 'Trait description',
 				location: location ?? 'left',
 				sfx: [],
 			});
 
-			this.update( character );
+			this.updateCharacter( character );
 			
 			let newTraitID = character.traitSets[traitSetID].traits.length - 1;
 			this.selectElement([ 'trait', traitSetID, newTraitID ]);
@@ -473,13 +480,18 @@ const CharacterSheet = {
 			setTimeout( () => {
 				let character = this.character;
 				character.traitSets[traitSetID].traits.splice(traitID, 1);
-				this.update( character );
+				this.updateCharacter( character );
 			}, 200 );
 
 		},
 
-		update( character ) {
-			this.$emit( 'update', character );
+		updateCharacter( character ) {
+			console.log('whut?');
+			this.$emit( 'updateCharacter', character );
+		},
+
+		exportCharacter() {
+			this.$emit('exportCharacter', this.character.id);
 		},
 
 		print() {

@@ -62,7 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
 						:characters="characters"
 						@createCharacter="createCharacter"
 						@loadCharacter="loadCharacter"
+						@exportCharacter="exportCharacter"
 						@deleteCharacter="deleteCharacter"
+						@importCharacter="importCharacter"
 					></roster>
 
 					<character-sheet
@@ -72,7 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
 						:editing="editing"
 						:viewY="viewY"
 						@selectElement="selectElement"
-						@update="updateCharacter"
+						@updateCharacter="updateCharacter"
+						@exportCharacter="exportCharacter"
 					></character-sheet>
 
 				</transition>
@@ -141,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				let character = structuredClone( cortexCharacterDefault );
 
 				character.id       = crypto.randomUUID();
+				character.created  = ( new Date() ).getTime();
 				character.modified = ( new Date() ).getTime();
 
 				this.characters.push( character );
@@ -165,11 +169,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			},
 
+			importCharacter( character, confirm ) {
+
+				let c = this.characters.findIndex( existingCharacter => existingCharacter.id === character.id );
+
+				if ( c !== -1 ) {
+					this.characters[c] = character;
+				} else {
+					this.characters.push( character );
+				}
+
+				this.saveLocalData();
+
+			},
+
 			loadCharacter( id ) {
 
 				this.characterID = id;
 
 				this.setMode( 'character', this.submode ?? 'edit' );
+
+			},
+
+			exportCharacter( id ) {
+
+				let character = this.characters.find( character => character.id === id );
+
+				let uri = encodeURI("data:application/json;charset=utf-8," + JSON.stringify(character, null, 2))
+				.replace(/#/g, '%23');
+
+				let name = character.name.length ? character.name : 'Name';
+				name = name.replaceAll( /\s+/g, '_' );
+				let filename = `${name}_${character.modified}.cortex.json`;
+
+				let link = document.createElement("a");
+				document.body.appendChild(link); // Required for Firefox
+				link.setAttribute('href', uri);
+				link.setAttribute('download', filename);
+				link.click();
+				link.remove();
+
+			},
+
+			exportAllCharacters() {
+
+				let uri = encodeURI("data:application/json;charset=utf-8," + JSON.stringify(this.characters))
+				.replace(/#/g, '%23');
+
+				let modified = ( new Date() ).getTime();
+				let filename = `CortexToolkitData_${modified}.json`;
+
+				let link = document.createElement("a");
+				document.body.appendChild(link); // Required for Firefox
+				link.setAttribute('href', uri);
+				link.setAttribute('download', filename);
+				link.click();
+				link.remove();
 
 			},
 

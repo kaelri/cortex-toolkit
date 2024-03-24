@@ -57,6 +57,15 @@ const TraitSetEditor = {
 			}
 		},
 
+		noun: {
+			get() {
+				return this.traitSet.noun ?? '';
+			},
+			set( noun ) {
+				this.setTraitSetProperty( 'noun', noun );
+			}
+		},
+
 		cssClass() {
 
 			let cssClass = {
@@ -103,6 +112,11 @@ const TraitSetEditor = {
 					<div class="editor-field">
 						<label>Description</label>
 						<textarea v-model="description"></textarea>
+					</div>
+
+					<div class="editor-field">
+						<label>Singular Noun</label>
+						<input type="text" v-model="noun" placeholder="Trait">
 					</div>
 
 				</div>
@@ -158,7 +172,7 @@ const TraitSetEditor = {
 
 			character.traitSets[s][ key ] = value;
 
-			this.update( character );
+			this.updateCharacter( character );
 
 		},
 
@@ -166,8 +180,8 @@ const TraitSetEditor = {
 			this.$emit( 'removeTraitSet', this.traitSetID );
 		},
 
-		update( character ) {
-			this.$emit( 'update', character );
+		updateCharacter( character ) {
+			this.$emit( 'updateCharacter', character );
 		},
 
 		checkAnchorPosition() {

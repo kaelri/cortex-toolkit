@@ -396,4 +396,11 @@
 
 .preview-button {
 	@extend %button;
+	&.preview-button-delete {
+		--button-color: var(--color-primary);
+	}
+	&.preview-button-export {
+		--button-color: var(--color-secondary);
+		color: black;
+	}
 }

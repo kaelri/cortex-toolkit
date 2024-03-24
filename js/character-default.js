@@ -1,6 +1,9 @@
 const cortexCharacterDefault = {
 	"$schema": "https://cortex.engard.me/data/cortex_character_schema.json",
 	"version": 1,
+	"id": null,
+	"created": 0,
+	"modified": 0,
 	"name": "Name",
 	"description": "Description",
 	"traitSets": [
@@ -9,6 +12,10 @@ const cortexCharacterDefault = {
 			"description": "Trait set description",
 			"style": "distinctions",
 			"location": "left",
+			"noun": "Distinction",
+			"allowStatement": true,
+			"allowSFX": true,
+			"allowHinder": true,
 			"traits": [
 				{
 					"name": "Distinction 1",
@@ -53,6 +60,10 @@ const cortexCharacterDefault = {
 			"description": "Trait set description",
 			"style": "default",
 			"location": "attributes",
+			"noun": "Attribute",
+			"allowStatement": true,
+			"allowSFX": false,
+			"allowHinder": false,
 			"traits": [
 				{
 					"name": "Attribute 1",
@@ -67,6 +78,10 @@ const cortexCharacterDefault = {
 			"description": "Trait set description",
 			"style": "default",
 			"location": "left",
+			"noun": "",
+			"allowStatement": true,
+			"allowSFX": false,
+			"allowHinder": false,
 			"traits": [
 				{
 					"name": "New trait",

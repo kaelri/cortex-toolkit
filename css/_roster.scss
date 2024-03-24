@@ -21,6 +21,14 @@
 .roster-button {
 	@extend %button;
 	--button-color: var(--color-interactive);
+	&.roster-button-delete {
+		--button-color: var(--color-primary);
+	}
+	&.roster-button-export,
+	&.roster-button-import {
+		--button-color: var(--color-secondary);
+		color: black;
+	}
 }
 
 // LIST
@@ -123,14 +131,23 @@
 
 .roster-item-button-container {
 	@extend %button-container;
+	justify-content: flex-start;
 	font-size: .66rem;
 	margin-block-start: .5rem;
 }
 
 .roster-item-button {
 	@extend %button;
-	&.roster-delete {
+	&.roster-button-delete {
 		--button-color: var(--color-primary);
+	}
+	&.roster-button-export,
+	&.roster-button-import {
+		--button-color: var(--color-secondary);
+		color: black;
 	}
 }
 
+.roster-input {
+	display: none;
+}

@@ -242,6 +242,20 @@
 
 		> .c {
 			color: var(--color-inactive);
+			position: relative;
+			/*&::before {
+				display: block;
+				position: absolute;
+				content: '';
+				z-index: -1;
+				width: .5em;
+				height: .5em;
+				background-color: white;
+				border-radius: 50%;
+				top: calc( 50% + .15em );
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}*/
 		}
 		&.active > .c {
 			color: var(--color-primary);
