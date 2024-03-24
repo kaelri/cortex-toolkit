@@ -16,6 +16,7 @@ Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex
 - [ ] Advanced **portrait** positioning: zoom, x-offset (%), y-offset (%)
 - [ ] **Dice roller** utility
   - [ ] Export dice **formula** to [CortexPalGS](https://github.com/lynn0702/CortexPalGS) format
+- [ ] Dynamic URL **routing**
 - [ ] **Move** traits/trait sets
 - [ ] **Duplicate** characters, trait sets, traits and SFX.
 - [ ] Document character sheet **schema** for interoperability with other Cortex utilities
