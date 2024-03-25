@@ -8,8 +8,9 @@
 	// background: hsla(0, 0%, 0%, 0.9);
 	// color: white;
 	z-index: var(--z-frame);
-	overflow: hidden;
+	// overflow: hidden;
 	user-select: none;
+	border-bottom: 1px solid var(--color-separator);
 }
 
 .header-inner {
@@ -19,6 +20,8 @@
 	padding-left: var(--sidebar-size);
 	justify-content: center;
 	align-items: stretch;
+	position: relative;
+	bottom: -1px;
 }
 
 .nav-mode {

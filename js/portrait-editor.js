@@ -52,12 +52,14 @@ const PortraitEditor = {
 						>
 
 						<div class="editor-button-container">
-							<button
-								class="editor-button"
-								@click.prevent="uploadStart"
-							>
-								<span><i class="fas fa-plus"></i> Upload {{ hasImage ? 'New' : '' }} Image</span>
-							</button>
+							<div class="editor-button-container-inner">
+								<button
+									class="editor-button"
+									@click.prevent="uploadStart"
+								>
+									<span><i class="fas fa-plus"></i> Upload {{ hasImage ? 'New' : '' }} Image</span>
+								</button>
+							</div>
 						</div>
 
 						<input class="portrait-input" type="file" ref="inputFile" @change="uploadProcess">

@@ -51,15 +51,17 @@ const CharacterSheet = {
 		<div class="preview-button-container"
 			v-show="submode === 'print'"
 		>
-			<div class="preview-button"
-				@click.stop="print"
-			>
-				<span><i class="fas fa-print"></i> Print</span>
-			</div>
-			<div class="preview-button preview-button-export"
-				@click.stop="exportCharacter"
-			>
-				<span><i class="fas fa-download"></i> Export</span>
+			<div class="preview-button-container-inner">
+				<div class="preview-button"
+					@click.stop="print"
+				>
+					<span><i class="fas fa-print"></i> Print</span>
+				</div>
+				<div class="preview-button preview-button-export"
+					@click.stop="exportCharacter"
+				>
+					<span><i class="fas fa-download"></i> Export</span>
+				</div>
 			</div>
 		</div>
 		</transition>
@@ -210,10 +212,12 @@ const CharacterSheet = {
 									v-show="submode === 'edit'"
 									v-if="pageLocation === 'right'"
 								>
-									<div class="preview-button"
-										@click.stop="addTrait( attributesID )"
-									>
-										<span><i class="fas fa-plus"></i> Attribute</span>
+									<div class="preview-button-container-inner">
+										<div class="preview-button"
+											@click.stop="addTrait( attributesID )"
+										>
+											<span><i class="fas fa-plus"></i> Attribute</span>
+										</div>
 									</div>
 								</div>
 								</transition>
@@ -252,13 +256,12 @@ const CharacterSheet = {
 
 								</div>
 
-								<div class="trait-columns">
-									<div class="trait-column" v-for="traitSetLocation in ['left', 'right']">
+								<div class="trait-set-body">
+
+									<div class="trait-list">
 
 										<template v-for="(trait, t) in traitSet.traits" :key="t">
-											<div class="trait"
-													v-if="trait.location === traitSetLocation"
-												>
+											<div class="trait">
 
 												<transition name="trait" appear>
 													<div :class="{ 'trait-inner': true, 'selected': isSelected(['trait', s, t]) }"
@@ -321,21 +324,24 @@ const CharacterSheet = {
 											</div>
 										</template>
 
-										<!-- BUTTON: ADD TRAIT -->
-										<transition appear>
-										<div class="preview-button-container"
-											v-show="submode === 'edit'"
-										>
+									</div> <!-- .trait-list -->
+
+									<!-- BUTTON: ADD TRAIT -->
+									<transition appear>
+									<div class="preview-button-container"
+										v-show="submode === 'edit'"
+									>
+										<div class="preview-button-container-inner">
 											<div class="preview-button"
 												@click.stop="addTrait( s, traitSetLocation )"
 											>
 												<span><i class="fas fa-plus"></i> {{ traitSet.noun && traitSet.noun.length ? traitSet.noun : 'Trait' }}</span>
 											</div>
 										</div>
-										</transition>
+									</div>
+									</transition>
 
-									</div> <!-- .trait-column -->
-								</div> <!-- .trait-columns -->
+								</div> <!-- .traits -->
 
 							</div>
 							</template>
@@ -345,10 +351,12 @@ const CharacterSheet = {
 							<div class="preview-button-container"
 								v-show="submode === 'edit'"
 							>
-								<div class="preview-button"
-									@click.stop="addTraitSet( pageLocation )"
-								>
-									<span><i class="fas fa-plus"></i> Trait Set</span>
+								<div class="preview-button-container-inner">
+									<div class="preview-button"
+										@click.stop="addTraitSet( pageLocation )"
+									>
+										<span><i class="fas fa-plus"></i> Trait Set</span>
+									</div>
 								</div>
 							</div>
 							</transition>
@@ -424,6 +432,8 @@ const CharacterSheet = {
 			character.traitSets.push({
 				name: 'New trait set',
 				description: 'Trait set description',
+				noun: '',
+				features: [],
 				style: 'default',
 				location: location ?? 'left',
 				traits: [
@@ -431,7 +441,6 @@ const CharacterSheet = {
 						name: 'New trait',
 						value: 6,
 						description: 'Trait description',
-						location: 'left',
 						sfx: [],
 					}
 				],

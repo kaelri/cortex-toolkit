@@ -1,6 +1,6 @@
 const cortexCharacterDefault = {
 	"$schema": "https://cortex.engard.me/data/cortex_character_schema.json",
-	"version": 1,
+	"version": 0,
 	"id": null,
 	"created": 0,
 	"modified": 0,
@@ -20,7 +20,6 @@ const cortexCharacterDefault = {
 					"name": "Distinction 1",
 					"value": 8,
 					"description": "Trait description",
-					"location": "left",
 					"sfx": [
 						{
 							"name": "Hinder",
@@ -32,7 +31,6 @@ const cortexCharacterDefault = {
 					"name": "Distinction 2",
 					"value": 8,
 					"description": "Trait description",
-					"location": "left",
 					"sfx": [
 						{
 							"name": "Hinder",
@@ -44,7 +42,6 @@ const cortexCharacterDefault = {
 					"name": "Distinction 3",
 					"value": 8,
 					"description": "Trait description",
-					"location": "left",
 					"sfx": [
 						{
 							"name": "Hinder",
@@ -88,7 +85,6 @@ const cortexCharacterDefault = {
 					"name": "New trait",
 					"value": 6,
 					"description": "Trait description",
-					"location": "left",
 					"sfx": []
 				}
 			]

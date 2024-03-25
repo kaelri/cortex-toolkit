@@ -18,19 +18,21 @@ const Roster = {
 	
 			<!-- BUTTON: ADD/IMPORT CHARACTER -->
 			<div class="roster-button-container">
+				<div class="roster-button-container-inner">
 
-				<div class="roster-button"
-					@click.stop="createCharacter"
-				>
-					<span><i class="fas fa-plus"></i> New Character</span>
-				</div>
+					<div class="roster-button"
+						@click.stop="createCharacter"
+					>
+						<span><i class="fas fa-plus"></i> New Character</span>
+					</div>
 
-				<div class="roster-button roster-button-import"
-					@click.stop="importCharacterStart"
-				>
-					<span><i class="fas fa-upload"></i> Import Character</span>
+					<div class="roster-button roster-button-import"
+						@click.stop="importCharacterStart"
+					>
+						<span><i class="fas fa-upload"></i> Import Character</span>
+					</div>
+
 				</div>
-				
 			</div>
 
 			<!-- CHARACTER LIST -->
@@ -66,28 +68,30 @@ const Roster = {
 						</div>
 
 						<div class="roster-item-button-container">
+							<div class="roster-item-button-container-inner">
 
-							<!-- LOAD -->
-							<div class="roster-item-button"
-								@click.stop="loadCharacter( character.id )"
-							>
-								<span><i class="fas fa-plus"></i> Load</span>
+								<!-- LOAD -->
+								<div class="roster-item-button"
+									@click.stop="loadCharacter( character.id )"
+								>
+									<span><i class="fas fa-plus"></i> Load</span>
+								</div>
+
+								<!-- EXPORT -->
+								<div class="roster-item-button roster-button-export"
+									@click.stop="exportCharacter( character.id )"
+								>
+									<span><i class="fas fa-download"></i> Export</span>
+								</div>
+
+								<!-- DELETE -->
+								<div class="roster-item-button roster-button-delete"
+									@click.stop="deleteCharacter( character.id )"
+								>
+									<span><i class="fas fa-trash"></i> Delete</span>
+								</div>
+
 							</div>
-
-							<!-- EXPORT -->
-							<div class="roster-item-button roster-button-export"
-								@click.stop="exportCharacter( character.id )"
-							>
-								<span><i class="fas fa-download"></i> Export</span>
-							</div>
-
-							<!-- DELETE -->
-							<div class="roster-item-button roster-button-delete"
-								@click.stop="deleteCharacter( character.id )"
-							>
-								<span><i class="fas fa-trash"></i> Delete</span>
-							</div>
-
 						</div>
 
 					</div>
@@ -99,19 +103,21 @@ const Roster = {
 
 			<!-- BUTTON: ADD/IMPORT CHARACTER -->
 			<!-- <div class="roster-button-container">
+				<div class="roster-button-container-inner">
 
-				<div class="roster-button"
-					@click.stop="createCharacter"
-				>
-					<span><i class="fas fa-plus"></i> New Character</span>
-				</div>
+					<div class="roster-button"
+						@click.stop="createCharacter"
+					>
+						<span><i class="fas fa-plus"></i> New Character</span>
+					</div>
 
-				<div class="roster-button roster-button-import"
-					@click.stop="importCharacterStart"
-				>
-					<span><i class="fas fa-upload"></i> Import Character</span>
+					<div class="roster-button roster-button-import"
+						@click.stop="importCharacterStart"
+					>
+						<span><i class="fas fa-upload"></i> Import Character</span>
+					</div>
+
 				</div>
-				
 			</div> -->
 
 			<!-- FILE INPUT -->

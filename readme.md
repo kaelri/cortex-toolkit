@@ -13,11 +13,11 @@ This is a web application for creating and managing character sheets using the [
 - [x] Switch editor panel vertical alignment depending on whether the element is in the top or bottom half of the page.
 - [x] Load/save multiple characters
 - [x] Portrait **placeholder**
+- [x] Improved two-column trait sets
 
 ### In Progress
 
 - [ ] Add **toggles** to enable/disable statements, SFX and “Hinder” for trait sets.
-- [ ] Improved two-column trait sets
 - [ ] Sub-traits (e.g. Specialties)
 
 ### Short Term
