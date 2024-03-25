@@ -227,7 +227,7 @@ const CharacterSheet = {
 							<!-- TRAIT SETS -->
 							<template v-for="(traitSet, s) in traitSets" :key="s">
 							
-							<div :class="'trait-set trait-set-style-' + traitSet.style"
+							<div :class="getTraitSetClasses(traitSet)"
 								v-if="traitSet.location === pageLocation"
 							>
 
@@ -290,7 +290,16 @@ const CharacterSheet = {
 															v-html="renderText(trait.description)"
 														></div>
 
-														<ul class="trait-sfx" v-if="traitSet.features.includes('sfx') && trait.sfx.length">
+														<ul class="trait-sfx" v-if="traitSet.features.includes('sfx')">
+															<li v-if="trait.hinder">
+
+																<span class="trait-sfx-name">Hinder</span>:
+
+																<span class="trait-sfx-description"
+																	v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.noun && traitSet.noun.length ? traitSet.noun : 'trait' ) + '’s d8 for a d4.')"
+																></span>
+
+															</li>
 															<li v-for="(sfx, s) in trait.sfx">
 
 																<span class="trait-sfx-name"
@@ -387,6 +396,25 @@ const CharacterSheet = {
 
 		renderDieValue( value ) {
 			return cortexFunctions.getDieDisplayValue( value );
+		},
+
+		getTraitSetClasses( traitSet ) {
+
+			let classes = {
+				'trait-set': true
+			}
+
+			classes[ 'trait-set-style-' + traitSet.style ] = true;
+
+			for (let i = 0; i < traitSet.features.length; i++) {
+				const feature = traitSet.features[i];
+
+				classes[ 'trait-set-has-feature-' + feature ] = true;
+				
+			}
+
+			return classes;
+
 		},
 
 		getAttributeStyle( a ) {

@@ -51,12 +51,16 @@
 		font-size: .75rem;
 		line-height: 13px;
 		margin: 0;
-		padding-bottom: .5rem;
-		border-bottom: 2px solid var(--color-primary);
 		b, strong {
 			font-weight: 800;
 		}
-	}		
+	}	
+	&.trait-set-has-feature-sfx .trait-title,
+	&.trait-set-has-feature-subtraits .trait-title,
+	&.trait-set-has-feature-description .trait-title {
+		padding-bottom: .5rem;
+		border-bottom: 2px solid var(--color-primary);
+	}	
 	.trait-value {
 		display: inline-block;
 		margin-left: .333rem !important;

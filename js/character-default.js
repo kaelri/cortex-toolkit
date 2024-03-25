@@ -11,7 +11,7 @@ const cortexCharacterDefault = {
 		{
 			"name": "Distinctions",
 			"description": "Trait set description",
-			"features": [ 'description', 'sfx', 'hinder' ],
+			"features": [ 'description', 'sfx' ],
 			"style": "distinctions",
 			"location": "left",
 			"noun": "Distinction",
@@ -20,34 +20,25 @@ const cortexCharacterDefault = {
 					"name": "Distinction 1",
 					"value": 8,
 					"description": "Trait description",
-					"sfx": [
-						{
-							"name": "Hinder",
-							"description": "Gain a PP when you switch out this distinction’s d8 for a d4."
-						}
-					]
+					"hinder": true,
+					"sfx": [],
+					"subtraits": [],
 				},
 				{
 					"name": "Distinction 2",
 					"value": 8,
 					"description": "Trait description",
-					"sfx": [
-						{
-							"name": "Hinder",
-							"description": "Gain a PP when you switch out this distinction’s d8 for a d4."
-						}
-					]
+					"hinder": true,
+					"sfx": [],
+					"subtraits": [],
 				},
 				{
 					"name": "Distinction 3",
 					"value": 8,
 					"description": "Trait description",
-					"sfx": [
-						{
-							"name": "Hinder",
-							"description": "Gain a PP when you switch out this distinction’s d8 for a d4."
-						}
-					]
+					"hinder": true,
+					"sfx": [],
+					"subtraits": [],
 				}
 			]
 		},
@@ -58,15 +49,13 @@ const cortexCharacterDefault = {
 			"style": "default",
 			"location": "attributes",
 			"noun": "Attribute",
-			"allowStatement": true,
-			"allowSFX": false,
-			"allowHinder": false,
 			"traits": [
 				{
 					"name": "Attribute 1",
 					"value": 8,
 					"description": "Trait description",
-					"sfx": []
+					"sfx": [],
+					"subtraits": [],
 				}
 			]
 		},
@@ -77,15 +66,13 @@ const cortexCharacterDefault = {
 			"style": "default",
 			"location": "left",
 			"noun": "",
-			"allowStatement": true,
-			"allowSFX": false,
-			"allowHinder": false,
 			"traits": [
 				{
 					"name": "New trait",
 					"value": 6,
 					"description": "Trait description",
-					"sfx": []
+					"sfx": [],
+					"subtraits": [],
 				}
 			]
 		}

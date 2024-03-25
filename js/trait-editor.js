@@ -55,6 +55,15 @@ const TraitEditor = {
 			}
 		},
 
+		hinder: {
+			get() {
+				return this.trait?.hinder ?? false;
+			},
+			set( hinder ) {
+				this.setTraitProperty( 'hinder', hinder );
+			}
+		},
+
 		scrollable() {
 			return Boolean( this.trait.sfx.length > 0 );
 		},
@@ -124,6 +133,13 @@ const TraitEditor = {
 					<div class="editor-field" v-if="traitSet.features.includes('sfx')">
 
 						<label>SFX</label>
+
+						<div class="editor-field">
+							<div class="editor-toggles">
+								<div><input type="checkbox" :id="'trait-' + traitSetID + '-' + traitID + '-hinder'" :true-value="true" :false-value="false" v-model="hinder"></div>
+								<div><label :for="'trait-' + traitSetID + '-' + traitID + '-hinder'">Can Hinder</label></div>
+							</div>
+						</div>
 
 						<transition-group appear>
 							<sfx-editor

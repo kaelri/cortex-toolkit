@@ -10,8 +10,7 @@
       "noun": "Distinction",
       "features": [
         "description",
-        "sfx",
-        "hinder"
+        "sfx"
       ],
       "style": "distinctions",
       "location": "left",
@@ -20,34 +19,25 @@
           "name": "Half-Orc",
           "value": 8,
           "description": "Trait description",
-          "sfx": [
-            {
-              "name": "Hinder",
-              "description": "Gain a PP when you switch out this distinction’s d8 for a d4."
-            }
-          ]
+          "hinder": true,
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Druid",
           "value": 10,
           "description": "Trait description",
-          "sfx": [
-            {
-              "name": "Hinder",
-              "description": "Gain a PP when you switch out this distinction’s d8 for a d4."
-            }
-          ]
+          "hinder": true,
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Sage",
           "value": 8,
           "description": "Trait description",
-          "sfx": [
-            {
-              "name": "Hinder",
-              "description": "Gain a PP when you switch out this distinction’s d8 for a d4."
-            }
-          ]
+          "hinder": true,
+          "sfx": [],
+          "subtraits": []
         }
       ]
     },
@@ -63,19 +53,22 @@
           "name": "Strength",
           "value": 8,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Agility",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Wisdom",
           "value": 10,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         }
       ]
     },
@@ -91,37 +84,43 @@
           "name": "Honor",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Wealth",
           "value": 4,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Kindness",
           "value": 8,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Justice",
           "value": 8,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Truth",
           "value": 12,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Power",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         }
       ]
     },
@@ -137,19 +136,22 @@
           "name": "Harm",
           "value": 10,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Stress",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Doubt",
           "value": 8,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         }
       ]
     },
@@ -167,13 +169,15 @@
           "name": "Shillelagh",
           "value": 8,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "New Asset",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         }
       ]
     },
@@ -191,19 +195,22 @@
           "name": "Circle of the Moon",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "King’s Guard",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Biggetyburgh",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         }
       ]
     },
@@ -219,19 +226,22 @@
           "name": "Arcana",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Athletics",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         },
         {
           "name": "Investigation",
           "value": 6,
           "description": "Trait description",
-          "sfx": []
+          "sfx": [],
+          "subtraits": []
         }
       ]
     }

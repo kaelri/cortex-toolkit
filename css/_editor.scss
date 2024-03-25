@@ -229,6 +229,12 @@
 
 }
 
+.editor-field {
+	&:has(.editor-values):last-child {
+		padding-bottom: 1rem; // Fixes the dice font characters being cut off at the bottom of the editor panel.
+	}
+}
+
 .editor-values {
 	list-style: none;
 	padding: 0;
@@ -269,6 +275,7 @@
 
 .editor-button-container {
 	@extend %button-container;
+	margin-block-start: 1rem;
 	font-size: .66rem;
 }
 
@@ -285,6 +292,7 @@
 
 .editor-toggles {
 	display: grid;
+	width: 100%;
 	grid-template-columns: 1.5rem 1fr;
 	gap: .25rem;
 	> div {
@@ -298,7 +306,13 @@
 		justify-content: flex-start;
 	}
 	label {
+		display: block;
 		margin: 0;
+		font-family: inherit;
+		font-size: .75rem;
+		color: inherit;
+		cursor: pointer;
+		user-select: none;
 	}
 }
 

@@ -14,17 +14,19 @@ This is a web application for creating and managing character sheets using the [
 - [x] Load/save multiple characters
 - [x] Portrait **placeholder**
 - [x] Improved two-column trait sets
+- [x] Add **toggles** to enable/disable statements, SFX and “Hinder” for trait sets.
 
 ### In Progress
 
-- [ ] Add **toggles** to enable/disable statements, SFX and “Hinder” for trait sets.
 - [ ] Sub-traits (e.g. Specialties)
 
 ### Short Term
+- [ ] Separate trait set “header” style and “body” style.
 - [ ] Add **confirmation** for delete & overwrite.
 - [ ] Dynamic URL **routing**
-- [ ] **Move** traits/trait sets
+- [ ] **Move** trait sets up/down/between columns
 - [ ] **Duplicate** characters, trait sets, traits and SFX.
+- [ ] Add option to disable **Attributes** ring
 - [ ] **Dice roller** utility
   - [ ] Export dice **formula** to [CortexPalGS](https://github.com/lynn0702/CortexPalGS) format
 
