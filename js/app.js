@@ -84,11 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			<footer class="footer">
 
-				<div class="about-logo">
-					<a href="https://cortexrpg.com" target="_blank"><img src="images/cortex_community_logo_white.png"></a>
+				<div class="footer-logo">
+					<a href="https://cortexrpg.com" target="_blank"><img src="images/cortex_community_logo_black.png"></a>
 				</div>
 
-				<div class="about-legal">
+				<div class="footer-legal">
 					<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at CortexRPG.com </p>
 					<p>Cortex is ©️ 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission.</p>
 					<p>If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.</p>
