@@ -1,8 +1,10 @@
 # Cortex Prime Toolkit
 
-Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex/sheet.html) by [@tamas-rabel](https://github.com/tamas-rabel/tamas-rabel.github.io).
+This is a web application for creating and managing character sheets using the [Cortex Prime](https://www.cortexrpg.com) tabletop roleplaying game system.
 
 ## To Do
+
+### Done
 
 - [x] Implement all original functionality:
   - [x] Trait set styles
@@ -11,32 +13,41 @@ Based on the [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex
 - [x] Switch editor panel vertical alignment depending on whether the element is in the top or bottom half of the page.
 - [x] Load/save multiple characters
 - [x] Portrait **placeholder**
-- [ ] Add **toggle** to enable/disable statements, SFX and “Hinder” for trait sets.
-- [ ] Sub-traits (e.g. Specialties)
+
+### In Progress
+
+- [ ] Add **toggles** to enable/disable statements, SFX and “Hinder” for trait sets.
 - [ ] Improved two-column trait sets
+- [ ] Sub-traits (e.g. Specialties)
+
+### Short Term
 - [ ] Add **confirmation** for delete & overwrite.
-- [ ] **Dice roller** utility
-  - [ ] Export dice **formula** to [CortexPalGS](https://github.com/lynn0702/CortexPalGS) format
 - [ ] Dynamic URL **routing**
 - [ ] **Move** traits/trait sets
 - [ ] **Duplicate** characters, trait sets, traits and SFX.
-- [ ] Document character sheet **schema** for interoperability with other Cortex utilities
-- [ ] **Markdown** character notes
+- [ ] **Dice roller** utility
+  - [ ] Export dice **formula** to [CortexPalGS](https://github.com/lynn0702/CortexPalGS) format
+
+### Medium/Long Term
 - [ ] Templates
   - [ ] Mark character as Template (**lock** editing trait sets)
   - [ ] **Select** a template when starting a new character.
   - [ ] Mark/list templates separately in roster.
+- [ ] **Markdown** character notes
 - [ ] Character **icons**
-- [ ] Multi-page print layout
-- [ ] Advanced **portrait** positioning: zoom, x-offset (%), y-offset (%)
 - [ ] **Bulk** import/export
-- [ ] **Mobile**-friendly
+- [ ] **Mobile** improvements
+- [ ] **Print** improvements
+  - [ ] Multi-page print layout
+  - [ ] **Printable** templates (filled out by hand)
 - [ ] Edit **history**: short-term undo/redo
-- [ ] **Styling** guide
-
-## Issues
+<!-- - [ ] Advanced **portrait** positioning: zoom, x-offset (%), y-offset (%) -->
+- [ ] Document character sheet **schema** for interoperability with other Cortex utilities
+- [ ] Custom **styling** via CSS variable overrides.
 
 ## Credits
+
+Based on the original [Cortex Prime character sheet](https://tamas-rabel.github.io/cortex/sheet.html) by [@tamas-rabel](https://github.com/tamas-rabel/tamas-rabel.github.io).
 
 Thanks to [Lynn Jones](https://github.com/lynn0702) and [Riley Routh](https://www.rileyrouth.com/) for key feedback and suggestions!
 
