@@ -19,9 +19,9 @@ This is a web application for creating and managing character sheets using the [
 ### In Progress
 
 - [ ] Sub-traits (e.g. Specialties)
+- [ ] Separate trait set “header” style and “body” style.
 
 ### Short Term
-- [ ] Separate trait set “header” style and “body” style.
 - [ ] Add **confirmation** for delete & overwrite.
 - [ ] Dynamic URL **routing**
 - [ ] **Move** trait sets up/down/between columns
@@ -35,17 +35,17 @@ This is a web application for creating and managing character sheets using the [
   - [ ] Mark character as Template (**lock** editing trait sets)
   - [ ] **Select** a template when starting a new character.
   - [ ] Mark/list templates separately in roster.
-- [ ] **Markdown** character notes
 - [ ] Character **icons**
+- [ ] **Markdown** character notes
 - [ ] **Bulk** import/export
 - [ ] **Mobile** improvements
 - [ ] **Print** improvements
   - [ ] Multi-page print layout
   - [ ] **Printable** templates (filled out by hand)
 - [ ] Edit **history**: short-term undo/redo
-<!-- - [ ] Advanced **portrait** positioning: zoom, x-offset (%), y-offset (%) -->
 - [ ] Document character sheet **schema** for interoperability with other Cortex utilities
 - [ ] Custom **styling** via CSS variable overrides.
+<!-- - [ ] Advanced **portrait** positioning: zoom, x-offset (%), y-offset (%) -->
 
 ## Credits
 
