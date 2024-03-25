@@ -290,13 +290,13 @@ const CharacterSheet = {
 															v-html="renderText(trait.description)"
 														></div>
 
-														<ul class="trait-sfx" v-if="traitSet.features.includes('sfx')">
+														<ul class="trait-sfx" v-if="traitSet.features.includes('sfx') && ( trait.sfx.length || trait.hinder )">
 															<li v-if="trait.hinder">
 
 																<span class="trait-sfx-name">Hinder</span>:
 
 																<span class="trait-sfx-description"
-																	v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.noun && traitSet.noun.length ? traitSet.noun : 'trait' ) + '’s d8 for a d4.')"
+																	v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.noun && traitSet.noun.length ? traitSet.noun : 'trait' ) + '’s d' + trait.value + ' for a d4.')"
 																></span>
 
 															</li>
