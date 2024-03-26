@@ -16,6 +16,7 @@ This is a web application for creating and managing character sheets using the [
 - [x] Improved two-column trait sets
 - [x] Add **toggles** to enable/disable statements, SFX and “Hinder” for trait sets.
 - [x] Sub-traits (e.g. Specialties)
+- [x] Enable SFX on Trait Sets
 
 ### In Progress
 
@@ -25,6 +26,7 @@ This is a web application for creating and managing character sheets using the [
 - [ ] Add option to disable **Attributes** ring
 
 ### Short Term
+
 - [ ] Dynamic URL **routing**
 - [ ] Styling overhaul
   - [ ] Separate trait set “header” style and “body” style.

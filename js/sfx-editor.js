@@ -18,7 +18,11 @@ const SfxEditor = {
 			let s = this.traitSetID;
 			let t = this.traitID;
 			let f = this.effectID;
-			return this.character.traitSets[s].traits[t].sfx[f];
+			if ( t === null ) {
+				return this.character.traitSets[s].sfx[f];
+			} else {
+				return this.character.traitSets[s].traits[t].sfx[f];
+			}
 		},
 
 		selector() {
@@ -81,7 +85,12 @@ const SfxEditor = {
 			let t = this.traitID;
 			let f = this.effectID;
 
-			character.traitSets[s].traits[t].sfx[f][ key ] = value;
+			if ( t === null ) {
+				character.traitSets[s].sfx[f][ key ] = value;
+			} else {
+				character.traitSets[s].traits[t].sfx[f][ key ] = value;
+			}
+
 
 			this.updateCharacter( character );
 

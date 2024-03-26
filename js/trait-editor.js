@@ -283,10 +283,9 @@ const TraitEditor = {
 			let s = this.traitSetID;
 			let t = this.traitID;
 
-			character.traitSets[s].traits[t].sfx.push({
-				name: 'New SFX',
-				description: 'SFX description',
-			});
+			character.traitSets[s].traits[t].sfx.push(
+				structuredClone( cortexFunctions.defaultSFX )
+			);
 
 			this.updateCharacter( character );
 
@@ -307,14 +306,14 @@ const TraitEditor = {
 
 		addSubtrait() {
 
+			let subtrait = structuredClone( cortexDefaultTrait );
+			subtrait.name = 'New subtrait';
+
 			let character = this.character;
 			let s = this.traitSetID;
 			let t = this.traitID;
 
-			character.traitSets[s].traits[t].subtraits.push({
-				name: 'New Subtrait',
-				value: 6
-			});
+			character.traitSets[s].traits[t].subtraits.push(subtrait);
 
 			this.updateCharacter( character );
 

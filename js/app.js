@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 						@importCharacter="importCharacter"
 					></roster>
 
-					<character-sheet
+					<character
 						v-else-if="mode === 'character' && character"
 						:submode="submode"
 						:character="character"
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 						@selectElement="selectElement"
 						@updateCharacter="updateCharacter"
 						@exportCharacter="exportCharacter"
-					></character-sheet>
+					></character>
 
 					<article class="about"
 						v-else-if="mode === 'about'"
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			createCharacter() {
 
-				let character = structuredClone( cortexCharacterDefault );
+				let character = structuredClone( cortexFunctions.defaultCharacter );
 
 				character.id       = crypto.randomUUID();
 				character.dateCreated  = ( new Date() ).getTime();
@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	})
 	.component('roster',           Roster )
-	.component('character-sheet',  CharacterSheet )
+	.component('character',        Character )
 	.component('name-editor',      NameEditor )
 	.component('portrait-editor',  PortraitEditor )
 	.component('trait-editor',     TraitEditor )

@@ -44,7 +44,8 @@
           "sfx": [],
           "subtraits": []
         }
-      ]
+      ],
+      "sfx": []
     },
     {
       "name": "Attributes",
@@ -75,7 +76,8 @@
           "sfx": [],
           "subtraits": []
         }
-      ]
+      ],
+      "sfx": []
     },
     {
       "name": "Values",
@@ -127,7 +129,8 @@
           "sfx": [],
           "subtraits": []
         }
-      ]
+      ],
+      "sfx": []
     },
     {
       "name": "Stress",
@@ -158,7 +161,8 @@
           "sfx": [],
           "subtraits": []
         }
-      ]
+      ],
+      "sfx": []
     },
     {
       "name": "Signature Assets",
@@ -184,7 +188,8 @@
           "sfx": [],
           "subtraits": []
         }
-      ]
+      ],
+      "sfx": []
     },
     {
       "name": "Affiliations",
@@ -217,7 +222,8 @@
           "sfx": [],
           "subtraits": []
         }
-      ]
+      ],
+      "sfx": []
     },
     {
       "name": "Skills",
@@ -267,7 +273,8 @@
             }
           ]
         }
-      ]
+      ],
+      "sfx": []
     }
   ],
   "portrait": {

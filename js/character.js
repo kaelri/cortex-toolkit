@@ -1,4 +1,4 @@
-const CharacterSheet = {
+const Character = {
 
 	props: {
 		submode:   String,
@@ -308,23 +308,23 @@ const CharacterSheet = {
 															</li>
 														</ul>
 
-														<ul class="sfx" v-if="traitSet.features.includes('sfx') && ( trait.sfx.length || trait.hinder )">
+														<ul class="trait-sfx" v-if="traitSet.features.includes('sfx') && ( trait.sfx.length || trait.hinder )">
 															<li v-if="trait.hinder">
 
-																<span class="sfx-name">Hinder</span>:
+																<span class="trait-sfx-name">Hinder</span>:
 
-																<span class="sfx-description"
+																<span class="trait-sfx-description"
 																	v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.noun && traitSet.noun.length ? traitSet.noun : 'trait' ) + '’s d' + trait.value + ' for a d4.')"
 																></span>
 
 															</li>
 															<li v-for="(sfx, s) in trait.sfx">
 
-																<span class="sfx-name"
+																<span class="trait-sfx-name"
 																	v-html="sfx.name"
 																></span>:
 
-																<span class="sfx-description"
+																<span class="trait-sfx-description"
 																	v-html="renderText(sfx.description)"
 																></span>
 
@@ -367,6 +367,20 @@ const CharacterSheet = {
 										</div>
 									</div>
 									</transition>
+
+									<ul class="sfx" v-if="traitSet.features.includes('sfx') && traitSet.sfx.length">
+										<li v-for="(sfx, s) in traitSet.sfx">
+
+											<span class="sfx-name"
+												v-html="sfx.name"
+											></span>:
+
+											<span class="sfx-description"
+												v-html="renderText(sfx.description)"
+											></span>
+
+										</li>
+									</ul>
 
 								</div> <!-- .traits -->
 
@@ -497,23 +511,8 @@ const CharacterSheet = {
 
 			let character = this.character;
 
-			character.traitSets.push({
-				name: 'New trait set',
-				description: 'Trait set description',
-				noun: '',
-				features: [],
-				style: 'default',
-				location: location ?? 'left',
-				traits: [
-					{
-						name: 'New trait',
-						value: 6,
-						description: 'Trait description',
-						subtraits: [],
-						sfx: []
-					}
-				],
-			});
+			let traitSet = structuredClone( cortexFunctions.defaultTraitSet );
+			traitSet.traits.push( structuredClone( cortexFunctions.defaultTrait ) );
 
 			this.updateCharacter( character );
 
@@ -542,14 +541,11 @@ const CharacterSheet = {
 			let traitSet = character.traitSets[traitSetID];
 			let noun = ( traitSet.noun && traitSet.noun.length ) ? traitSet.noun : 'Trait';
 
-			character.traitSets[traitSetID].traits.push({
-				name: 'New ' + noun,
-				value: 6,
-				description: 'Trait description',
-				location: location ?? 'left',
-				sfx: [],
-				subtraits: [],
-			});
+			let trait = structuredClone( cortexFunctions.defaultTrait );
+			trait.name = 'New ' + noun;
+			trait.location = location ?? 'left',
+
+			character.traitSets[traitSetID].traits.push(trait);
 
 			this.updateCharacter( character );
 			

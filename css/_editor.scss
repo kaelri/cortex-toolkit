@@ -56,10 +56,9 @@
 		}
 	}
 
-
 	// Scroll indicators
 	&.scrollable {
-		height: 30rem;
+		height: 36rem;
 	}
 
 }
@@ -318,6 +317,7 @@
 }
 
 .editor-subgroups {
+	margin-top: .5rem;
 	display: flex;
 	flex-direction: column;
 	row-gap: .5rem;

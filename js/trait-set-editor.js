@@ -75,12 +75,18 @@ const TraitSetEditor = {
 			}
 		},
 
+		scrollable() {
+			return Boolean(
+				this.traitSet.features.includes('sfx') && this.traitSet.sfx.length > 0
+			);
+		},
+
 		cssClass() {
 
 			let cssClass = {
 				'editor':     true,
 				'open':       this.open,
-				'scrollable': false,
+				'scrollable': this.scrollable,
 			}
 
 			cssClass[ 'anchor-position-' + this.anchorPosition ] = true;
@@ -142,6 +148,38 @@ const TraitSetEditor = {
 							<div><label :for="'trait-set-' + traitSetID + '-feature-sfx'">SFX</label></div>
 
 						</div>
+					</div>
+
+					<!-- SFX -->
+					<div class="editor-field" v-if="traitSet.features.includes('sfx')">
+
+						<label>Trait Set SFX</label>
+
+						<div class="editor-subgroups">
+
+							<transition-group appear>
+								<sfx-editor
+									v-for="(effect, effectID) in traitSet.sfx"
+									:key="traitSetID + '-' + effectID"
+									:character="character"
+									:traitSetID="traitSetID"
+									:traitID="null"
+									:effectID="effectID"
+									@updateCharacter="updateCharacter"
+									@removeEffect="removeEffect"
+								></sfx-editor>
+							</transition-group>
+
+						</div>
+
+						<div class="editor-button-container">
+							<div class="editor-button-container-inner">
+								<div class="editor-button" @click.stop="addEffect">
+									<span><i class="fas fa-plus"></i> New SFX</span>
+								</div>
+							</div>
+						</div>
+
 					</div>
 
 				</div>
@@ -218,6 +256,31 @@ const TraitSetEditor = {
 			}
 
 			this.updateCharacter( this.character );
+
+		},
+
+		addEffect() {
+
+			let character = this.character;
+			let s = this.traitSetID;
+
+			character.traitSets[s].sfx.push(
+				structuredClone( cortexFunctions.defaultSFX )
+			);
+
+			this.updateCharacter( character );
+
+		},
+
+		removeEffect( effectID ) {
+
+			let character = this.character;
+			let s = this.traitSetID;
+			let f = effectID;
+
+			character.traitSets[s].sfx.splice(f, 1);
+
+			this.updateCharacter( character );
 
 		},
 
