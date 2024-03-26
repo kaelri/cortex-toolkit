@@ -261,7 +261,7 @@ const CharacterSheet = {
 									<div class="trait-list">
 
 										<template v-for="(trait, t) in traitSet.traits" :key="t">
-											<div class="trait">
+											<div :class="getTraitClasses(trait)">
 
 												<transition name="trait" appear>
 													<div :class="{ 'trait-inner': true, 'selected': isSelected(['trait', s, t]) }"
@@ -290,23 +290,41 @@ const CharacterSheet = {
 															v-html="renderText(trait.description)"
 														></div>
 
-														<ul class="trait-sfx" v-if="traitSet.features.includes('sfx') && ( trait.sfx.length || trait.hinder )">
+														<ul class="subtraits" v-if="traitSet.features.includes('subtraits') && trait.subtraits.length">
+															<li class="subtrait" v-for="(subtrait, u) in trait.subtraits">
+
+																<span class="subtrait-name"
+																	v-html="subtrait.name"
+																></span>
+															
+																<div class="subtrait-value">
+																	<span :class="{ 'c': true, 'active': subtrait.value === 4 }" >4</span>
+																	<span :class="{ 'c': true, 'active': subtrait.value === 6 }" >6</span>
+																	<span :class="{ 'c': true, 'active': subtrait.value === 8 }" >8</span>
+																	<span :class="{ 'c': true, 'active': subtrait.value === 10 }">0</span>
+																	<span :class="{ 'c': true, 'active': subtrait.value === 12 }">2</span>
+																</div>
+
+															</li>
+														</ul>
+
+														<ul class="sfx" v-if="traitSet.features.includes('sfx') && ( trait.sfx.length || trait.hinder )">
 															<li v-if="trait.hinder">
 
-																<span class="trait-sfx-name">Hinder</span>:
+																<span class="sfx-name">Hinder</span>:
 
-																<span class="trait-sfx-description"
+																<span class="sfx-description"
 																	v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.noun && traitSet.noun.length ? traitSet.noun : 'trait' ) + '’s d' + trait.value + ' for a d4.')"
 																></span>
 
 															</li>
 															<li v-for="(sfx, s) in trait.sfx">
 
-																<span class="trait-sfx-name"
+																<span class="sfx-name"
 																	v-html="sfx.name"
 																></span>:
 
-																<span class="trait-sfx-description"
+																<span class="sfx-description"
 																	v-html="renderText(sfx.description)"
 																></span>
 
@@ -411,6 +429,28 @@ const CharacterSheet = {
 
 				classes[ 'trait-set-has-feature-' + feature ] = true;
 				
+			}
+
+			return classes;
+
+		},
+
+		getTraitClasses( trait ) {
+
+			let classes = {
+				'trait': true
+			}
+
+			if ( trait.description.length ) {
+				classes['trait-has-description'] = true;
+			}
+
+			if ( trait.sfx.length ) {
+				classes['trait-has-sfx'] = true;
+			}
+
+			if ( trait.sfx.length ) {
+				classes['trait-has-subtraits'] = true;
 			}
 
 			return classes;

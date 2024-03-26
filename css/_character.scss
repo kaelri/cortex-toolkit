@@ -408,7 +408,7 @@
 .preview-button-container {
 	@extend %button-container;
 	.page & {
-		font-size: .66rem;
+		--button-font-size: .66rem;
 	}
 	.trait-set & {
 		margin-top: 1rem;

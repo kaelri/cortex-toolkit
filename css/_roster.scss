@@ -142,7 +142,7 @@
 
 .roster-item-button-container {
 	@extend %button-container;
-	font-size: .66rem;
+	--button-font-size: .66rem;
 	margin-block-start: .5rem;
 	> div {
 		justify-content: flex-start;

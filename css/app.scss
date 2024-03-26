@@ -125,9 +125,10 @@ body {
 // INTERFACE
 
 %button-container {
+	--button-font-size: .75rem;
 	--button-container-height: 2.4em;
 	@extend %no-print;
-	font-size: .75rem;
+	font-size: var(--button-font-size);
 	&.v-enter-active,
 	&.v-leave-active {
 		transition: opacity .2s ease, transform .2s ease, height .2s ease;

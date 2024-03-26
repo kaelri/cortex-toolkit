@@ -62,9 +62,9 @@ const SfxEditor = {
 
 			<div class="editor-button-container">
 				<div class="editor-button-container-inner">
-					<button class="editor-button editor-button-remove editor-button-secondary" @click.prevent="removeEffect">
+					<div class="editor-button editor-button-remove editor-button-secondary" @click.prevent="removeEffect">
 						<span><i class="fas fa-trash"></i> Remove SFX</span>
-					</button>
+					</div>
 				</div>
 			</div>
 

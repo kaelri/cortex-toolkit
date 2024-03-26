@@ -65,7 +65,11 @@ const TraitEditor = {
 		},
 
 		scrollable() {
-			return Boolean( this.trait.sfx.length > 0 );
+			return Boolean(
+				( this.traitSet.features.includes('sfx') && this.trait.sfx.length > 0 )
+				||
+				( this.traitSet.features.includes('subtraits') && this.trait.subtraits.length > 0 )
+			);
 		},
 
 		cssClass() {
@@ -129,6 +133,38 @@ const TraitEditor = {
 						<textarea v-model="description"></textarea>
 					</div>
 
+					<!-- SUBTRAITS -->
+					<div class="editor-field" v-if="traitSet.features.includes('subtraits')">
+
+						<label>Subtraits</label>
+
+						<div class="editor-subgroups">
+
+							<transition-group appear>
+								<subtrait-editor
+									v-for="(subtrait, subtraitID) in trait.subtraits"
+									:key="traitSetID + '-' + traitID + '-' + subtraitID"
+									:character="character"
+									:traitSetID="traitSetID"
+									:traitID="traitID"
+									:subtraitID="subtraitID"
+									@updateCharacter="updateCharacter"
+									@removeSubtrait="removeSubtrait"
+								></subtrait-editor>
+							</transition-group>
+
+						</div>
+
+						<div class="editor-button-container">
+							<div class="editor-button-container-inner">
+								<div class="editor-button" @click.stop="addSubtrait">
+									<span><i class="fas fa-plus"></i> New Subtrait</span>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
 					<!-- SFX -->
 					<div class="editor-field" v-if="traitSet.features.includes('sfx')">
 
@@ -141,24 +177,28 @@ const TraitEditor = {
 							</div>
 						</div>
 
-						<transition-group appear>
-							<sfx-editor
-								v-for="(effect, effectID) in trait.sfx"
-								:key="traitSetID + '-' + traitID + '-' + effectID"
-								:character="character"
-								:traitSetID="traitSetID"
-								:traitID="traitID"
-								:effectID="effectID"
-								@updateCharacter="updateCharacter"
-								@removeEffect="removeEffect"
-							></sfx-editor>
-						</transition-group>
+						<div class="editor-subgroups">
+
+							<transition-group appear>
+								<sfx-editor
+									v-for="(effect, effectID) in trait.sfx"
+									:key="traitSetID + '-' + traitID + '-' + effectID"
+									:character="character"
+									:traitSetID="traitSetID"
+									:traitID="traitID"
+									:effectID="effectID"
+									@updateCharacter="updateCharacter"
+									@removeEffect="removeEffect"
+								></sfx-editor>
+							</transition-group>
+
+						</div>
 
 						<div class="editor-button-container">
 							<div class="editor-button-container-inner">
-								<button class="editor-button" @click.stop="addEffect">
+								<div class="editor-button" @click.stop="addEffect">
 									<span><i class="fas fa-plus"></i> New SFX</span>
-								</button>
+								</div>
 							</div>
 						</div>
 
@@ -260,6 +300,34 @@ const TraitEditor = {
 			let f = effectID;
 
 			character.traitSets[s].traits[t].sfx.splice(f, 1);
+
+			this.updateCharacter( character );
+
+		},
+
+		addSubtrait() {
+
+			let character = this.character;
+			let s = this.traitSetID;
+			let t = this.traitID;
+
+			character.traitSets[s].traits[t].subtraits.push({
+				name: 'New Subtrait',
+				value: 6
+			});
+
+			this.updateCharacter( character );
+
+		},
+
+		removeSubtrait( subtraitID ) {
+
+			let character = this.character;
+			let s = this.traitSetID;
+			let t = this.traitID;
+			let u = subtraitID;
+
+			character.traitSets[s].traits[t].sfx.splice(u, 1);
 
 			this.updateCharacter( character );
 

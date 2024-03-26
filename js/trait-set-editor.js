@@ -135,11 +135,11 @@ const TraitSetEditor = {
 							<div><input type="checkbox" :id="'trait-set-' + traitSetID + '-feature-description'" value="description" v-model="features" @change="setFeatures($event, 'description')"></div>
 							<div><label :for="'trait-set-' + traitSetID + '-feature-description'">Description</label></div>
 
-							<div><input type="checkbox" :id="'trait-set-' + traitSetID + '-feature-sfx'" value="sfx" v-model="features" @change="setFeatures($event, 'sfx')"></div>
-							<div><label :for="'trait-set-' + traitSetID + '-feature-sfx'">SFX</label></div>
-
 							<div><input type="checkbox" :id="'trait-set-' + traitSetID + '-feature-subtraits'" value="subtraits" v-model="features" @change="setFeatures($event, 'subtraits')"></div>
 							<div><label :for="'trait-set-' + traitSetID + '-feature-subtraits'">Sub-Traits</label></div>
+
+							<div><input type="checkbox" :id="'trait-set-' + traitSetID + '-feature-sfx'" value="sfx" v-model="features" @change="setFeatures($event, 'sfx')"></div>
+							<div><label :for="'trait-set-' + traitSetID + '-feature-sfx'">SFX</label></div>
 
 						</div>
 					</div>

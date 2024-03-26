@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
 				return window.location.href;
 			},
 
+			year() {
+				return ( new Date() ).getFullYear();
+			},
+
 			characterIndex() {
 				return this.characters.findIndex( character => character.id === this.characterID );
 			},
@@ -36,10 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
 				<div class="header-inner">
 					<nav class="nav-mode">
 						<ul>
-							<li @click.stop="setMode('roster', null)" :class="{ active: mode === 'roster' }"><div><span class="nav-mode-icon"><i class="fas fa-users"></i></span></div></li>
-							<li @click.stop="setMode('character', 'edit')" :class="{ active: mode === 'character' && submode === 'edit', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-pencil"></i></span> <span class="nav-mode-label">Create</span></div></li>
-							<li @click.stop="setMode('character', 'play')" :class="{ active: mode === 'character' && submode === 'play', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-dice"></i></span> <span class="nav-mode-label">Play</span></div></li>
-							<li @click.stop="setMode('character', 'print')" :class="{ active: mode === 'character' && submode === 'print', 'disabled': !character }"><div><span class="nav-mode-icon"><i class="fas fa-file"></i></span> <span class="nav-mode-label">Share</span></div></li>
+							<li @click.stop="setMode('roster', null)" :class="{ active: mode === 'roster' }"><div><span class="nav-icon"><i class="fas fa-users"></i></span></div></li>
+							<li @click.stop="setMode('character', 'edit')" :class="{ active: mode === 'character' && submode === 'edit', 'disabled': !character }"><div><span class="nav-icon"><i class="fas fa-pencil"></i></span> <span class="nav-label">Create</span></div></li>
+							<li @click.stop="setMode('character', 'play')" :class="{ active: mode === 'character' && submode === 'play', 'disabled': !character }"><div><span class="nav-icon"><i class="fas fa-dice"></i></span> <span class="nav-label">Play</span></div></li>
+							<li @click.stop="setMode('character', 'print')" :class="{ active: mode === 'character' && submode === 'print', 'disabled': !character }"><div><span class="nav-icon"><i class="fas fa-file"></i></span> <span class="nav-label">Share</span></div></li>
 						</ul>
 					</nav>
 				</div>
@@ -78,23 +82,43 @@ document.addEventListener('DOMContentLoaded', () => {
 						@exportCharacter="exportCharacter"
 					></character-sheet>
 
+					<article class="about"
+						v-else-if="mode === 'about'"
+					>
+
+						<h1>About Cortex Toolkit</h1>
+						
+						<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at <a href="https://www.cortexrpg.com" target="_blank">CortexRPG.com</a>.
+
+						<p>Cortex is ©️ {{year}} Dire Wolf Digital, LLC. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Dire Wolf Digital, LLC. Iconography used with permission.</p>
+
+						<p>If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.</p>
+
+					</article>
+
 				</transition>
 
 			</main>
 
 			<footer class="footer">
+				<div class="footer-inner">
 
-				<div class="footer-logo">
-					<a href="https://cortexrpg.com" target="_blank"><img src="images/cortex_community_logo_black.png"></a>
+					<div class="footer-colophon">
+						<a href="https://www.cortexrpg.com" target="_blank"><img src="images/cortex_prime_logo_light_background.png"></a>
+					</div>
+
+					<nav class="footer-nav">
+						<ul>
+							<li @click.stop="setMode('about', null)" :class="{ active: mode === 'about' }"><div><span class="nav-icon"><i class="far fa-question-circle"></i></span></div></li>
+							<li><a href="https://github.com/kaelri/cortex-toolkit" target="_blank" title="View on GitHub"><div><span class="nav-icon"><i class="fab fa-github"></i></span></a></div></li>
+						</ul>
+					</nav>
+
 				</div>
-
-				<div class="footer-legal">
-					<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at CortexRPG.com </p>
-					<p>Cortex is ©️ 2022 Fandom, Inc. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Fandom, Inc. Iconography used with permission.</p>
-					<p>If you wish to publish or sell what you make using this tool, it is your responsibility to ensure you have the proper license or right for any resources used. No rights are granted through the use of this tool.</p>
-				</div>
-
-			</footer>`,
+			</footer>
+			
+			<div class="legal">
+			</div>`,
 		
 		mounted() {
 
@@ -292,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	.component('portrait-editor',  PortraitEditor )
 	.component('trait-editor',     TraitEditor )
 	.component('trait-set-editor', TraitSetEditor )
+	.component('subtrait-editor',  SubtraitEditor )
 	.component('sfx-editor',       SfxEditor )
 	.mount('#cortex-toolkit');
 

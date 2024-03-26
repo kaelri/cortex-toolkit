@@ -269,14 +269,15 @@
 	}
 }
 
-.editor-group-remove {
-	margin-top: 2rem;
-}
-
 .editor-button-container {
 	@extend %button-container;
-	margin-block-start: 1rem;
-	font-size: .66rem;
+	--button-font-size: .66rem;
+	.editor-field & {
+		margin-top: .5em;
+	}
+	&:has(.editor-button-secondary) {
+		--button-container-height: 1.5em;
+	}
 }
 
 .editor-button {
@@ -316,8 +317,13 @@
 	}
 }
 
+.editor-subgroups {
+	display: flex;
+	flex-direction: column;
+	row-gap: .5rem;
+}
+
 .editor-subgroup {
-	margin: .5em 0;
 	border: 2px solid var(--color-input);
 	padding: 1em;
 	border-radius: .25rem;

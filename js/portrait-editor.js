@@ -53,12 +53,12 @@ const PortraitEditor = {
 
 						<div class="editor-button-container">
 							<div class="editor-button-container-inner">
-								<button
+								<div
 									class="editor-button"
 									@click.prevent="uploadStart"
 								>
 									<span><i class="fas fa-plus"></i> Upload {{ hasImage ? 'New' : '' }} Image</span>
-								</button>
+								</div>
 							</div>
 						</div>
 
