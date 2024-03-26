@@ -81,7 +81,7 @@ const Roster = {
 								<div class="roster-item-button"
 									@click.stop="loadCharacter( character.id )"
 								>
-									<span><i class="fas fa-plus"></i> Load</span>
+									<span><i class="fas fa-eye"></i> Open</span>
 								</div>
 
 								<!-- EXPORT -->

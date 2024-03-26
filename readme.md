@@ -19,15 +19,15 @@ This is a web application for creating and managing character sheets using the [
 
 ### In Progress
 
+- [ ] Add **confirmation** for delete & overwrite.
 - [ ] **Move** trait sets up/down/between columns
 - [ ] **Duplicate** characters, trait sets, traits and SFX.
+- [ ] Add option to disable **Attributes** ring
 
 ### Short Term
-- [ ] Add **confirmation** for delete & overwrite.
 - [ ] Dynamic URL **routing**
 - [ ] Styling overhaul
   - [ ] Separate trait set “header” style and “body” style.
-- [ ] Add option to disable **Attributes** ring
 - [ ] **Dice roller** utility
   - [ ] Export dice **formula** to [CortexPalGS](https://github.com/lynn0702/CortexPalGS) format
 
