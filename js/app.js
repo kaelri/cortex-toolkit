@@ -168,8 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				let character = structuredClone( cortexCharacterDefault );
 
 				character.id       = crypto.randomUUID();
-				character.created  = ( new Date() ).getTime();
-				character.modified = ( new Date() ).getTime();
+				character.dateCreated  = ( new Date() ).getTime();
+				character.dateModified = ( new Date() ).getTime();
+				character.dateTouched = ( new Date() ).getTime();
 
 				this.characters.push( character );
 				this.characterID = character.id;
@@ -194,6 +195,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			},
 
 			importCharacter( character, confirm ) {
+
+				character.dateTouched = ( new Date() ).getTime();
 
 				let c = this.characters.findIndex( existingCharacter => existingCharacter.id === character.id );
 
@@ -224,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				let name = character.name.length ? character.name : 'Name';
 				name = name.replaceAll( /\s+/g, '_' );
-				let filename = `${name}_${character.modified}.cortex.json`;
+				let filename = `${name}_${character.dateModified}.cortex.json`;
 
 				let link = document.createElement("a");
 				document.body.appendChild(link); // Required for Firefox
@@ -240,8 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				let uri = encodeURI("data:application/json;charset=utf-8," + JSON.stringify(this.characters))
 				.replace(/#/g, '%23');
 
-				let modified = ( new Date() ).getTime();
-				let filename = `CortexToolkitData_${modified}.json`;
+				let dateModified = ( new Date() ).getTime();
+				let filename = `CortexToolkitData_${dateModified}.json`;
 
 				let link = document.createElement("a");
 				document.body.appendChild(link); // Required for Firefox
@@ -258,7 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				if ( c === -1 ) return;
 
-				character.modified = ( new Date() ).getTime();
+				character.dateModified = ( new Date() ).getTime();
+				character.dateTouched  = ( new Date() ).getTime();
 
 				this.characters[c] = character;
 				this.setPageTitle();

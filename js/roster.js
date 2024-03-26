@@ -7,7 +7,14 @@ const Roster = {
 	computed: {
 
 		charactersSorted() {
-			return this.characters.sort((a, b) => b.modified - a.modified);
+			return this.characters.sort((a, b) => {
+
+				let aDate = Math.max( a.dateModified, a.dateTouched );
+				let bDate = Math.max( b.dateModified, b.dateTouched );
+
+				aDate - bDate
+
+			});
 		}
 
 	},
@@ -64,7 +71,7 @@ const Roster = {
 
 						<div class="roster-date">
 							<span class="roster-date-label">Last modified: </span>
-							<span v-html="renderDate(character.modified)"></span>
+							<span v-html="renderDate(character.dateModified)"></span>
 						</div>
 
 						<div class="roster-item-button-container">

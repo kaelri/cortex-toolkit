@@ -509,7 +509,8 @@ const CharacterSheet = {
 						name: 'New trait',
 						value: 6,
 						description: 'Trait description',
-						sfx: [],
+						subtraits: [],
+						sfx: []
 					}
 				],
 			});
@@ -547,6 +548,7 @@ const CharacterSheet = {
 				description: 'Trait description',
 				location: location ?? 'left',
 				sfx: [],
+				subtraits: [],
 			});
 
 			this.updateCharacter( character );
