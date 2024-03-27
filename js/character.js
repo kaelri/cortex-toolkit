@@ -472,7 +472,7 @@ const Character = {
 				classes['trait-has-sfx'] = true;
 			}
 
-			if ( trait.sfx.length ) {
+			if ( trait.traits.length ) {
 				classes['trait-has-subtraits'] = true;
 			}
 
