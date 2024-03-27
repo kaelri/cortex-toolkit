@@ -17,7 +17,7 @@ const PortraitEditor = {
 
 		alignment: {
 			get() {
-				return this.character.portrait.alignment;
+				return this.character.portrait.custom.cortexToolkit.alignment;
 			},
 			set( value ) {
 				this.setAlignment( value );
@@ -109,7 +109,7 @@ const PortraitEditor = {
 
 		setAlignment( alignment ) {
 			let character = this.character;
-			character.portrait.alignment = alignment;
+			character.portrait.custom.cortexToolkit.alignment = alignment;
 			this.updateCharacter( character );
 		},
 

@@ -127,7 +127,7 @@ const Character = {
 								<div :class="{ 'portrait-inner': true, 'selected': isSelected(['portrait']) }"
 									@click.stop="selectElement([ 'portrait' ])"
 								>
-									<div :class="'portrait-circle portrait-alignment-' + portrait.alignment" width="100%" height="100%" :style="'background-image: url(' + portrait.url + ');'">
+									<div :class="'portrait-circle portrait-alignment-' + portrait.custom.cortexToolkit.alignment" width="100%" height="100%" :style="'background-image: url(' + portrait.url + ');'">
 										<div class="portrait-placeholder" v-if="!portrait.url.length"><i class="fas fa-user"></i></div>
 									</div>
 								</div>

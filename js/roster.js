@@ -52,7 +52,7 @@ const Roster = {
 
 					<div>
 
-						<div :class="'roster-item-portrait alignment-' + character.portrait.alignment"
+						<div :class="'roster-item-portrait alignment-' + character.portrait.custom.cortexToolkit.alignment"
 							:style="'background-image: url(' + character.portrait.url + ');'"
 							@click.stop="loadCharacter( character.id )"
 						>

@@ -304,28 +304,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			loadLocalData() {
 
-				let characters = [];
-
 				let localJSON = localStorage.getItem('cortexToolkitData');
-				if ( localJSON && localJSON.length ) {
+				if ( !localJSON || !localJSON.length ) return;
 
-					let localData = JSON.parse(localJSON);
-					if ( localData && localData.characters ) {
-						characters = localData.characters;
-					}
-	
+				let localData = JSON.parse(localJSON);
+				if ( !localData || !localData['0.1'] ) return;
+
+				if ( localData['0.1'].characters ) {
+					this.characters = localData['0.1'].characters;
 				}
-
-				this.characters = characters;
 
 			},
 
 			saveLocalData() {
 
 				localStorage.setItem('cortexToolkitData', JSON.stringify({
-					characters: this.characters,
+					'0.1': {
+						characters: this.characters,
+					}
 				}));
 			},
+
+			clearLocalData() {
+				localStorage.setItem('cortexToolkitData', null);
+			}
 
 		}
 
