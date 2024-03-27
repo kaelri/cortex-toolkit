@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 						<h1>About Cortex Toolkit</h1>
 						
-						<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at <a href="https://www.cortexrpg.com" target="_blank">CortexRPG.com</a>.
+						<p>Cortex Prime is the award-winning world-building tabletop RPG system for forging unique, compelling game experiences from a set of modular rules mechanics available at <a href="https://www.cortexrpg.com" target="_blank">CortexRPG.com</a>.</p>
 
 						<p>Cortex is ©️ {{year}} Dire Wolf Digital, LLC. Cortex, Cortex Prime, associated logos and trade dress are the trademarks of Dire Wolf Digital, LLC. Iconography used with permission.</p>
 
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					<nav class="footer-nav">
 						<ul>
 							<li @click.stop="setMode('about', null)" :class="{ active: mode === 'about' }"><div><span class="nav-icon"><i class="far fa-question-circle"></i></span></div></li>
-							<li><a href="https://github.com/kaelri/cortex-toolkit" target="_blank" title="View on GitHub"><div><span class="nav-icon"><i class="fab fa-github"></i></span></a></div></li>
+							<li><a href="https://github.com/kaelri/cortex-toolkit" target="_blank" title="View on GitHub"><div><span class="nav-icon"><i class="fab fa-github"></i></span></div></a></li>
 						</ul>
 					</nav>
 
@@ -167,10 +167,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				let character = structuredClone( cortexFunctions.defaultCharacter );
 
-				character.id       = crypto.randomUUID();
-				character.dateCreated  = ( new Date() ).getTime();
-				character.dateModified = ( new Date() ).getTime();
-				character.dateTouched = ( new Date() ).getTime();
+				character.id = crypto.randomUUID();
+
+				character.dateCreated  = ( new Date() ).toISOString();
+				character.dateModified = ( new Date() ).toISOString();
+				character.dateTouched  = ( new Date() ).toISOString();
 
 				this.characters.push( character );
 				this.characterID = character.id;
@@ -196,7 +197,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			importCharacter( character, confirm ) {
 
-				character.dateTouched = ( new Date() ).getTime();
+				character.dateTouched = ( new Date() ).toISOString();
+
+				// Populate custom data sets for this app.
+				for (let i = 0; i < character.traitSets.length; i++) {
+					const traitSet = character.traitSets[i];
+
+					if ( !traitSet.custom.cortexToolkit ) {
+						traitSet.custom.cortexToolkit = structuredClone( cortexFunctions.defaultTraitSet.custom.cortexToolkit );
+					}
+					
+				}
+
+				if ( !character.portrait.custom.cortexToolkit ) {
+					character.portrait.custom.cortexToolkit = structuredClone( cortexFunctions.defaultCharacter.portrait.custom.cortexToolkit );
+				}
 
 				let c = this.characters.findIndex( existingCharacter => existingCharacter.id === character.id );
 
@@ -226,8 +241,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				.replace(/#/g, '%23');
 
 				let name = character.name.length ? character.name : 'Name';
+				let timestamp = ( new Date(character.dateModified) ).getTime();
 				name = name.replaceAll( /\s+/g, '_' );
-				let filename = `${name}_${character.dateModified}.cortex.json`;
+				let filename = `${name}_${timestamp}.cortex.json`;
 
 				let link = document.createElement("a");
 				document.body.appendChild(link); // Required for Firefox
@@ -243,8 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				let uri = encodeURI("data:application/json;charset=utf-8," + JSON.stringify(this.characters))
 				.replace(/#/g, '%23');
 
-				let dateModified = ( new Date() ).getTime();
-				let filename = `CortexToolkitData_${dateModified}.json`;
+				let timestamp = ( new Date() ).getTime();
+				let filename  = `CortexToolkitData_${timestamp}.json`;
 
 				let link = document.createElement("a");
 				document.body.appendChild(link); // Required for Firefox
@@ -261,8 +277,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				if ( c === -1 ) return;
 
-				character.dateModified = ( new Date() ).getTime();
-				character.dateTouched  = ( new Date() ).getTime();
+				character.dateModified = ( new Date() ).toISOString();
+				character.dateTouched  = ( new Date() ).toISOString();
 
 				this.characters[c] = character;
 				this.setPageTitle();

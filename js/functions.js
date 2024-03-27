@@ -26,115 +26,196 @@ window.cortexFunctions = {
 	},
 
 	defaultCharacter: {
-		"$schema": "https://cortex.engard.me/data/cortex_character_schema.json",
-		"version": 0,
-		"id": null,
-		"dateCreated": 0,
-		"dateModified": 0,
-		"dateTouched": 0,
-		"name": "Name",
-		"description": "Description",
-		"pronouns": "",
-		"traitSets": [
+		'$schema': 'https://cortex.engard.me/schema/0.1/character.schema.json',
+		'version': '0.1',
+		'id': '',
+		'dateCreated': '',
+		'dateModified': '',
+		'dateTouched': '',
+		'name': 'Name',
+		'game': '',
+		'description': 'Description',
+		'pronouns': '',
+		'traitSets': [
 			{
-				"name": "Distinctions",
-				"description": "Trait set description",
-				"features": [ 'description', 'sfx' ],
-				"style": "distinctions",
-				"location": "left",
-				"noun": "Distinction",
-				"traits": [
+				'name': 'Distinctions',
+				'description': 'Trait set description',
+				'nounSingular': 'Distinction',
+				'nounPlural': 'Distinctions',
+				'traits': [
 					{
-						"name": "Distinction 1",
-						"value": 8,
-						"description": "Trait description",
-						"hinder": true,
-						"sfx": [],
-						"subtraits": [],
+						'name': 'Distinction 1',
+						'value': 8,
+						'description': 'Trait description',
+						'traits': [],
+						'sfx': [ 'hinder' ],
+						'tags': [],
+						'custom': {},
 					},
 					{
-						"name": "Distinction 2",
-						"value": 8,
-						"description": "Trait description",
-						"hinder": true,
-						"sfx": [],
-						"subtraits": [],
+						'name': 'Distinction 2',
+						'value': 8,
+						'description': 'Trait description',
+						'traits': [],
+						'sfx': [ 'hinder' ],
+						'tags': [],
+						'custom': {},
 					},
 					{
-						"name": "Distinction 3",
-						"value": 8,
-						"description": "Trait description",
-						"hinder": true,
-						"sfx": [],
-						"subtraits": [],
+						'name': 'Distinction 3',
+						'value': 8,
+						'description': 'Trait description',
+						'traits': [],
+						'sfx': [ 'hinder' ],
+						'tags': [],
+						'custom': {},
 					}
 				],
-				"sfx": []
+				'sfx': [],
+				'tags': [],
+				'custom': {
+					'cortexToolkit': {
+						'features': {
+							'description': true,
+							'sfx': true,
+							'subtraits': false
+						},
+						'location': 'left',
+						'style': {
+							'header': 'distinctions',
+							'body': 'distinctions',
+						}
+					}
+				},
 			},
 			{
-				"name": "Attributes",
-				"description": "Trait set description",
-				"features": [],
-				"style": "default",
-				"location": "attributes",
-				"noun": "Attribute",
-				"traits": [
+				'name': 'Attributes',
+				'description': '',
+				'nounSingular': 'Attribute',
+				'nounPlural': 'Attributes',
+				'traits': [
 					{
-						"name": "Attribute 1",
-						"value": 8,
-						"description": "Trait description",
-						"sfx": [],
-						"subtraits": [],
+						'name': 'Attribute 1',
+						'value': 8,
+						'description': 'Trait description',
+						'traits': [],
+						'sfx': [],
+						'tags': [],
+						'custom': {},
 					}
 				],
-				"sfx": []
+				'sfx': [],
+				'tags': [],
+				'custom': {
+					'cortexToolkit': {
+						'features': {
+							'description': false,
+							'sfx': false,
+							'subtraits': false
+						},
+						'location': 'attributes',
+						'style': {
+							'header': 'attributes',
+							'body': 'attributes',
+						}
+					}
+				},
 			},
 			{
-				"name": "New trait set",
-				"description": "Trait set description",
-				"features": [],
-				"style": "default",
-				"location": "left",
-				"noun": "",
-				"traits": [
+				'name': 'New trait set',
+				'description': 'Trait set description',
+				'nounSingular': '',
+				'nounPlural': '',
+				'traits': [
 					{
-						"name": "New trait",
-						"value": 6,
-						"description": "Trait description",
-						"sfx": [],
-						"subtraits": [],
+						'name': 'New trait',
+						'value': 6,
+						'description': 'Trait description',
+						'traits': [],
+						'sfx': [],
+						'tags': [],
+						'custom': {},
 					}
 				],
-				"sfx": []
+				'sfx': [],
+				'tags': [],
+				'custom': {
+					'cortexToolkit': {
+						'features': {
+							'description': false,
+							'sfx': false,
+							'subtraits': false
+						},
+						'location': 'left',
+						'style': {
+							'header': 'default',
+							'body': 'default',
+						}
+					}
+				},
 			}
 		],
-		"portrait": {
-			"url": "",
-			"alignment": "center"
-		}	
+		'portrait': {
+			'url': '',
+			'alt': '',
+			'tags': [],
+			'custom': {
+				'cortexToolkit': {
+					'alignment': 'top-center'
+				}
+			}
+		},
+		'plotPoints': 0,
+		'notes': '',
+		'tags': [],
+		'custom': {
+			'cortexToolkit': {
+				'style': {
+					'hasAttributes': true,
+				}
+			}
+		}
 	},
 	
 	defaultTraitSet: {
 		name: 'New trait set',
 		description: 'Trait set description',
-		noun: '',
-		features: [],
-		style: 'default',
-		location: location ?? 'left',
+		nounSingular: '',
+		nounPlural: '',
 		traits: [],
+		sfx: [],
+		tags: [],
+		custom: {
+			'cortexToolkit': {
+				features: {
+					description: false,
+					sfx: false,
+					subtraits: false
+				},
+				location: 'left',
+				style: {
+					header: 'default',
+					body: 'default',
+				}
+			}
+		}
 	},
 	
 	defaultTrait: {
 		name: 'New trait',
 		value: 6,
 		description: 'Trait description',
-		subtraits: [],
-		sfx: []
+		traits: [],
+		sfx: [],
+		tags: [],
+		custom: {}
 	},
 	
 	defaultSFX: {
 		name: 'New SFX',
 		description: 'SFX description',
+		tags: [],
+		custom: {}
 	},
 	
 }

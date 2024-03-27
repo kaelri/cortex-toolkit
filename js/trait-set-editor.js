@@ -35,7 +35,7 @@ const TraitSetEditor = {
 				return this.traitSet.name;
 			},
 			set( name ) {
-				this.setTraitSetProperty( 'name', name );
+				this.setProperty( 'name', name );
 			}
 		},
 
@@ -44,40 +44,76 @@ const TraitSetEditor = {
 				return this.traitSet.description;
 			},
 			set( description ) {
-				this.setTraitSetProperty( 'description', description );
+				this.setProperty( 'description', description );
 			}
 		},
 
-		style: {
+		nounSingular: {
 			get() {
-				return this.traitSet.style;
+				return this.traitSet.nounSingular ?? '';
 			},
-			set( style ) {
-				this.setTraitSetProperty( 'style', style );
+			set( nounSingular ) {
+				this.setProperty( 'nounSingular', nounSingular );
 			}
 		},
 
-		noun: {
+		nounPlural: {
 			get() {
-				return this.traitSet.noun ?? '';
+				return this.traitSet.nounPlural ?? '';
 			},
-			set( noun ) {
-				this.setTraitSetProperty( 'noun', noun );
+			set( nounPlural ) {
+				this.setProperty( 'nounPlural', nounPlural );
 			}
 		},
 
-		features : {
+		styleHeader: {
 			get() {
-				return this.traitSet.features;
+				return this.traitSet.custom.cortexToolkit.style.header;
 			},
 			set( value ) {
-				// Do nothing. The @change listener will handle it.
+				this.setStyle( 'header', value );
+			}
+		},
+
+		styleBody: {
+			get() {
+				return this.traitSet.custom.cortexToolkit.style.body;
+			},
+			set( value ) {
+				this.setStyle( 'body', value );
+			}
+		},
+
+		featureDescription: {
+			get() {
+				return this.traitSet.custom.cortexToolkit.features.description ?? false;
+			},
+			set( value ) {
+				this.setFeature( 'description', value );
+			}
+		},
+
+		featureSFX: {
+			get() {
+				return this.traitSet.custom.cortexToolkit.features.sfx ?? false;
+			},
+			set( value ) {
+				this.setFeature( 'sfx', value );
+			}
+		},
+
+		featureSubtraits: {
+			get() {
+				return this.traitSet.custom.cortexToolkit.features.subtraits ?? false;
+			},
+			set( value ) {
+				this.setFeature( 'subtraits', value );
 			}
 		},
 
 		scrollable() {
 			return Boolean(
-				this.traitSet.features.includes('sfx') && this.traitSet.sfx.length > 0
+				this.traitSet.custom.cortexToolkit.features.sfx && this.traitSet.sfx.length > 0
 			);
 		},
 
@@ -119,8 +155,8 @@ const TraitSetEditor = {
 
 					<div class="editor-field" v-if="traitSet.location !== 'attributes'">
 						<label>Style</label>
-						<select v-model="style">
-							<option v-for="option in styleOptions" :value="option.id" :selected="option.id === style">{{ option.label }}</option>
+						<select v-model="styleBody">
+							<option v-for="option in styleOptions" :value="option.id" :selected="option.id === styleBody">{{ option.label }}</option>
 						</select>
 					</div>
 
@@ -131,27 +167,27 @@ const TraitSetEditor = {
 
 					<div class="editor-field">
 						<label>Singular Noun</label>
-						<input type="text" v-model="noun" placeholder="Trait">
+						<input type="text" v-model="nounSingular" placeholder="Trait">
 					</div>
 
 					<div class="editor-field">
 						<label>Trait Features</label>
 						<div class="editor-toggles">
 
-							<div><input type="checkbox" :id="'trait-set-' + traitSetID + '-feature-description'" value="description" v-model="features" @change="setFeatures($event, 'description')"></div>
+							<div><input type="checkbox" :id="'trait-set-' + traitSetID + '-feature-description'" :true-value="true" :false-value="false" v-model="featureDescription"></div>
 							<div><label :for="'trait-set-' + traitSetID + '-feature-description'">Description</label></div>
 
-							<div><input type="checkbox" :id="'trait-set-' + traitSetID + '-feature-subtraits'" value="subtraits" v-model="features" @change="setFeatures($event, 'subtraits')"></div>
+							<div><input type="checkbox" :id="'trait-set-' + traitSetID + '-feature-subtraits'" :true-value="true" :false-value="false" v-model="featureSubtraits"></div>
 							<div><label :for="'trait-set-' + traitSetID + '-feature-subtraits'">Sub-Traits</label></div>
 
-							<div><input type="checkbox" :id="'trait-set-' + traitSetID + '-feature-sfx'" value="sfx" v-model="features" @change="setFeatures($event, 'sfx')"></div>
+							<div><input type="checkbox" :id="'trait-set-' + traitSetID + '-feature-sfx'" :true-value="true" :false-value="false" v-model="featureSFX"></div>
 							<div><label :for="'trait-set-' + traitSetID + '-feature-sfx'">SFX</label></div>
 
 						</div>
 					</div>
 
 					<!-- SFX -->
-					<div class="editor-field" v-if="traitSet.features.includes('sfx')">
+					<div class="editor-field" v-if="traitSet.custom.cortexToolkit.features.sfx">
 
 						<label>Trait Set SFX</label>
 
@@ -190,13 +226,7 @@ const TraitSetEditor = {
 	</aside>`,
 
 	mounted() {
-
 		this.checkAnchorPosition();
-
-		if ( this.open ) {
-			this.focusFirstInput();
-		}
-
 	},
 
 	watch: {
@@ -228,7 +258,7 @@ const TraitSetEditor = {
 			this.$refs.inputName.focus();
 		},
  
-		setTraitSetProperty( key, value ) {
+		setProperty( key, value ) {
 
 			let character = this.character;
 			let s = this.traitSetID;
@@ -243,17 +273,21 @@ const TraitSetEditor = {
 			this.$emit( 'removeTraitSet', this.traitSetID );
 		},
 
-		setFeatures( event, featureID ) {
+		setFeature( featureID, value ) {
 
-			let s       = this.traitSetID;
-			let f       = this.character.traitSets[s].features.indexOf(featureID);
-			let checked = event.target.checked;
+			let s = this.traitSetID;
+			
+			this.character.traitSets[s].custom.cortexToolkit.features[ featureID ] = value;
 
-			if ( checked && f === -1 ) {
-				this.character.traitSets[s].features.push(featureID);
-			} else if ( !checked && f >= 0 ) {
-				this.character.traitSets[s].features.splice( f, 1 );
-			}
+			this.updateCharacter( this.character );
+
+		},
+
+		setStyle( styleID, value ) {
+
+			let s = this.traitSetID;
+			
+			this.character.traitSets[s].custom.cortexToolkit.style[ styleID ] = value;
 
 			this.updateCharacter( this.character );
 

@@ -29,16 +29,12 @@ const Character = {
 			return this.character?.traitSets ?? [];
 		},
 
-		distinctions() {
-			return this.traitSets.find( traitSet => traitSet.style === 'distinctions' );
-		},
-
 		attributes() {
-			return this.traitSets.find( traitSet => traitSet.location === 'attributes' )?.traits || [];
+			return this.traitSets.find( traitSet => traitSet.custom.cortexToolkit.location === 'attributes' )?.traits || [];
 		},
 
 		attributesID() {
-			return this.traitSets.findIndex( traitSet => traitSet.location === 'attributes' );
+			return this.traitSets.findIndex( traitSet => traitSet.custom.cortexToolkit.location === 'attributes' );
 		}
 
 	},
@@ -149,7 +145,7 @@ const Character = {
 							</div>
 
 							<!-- ATTRIBUTES -->
-							<div :class="{ 'attributes': true, 'vertical': attributes.length > 5 }" v-if="pageLocation === 'right'">
+							<div :class="{ 'attributes': true, 'vertical': attributes.length > 5 }" v-if="pageLocation === 'right' && attributesID > -1">
 
 								<div class="attributes-grid">
 
@@ -228,7 +224,7 @@ const Character = {
 							<template v-for="(traitSet, s) in traitSets" :key="s">
 							
 							<div :class="getTraitSetClasses(traitSet)"
-								v-if="traitSet.location === pageLocation"
+								v-if="traitSet.custom.cortexToolkit.location === pageLocation"
 							>
 
 								<div class="trait-set-header">
@@ -286,12 +282,12 @@ const Character = {
 
 														<div
 															class="trait-description"
-															v-if="traitSet.features.includes('description')"
+															v-if="traitSet.custom.cortexToolkit.features.description"
 															v-html="renderText(trait.description)"
 														></div>
 
-														<ul class="subtraits" v-if="traitSet.features.includes('subtraits') && trait.subtraits.length">
-															<li class="subtrait" v-for="(subtrait, u) in trait.subtraits">
+														<ul class="subtraits" v-if="traitSet.custom.cortexToolkit.features.subtraits && trait.traits.length">
+															<li class="subtrait" v-for="(subtrait, u) in trait.traits">
 
 																<span class="subtrait-name"
 																	v-html="subtrait.name"
@@ -308,25 +304,33 @@ const Character = {
 															</li>
 														</ul>
 
-														<ul class="trait-sfx" v-if="traitSet.features.includes('sfx') && ( trait.sfx.length || trait.hinder )">
+														<ul class="trait-sfx" v-if="traitSet.custom.cortexToolkit.features.sfx && ( trait.sfx.length )">
 															<li v-if="trait.hinder">
-
-																<span class="trait-sfx-name">Hinder</span>:
-
-																<span class="trait-sfx-description"
-																	v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.noun && traitSet.noun.length ? traitSet.noun : 'trait' ) + '’s d' + trait.value + ' for a d4.')"
-																></span>
 
 															</li>
 															<li v-for="(sfx, s) in trait.sfx">
 
-																<span class="trait-sfx-name"
-																	v-html="sfx.name"
-																></span>:
+																<template v-if="sfx === 'hinder'">
 
-																<span class="trait-sfx-description"
-																	v-html="renderText(sfx.description)"
-																></span>
+																	<span class="trait-sfx-name">Hinder</span>:
+
+																	<span class="trait-sfx-description"
+																		v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.nounSingular && traitSet.nounSingular.length ? traitSet.nounSingular : 'trait' ) + '’s d' + trait.value + ' for a d4.')"
+																	></span>
+
+																</template>
+
+																<template v-else>
+
+																	<span class="trait-sfx-name"
+																		v-html="sfx.name"
+																	></span>:
+
+																	<span class="trait-sfx-description"
+																		v-html="renderText(sfx.description)"
+																	></span>
+
+																</template>
 
 															</li>
 														</ul>
@@ -362,13 +366,13 @@ const Character = {
 											<div class="preview-button"
 												@click.stop="addTrait( s, traitSetLocation )"
 											>
-												<span><i class="fas fa-plus"></i> {{ traitSet.noun && traitSet.noun.length ? traitSet.noun : 'Trait' }}</span>
+												<span><i class="fas fa-plus"></i> {{ traitSet.nounSingular && traitSet.nounSingular.length ? traitSet.nounSingular : 'Trait' }}</span>
 											</div>
 										</div>
 									</div>
 									</transition>
 
-									<ul class="sfx" v-if="traitSet.features.includes('sfx') && traitSet.sfx.length">
+									<ul class="sfx" v-if="traitSet.custom.cortexToolkit.features.sfx && traitSet.sfx.length">
 										<li v-for="(sfx, s) in traitSet.sfx">
 
 											<span class="sfx-name"
@@ -436,13 +440,18 @@ const Character = {
 				'trait-set': true
 			}
 
-			classes[ 'trait-set-style-' + traitSet.style ] = true;
+			classes[ 'trait-set-style-' + traitSet.custom.cortexToolkit.style.body ] = true;
 
-			for (let i = 0; i < traitSet.features.length; i++) {
-				const feature = traitSet.features[i];
+			if ( traitSet.custom.cortexToolkit.features.description ) {
+				classes[ 'trait-set-has-feature-description' ] = true;
+			}
 
-				classes[ 'trait-set-has-feature-' + feature ] = true;
-				
+			if ( traitSet.custom.cortexToolkit.features.sfx ) {
+				classes[ 'trait-set-has-feature-sfx' ] = true;
+			}
+
+			if ( traitSet.custom.cortexToolkit.features.subtraits ) {
+				classes[ 'trait-set-has-feature-subtraits' ] = true;
 			}
 
 			return classes;
@@ -512,7 +521,10 @@ const Character = {
 			let character = this.character;
 
 			let traitSet = structuredClone( cortexFunctions.defaultTraitSet );
+			traitSet.custom.cortexToolkit.location = location ?? 'left';
 			traitSet.traits.push( structuredClone( cortexFunctions.defaultTrait ) );
+
+			character.traitSets.push( traitSet );
 
 			this.updateCharacter( character );
 
@@ -535,15 +547,14 @@ const Character = {
 
 		},
 		
-		addTrait( traitSetID, location ) {
+		addTrait( traitSetID ) {
 
 			let character = this.character;
 			let traitSet = character.traitSets[traitSetID];
-			let noun = ( traitSet.noun && traitSet.noun.length ) ? traitSet.noun : 'Trait';
+			let noun = ( traitSet.nounSingular && traitSet.nounSingular.length ) ? traitSet.nounSingular : 'Trait';
 
 			let trait = structuredClone( cortexFunctions.defaultTrait );
 			trait.name = 'New ' + noun;
-			trait.location = location ?? 'left',
 
 			character.traitSets[traitSetID].traits.push(trait);
 

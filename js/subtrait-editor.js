@@ -18,7 +18,7 @@ const SubtraitEditor = {
 			let s = this.traitSetID;
 			let t = this.traitID;
 			let u = this.subtraitID;
-			return this.character.traitSets[s].traits[t].subtraits[u];
+			return this.character.traitSets[s].traits[t].traits[u];
 		},
 
 		selector() {

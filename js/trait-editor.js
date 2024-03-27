@@ -33,7 +33,7 @@ const TraitEditor = {
 				return this.trait.name;
 			},
 			set( name ) {
-				this.setTraitProperty( 'name', name );
+				this.setProperty( 'name', name );
 			}
 		},
 
@@ -42,7 +42,7 @@ const TraitEditor = {
 				return this.trait.value;
 			},
 			set( value ) {
-				this.setTraitProperty( 'value', value );
+				this.setProperty( 'value', value );
 			}
 		},
 
@@ -51,24 +51,30 @@ const TraitEditor = {
 				return this.trait.description;
 			},
 			set( description ) {
-				this.setTraitProperty( 'description', description );
+				this.setProperty( 'description', description );
 			}
 		},
 
 		hinder: {
 			get() {
-				return this.trait?.hinder ?? false;
+				return this.trait.sfx.includes('hinder');
 			},
-			set( hinder ) {
-				this.setTraitProperty( 'hinder', hinder );
+			set( value ) {
+				this.setHinder( value );
 			}
+		},
+
+		editableSFX() {
+			return this.trait.sfx
+			.filter( effect => effect !== 'hinder' )
+			.map( effect => this.trait.sfx.indexOf(effect) );
 		},
 
 		scrollable() {
 			return Boolean(
-				( this.traitSet.features.includes('sfx') && this.trait.sfx.length > 0 )
+				( this.traitSet.custom.cortexToolkit.features.sfx && this.editableSFX.length > 0 )
 				||
-				( this.traitSet.features.includes('subtraits') && this.trait.subtraits.length > 0 )
+				( this.traitSet.custom.cortexToolkit.features.subtraits && this.trait.traits.length > 0 )
 			);
 		},
 
@@ -128,13 +134,13 @@ const TraitEditor = {
 
 					</div>
 
-					<div class="editor-field" v-if="traitSet.features.includes('description')">
+					<div class="editor-field" v-if="traitSet.custom.cortexToolkit.features.description">
 						<label>Description</label>
 						<textarea v-model="description"></textarea>
 					</div>
 
 					<!-- SUBTRAITS -->
-					<div class="editor-field" v-if="traitSet.features.includes('subtraits')">
+					<div class="editor-field" v-if="traitSet.custom.cortexToolkit.features.subtraits">
 
 						<label>Subtraits</label>
 
@@ -142,7 +148,7 @@ const TraitEditor = {
 
 							<transition-group appear>
 								<subtrait-editor
-									v-for="(subtrait, subtraitID) in trait.subtraits"
+									v-for="(subtrait, subtraitID) in trait.traits"
 									:key="traitSetID + '-' + traitID + '-' + subtraitID"
 									:character="character"
 									:traitSetID="traitSetID"
@@ -166,7 +172,7 @@ const TraitEditor = {
 					</div>
 
 					<!-- SFX -->
-					<div class="editor-field" v-if="traitSet.features.includes('sfx')">
+					<div class="editor-field" v-if="traitSet.custom.cortexToolkit.features.sfx">
 
 						<label>SFX</label>
 
@@ -181,7 +187,7 @@ const TraitEditor = {
 
 							<transition-group appear>
 								<sfx-editor
-									v-for="(effect, effectID) in trait.sfx"
+									v-for="effectID in editableSFX"
 									:key="traitSetID + '-' + traitID + '-' + effectID"
 									:character="character"
 									:traitSetID="traitSetID"
@@ -251,7 +257,7 @@ const TraitEditor = {
 			this.$refs.inputName.focus();
 		},
  
-		setTraitProperty( key, value ) {
+		setProperty( key, value ) {
 
 			let character = this.character;
 			let s = this.traitSetID;
@@ -263,13 +269,30 @@ const TraitEditor = {
 
 		},
 
+		setHinder( value ) {
+
+			let character = this.character;
+			let s = this.traitSetID;
+			let t = this.traitID;
+			let sfx = character.traitSets[s].traits[t].sfx;
+
+			if ( value === false && sfx.includes('hinder') ) {
+				sfx.splice( sfx.indexOf('hinder'), 1 );
+			} else if ( value === true && !sfx.includes('hinder') ) {
+				sfx.unshift( 'hinder' );
+			}
+
+			this.updateCharacter( character );
+
+		},
+
 		toggleTraitValue( value ) {
 
 			if ( value === this.trait.value ) {
 				value = null;
 			}
 
-			this.setTraitProperty( 'value', value );
+			this.setProperty( 'value', value );
 
 		},
 
@@ -306,14 +329,14 @@ const TraitEditor = {
 
 		addSubtrait() {
 
-			let subtrait = structuredClone( cortexDefaultTrait );
+			let subtrait = structuredClone( cortexFunctions.defaultTrait );
 			subtrait.name = 'New subtrait';
 
 			let character = this.character;
 			let s = this.traitSetID;
 			let t = this.traitID;
 
-			character.traitSets[s].traits[t].subtraits.push(subtrait);
+			character.traitSets[s].traits[t].traits.push(subtrait);
 
 			this.updateCharacter( character );
 
@@ -326,7 +349,7 @@ const TraitEditor = {
 			let t = this.traitID;
 			let u = subtraitID;
 
-			character.traitSets[s].traits[t].sfx.splice(u, 1);
+			character.traitSets[s].traits[t].traits.splice(u, 1);
 
 			this.updateCharacter( character );
 

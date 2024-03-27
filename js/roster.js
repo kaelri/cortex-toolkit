@@ -9,10 +9,10 @@ const Roster = {
 		charactersSorted() {
 			return this.characters.sort((a, b) => {
 
-				let aDate = Math.max( a.dateModified, a.dateTouched );
-				let bDate = Math.max( b.dateModified, b.dateTouched );
+				let aDate = Math.max( ( new Date(a.dateCreated)).toISOString(), ( new Date(a.dateModified)).toISOString(), ( new Date(a.dateTouched) ).toISOString() );
+				let bDate = Math.max( ( new Date(b.dateCreated)).toISOString(), ( new Date(b.dateModified)).toISOString(), ( new Date(b.dateTouched) ).toISOString() );
 
-				aDate - bDate
+				return aDate - bDate;
 
 			});
 		}

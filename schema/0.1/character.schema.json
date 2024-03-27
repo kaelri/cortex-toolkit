@@ -1,0 +1,198 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://cortex.engard.me/schema/0.1/character.schema.json",
+	"title": "Cortex Prime character",
+	"description": "A JSON schema for a Cortex Prime player character sheet.",
+	"type" : "object",
+	"$defs": {
+		"traitSet": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string",
+					"description": "The name of the trait set."
+				},
+				"description": {
+					"type": "string",
+					"description": "A description of the trait set."
+				},
+				"nounSingular": {
+					"type": "string",
+					"description": "The singular noun used to describe a trait in this set."
+				},
+				"nounPlural": {
+					"type": "string",
+					"description": "The plural noun used to describe multiple traits in this set."
+				},
+				"traits": {
+					"type": "array",
+					"description": "The traits in the trait set.",
+					"items": { "$ref": "#/$defs/trait" }
+				},
+				"sfx": {
+					"type": "array",
+					"description": "Any SFX attached directly to this trait set.",
+					"items": { "$ref": "#/$defs/sfx" }
+				},
+				"tags": { "$ref": "#/$defs/tags" },
+				"custom": { "$ref": "#/$defs/custom" }
+			},
+			"additionalProperties": false,
+			"required": [ "name", "description", "nounSingular", "nounPlural", "traits", "sfx", "tags", "custom" ]
+		},
+		"trait": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string",
+					"description": "The name of the trait."
+				},
+				"value": {
+					"type": "integer",
+					"description": "The die value of the trait. For example, `2` for d2, `6` for a d6, etc. For unrated traits, use `0`."
+				},
+				"description": {
+					"type": "string",
+					"description": "A description of the trait, or the trait statement."
+				},
+				"traits": {
+					"type": "array",
+					"description": "Any child traits attached this parent trait.",
+					"items": { "$ref": "#/$defs/trait" }
+				},
+				"sfx": {
+					"type": "array",
+					"description": "Any SFX attached to this trait.",
+					"items": {
+						"oneOf": [
+							{"$ref": "#/$defs/sfx"},
+							{"$ref": "#/$defs/sfxHinder"}
+						]
+					}
+				},
+				"tags": { "$ref": "#/$defs/tags" },
+				"custom": { "$ref": "#/$defs/custom" }
+			},
+			"additionalProperties": false,
+			"required": [ "name", "value", "description", "traits", "sfx", "tags", "custom" ]
+		},
+		"sfx": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string",
+					"description": "The name of the SFX."
+				},
+				"description": {
+					"type": "string",
+					"description": "A description of the SFX."
+				},
+				"tags": { "$ref": "#/$defs/tags" },
+				"custom": { "$ref": "#/$defs/custom" }
+			},
+			"additionalProperties": false,
+			"required": [ "name", "description", "tags", "custom" ]
+		},
+		"sfxHinder": {
+			"type": "string",
+			"description": "Represents the “Hinder” core SFX.",
+			"enum": [ "hinder" ]
+		},
+		"tags": {
+			"type": "array",
+			"description": "A list of taxonomy tags attached to this entity. Tags may include letters, numbers, hyphens, periods, and forward slashes (for namespacing).",
+			"items": {
+				"type": "string",
+				"pattern": "^[A-Za-z0-9-\\.\\\/]+$"
+			}
+		},
+		"custom": {
+			"type": "object",
+			"description": "An open-ended object where apps and services can add custom data to this entity. It is strongly recommended that developers compartmentalize their app’s custom data under a unique key to avoid conflicts and generally be good neighbors.",
+			"additionalProperties": true
+		}
+	},
+	"properties": {
+		"$schema": {
+			"description": "JSON schema URI for character.schema.json.",
+			"type": "string"
+		},
+		"version": {
+			"description": "Version of character.schema.json to use.",
+			"type": "string",
+			"enum": [ "0.1" ]
+		},
+		"id": {
+			"type": "string",
+			"description": "A unique identifier for the character.",
+			"format": "uuid"
+		},
+		"dateCreated": {
+			"type": "string",
+			"format": "date-time",
+			"description": "The date and time when the character was first created."
+		},
+		"dateModified": {
+			"type": "string",
+			"format": "date-time",
+			"description": "The date and time when the character was last changed."
+		},
+		"dateTouched": {
+			"type": "string",
+			"format": "date-time",
+			"description": "The date and time when the character was last loaded, viewed or interacted with."
+		},
+		"name": {
+			"type": "string",
+			"description": "The character’s name."
+		},
+		"game": {
+			"type": "string",
+			"description": "The name of the game or campaign that the character belongs to."
+		},
+		"pronouns": {
+			"type": "string",
+			"description": "The character’s preferred pronouns."
+		},
+		"description": {
+			"type": "string",
+			"description": "A short summary or subtitle for the character."
+		},
+		"traitSets": {
+			"type": "array",
+			"description": "The character’s trait sets.",
+			"items": { "$ref": "#/$defs/traitSet" }
+		},
+		"portrait": {
+			"type": "object",
+			"description": "An image to represent the character.",
+			"properties": {
+				"url": {
+					"type": "string",
+					"description": "A URI compatible with the HTML <image> tag.",
+					"format": "uri"
+				},
+				"alt": {
+					"type": "string",
+					"description": "A description of the image."
+				},
+				"tags": { "$ref": "#/$defs/tags" },
+				"custom": { "$ref": "#/$defs/custom" }
+			},
+			"required": [ "url", "alt", "tags", "custom" ],
+			"additionalProperties": false
+		},
+		"plotPoints": {
+			"type": "integer",
+			"description": "The character’s current number of plot points."
+		},
+		"notes": {
+			"type": "string",
+			"description": "Any additional notes about the character. Format: plaintext, Markdown or HTML."
+		},
+		"tags": { "$ref": "#/$defs/tags" },
+		"custom": { "$ref": "#/$defs/custom" }
+	},
+	"required": [ "version", "id", "dateCreated", "dateModified", "dateTouched", "name", "game", "pronouns", "description", "traitSets", "portrait", "plotPoints", "notes", "tags", "custom" ],
+	"additionalProperties": false
+}
