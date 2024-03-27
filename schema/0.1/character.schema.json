@@ -168,9 +168,18 @@
 			"description": "An image to represent the character.",
 			"properties": {
 				"url": {
-					"type": "string",
-					"description": "A URI compatible with the HTML <image> tag.",
-					"format": "uri"
+					"anyOf": [
+						{
+							"type": "string",
+							"description": "A URI compatible with the HTML <image> tag.",
+							"format": "uri"
+						},
+						{
+							"type": "string",
+							"description": "An empty string to indicate no image.",
+							"maxLength": 0
+						}
+					]
 				},
 				"alt": {
 					"type": "string",
