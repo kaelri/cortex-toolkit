@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		data() {
 			return {
-				localData:    {},
-				characters:   [],
-				characterID:  null,
-				mode:         'roster',
-				submode:      null,
-				editing:      null,
-				viewY:        null,
+				localData:          {},
+				characters:         [],
+				characterID:        null,
+				mode:               'roster',
+				submode:            null,
+				editing:            null,
+				viewY:              null,
 			}
 		},
 
@@ -116,10 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					</nav>
 
 				</div>
-			</footer>
-			
-			<div class="legal">
-			</div>`,
+			</footer>`,
 		
 		mounted() {
 
@@ -196,35 +193,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			},
 
-			importCharacter( character, confirm ) {
+			loadCharacter( id ) {
 
-				character.dateTouched = ( new Date() ).toISOString();
+				this.characterID = id;
 
-				// Convert timestamps to strings.
-				let dateProperties = [ 'dateCreated', 'dateModified' ];
-				for (let i = 0; i < dateProperties.length; i++) {
-					const property = dateProperties[i];
+				this.setMode( 'character', this.submode ?? 'edit' );
 
-					if ( typeof property === 'number' ) {
-						character[property] = ( new Date(character[property]) ).toISOString();
-					}
-					
-				}
-				
-				// Populate custom data sets for this app.
-				for (let i = 0; i < character.traitSets.length; i++) {
-					const traitSet = character.traitSets[i];
+				this.touchCharacter( id );
+				this.saveLocalData();
 
-					if ( !traitSet.custom.cortexToolkit ) {
-						traitSet.custom.cortexToolkit = structuredClone( cortexFunctions.defaultTraitSet.custom.cortexToolkit );
-					}
-					
-				}
+			},
 
-				if ( !character.portrait.custom.cortexToolkit ) {
-					character.portrait.custom.cortexToolkit = structuredClone( cortexFunctions.defaultCharacter.portrait.custom.cortexToolkit );
-				}
+			importCharacter( character ) {
 
+				// Save new character.
 				let c = this.characters.findIndex( existingCharacter => existingCharacter.id === character.id );
 
 				if ( c !== -1 ) {
@@ -233,15 +215,8 @@ document.addEventListener('DOMContentLoaded', () => {
 					this.characters.push( character );
 				}
 
+				this.touchCharacter( character.id );
 				this.saveLocalData();
-
-			},
-
-			loadCharacter( id ) {
-
-				this.characterID = id;
-
-				this.setMode( 'character', this.submode ?? 'edit' );
 
 			},
 
@@ -295,7 +270,22 @@ document.addEventListener('DOMContentLoaded', () => {
 				this.characters[c] = character;
 				this.setPageTitle();
 
+				this.touchCharacter( character.id );
 				this.saveLocalData();
+
+			},
+
+			touchCharacter( id ) {
+
+				let c = this.characters.findIndex( savedCharacter => savedCharacter.id === id );
+
+				if ( c === -1 ) return;
+
+				let character = this.characters[c];
+
+				character.dateTouched = ( new Date() ).toISOString();
+
+				this.characters[c] = character;
 
 			},
 

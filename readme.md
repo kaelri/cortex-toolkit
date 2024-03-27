@@ -17,12 +17,13 @@ This is a web application for creating and managing character sheets using the [
 - [x] Add **toggles** to enable/disable statements, SFX and “Hinder” for trait sets.
 - [x] Sub-traits (e.g. Specialties)
 - [x] Enable SFX on Trait Sets
+- [x] Confirmation message when importing an existing character
 
 ### In Progress
 
-- [ ] Add **confirmation** for delete & overwrite.
-- [ ] **Move** trait sets up/down/between columns
-- [ ] **Duplicate** characters, trait sets, traits and SFX.
+- [ ] Add confirmation messages when deleting characters and properties.
+- [ ] **Duplicate** characters and properties.
+- [ ] **Move** trait sets up, down and between columns.
 - [ ] Add option to disable **Attributes** ring
 
 ### Short Term

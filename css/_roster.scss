@@ -164,3 +164,32 @@
 .roster-input {
 	display: none;
 }
+
+// IMPORT FEEDBACK
+
+.modal-import-details {
+	display: flex;
+	column-gap: 2rem;
+	align-items: flex-start;
+	justify-content: center;
+	> * {
+		text-align: left;
+	}
+}
+
+.modal-import-prefix {
+	font-size: .75rem;
+	font-weight: bold;
+	color: var(--color-primary);
+
+}
+
+.modal-import-date {
+	font-size: .75rem;
+	color: var(--color-label);
+}
+
+.modal-import-date-suffix {
+	color: white;
+	font-weight: bold;
+}

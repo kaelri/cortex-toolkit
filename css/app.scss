@@ -53,6 +53,9 @@ $fa-font-path: '../fonts/fontawesome-free/webfonts';
 	--z-editor:                   1000;
 	--z-editor-scroll-indicator:  1100;
 	--z-editor-controls:          1200;
+	--z-modal-veil:               1300;
+	--z-modal:                    1400;
+	--z-modal-close:              1500;
 
 }
 
@@ -188,6 +191,7 @@ body {
 // COMPONENTS
 
 @import 'frame';
+@import 'modal';
 @import 'roster';
 @import 'character';
 @import 'variants';
