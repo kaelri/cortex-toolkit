@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		computed: {
 
 			baseURL() {
-				return window.location.href;
+				return window.location.href.replace('/index.html', '/');
 			},
 
 			year() {

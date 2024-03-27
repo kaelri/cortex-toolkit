@@ -15,4 +15,4 @@ mix
 	'js/portrait-editor.js',
 	'js/app.js'
 ], 'js/app.min.js' )
-.sass( 'css/app.scss', 'css/app.min.css', { sassOptions: { outputStyle: 'compressed' }} );
+.sass( 'css/app.scss', 'css/app.min.css', { sassOptions: { outputStyle: 'expanded' }} );

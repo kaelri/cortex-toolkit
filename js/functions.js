@@ -1,4 +1,4 @@
-window.cortexFunctions = {
+const cortexFunctions = {
 
 	arraysMatch: function( a, b ) {
 		if ( !Array.isArray(a) || !Array.isArray(b) ) return false;

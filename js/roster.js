@@ -315,7 +315,7 @@ const Roster = {
 		},
 
 		renderDate( timestamp ) {
-			return window.cortexFunctions.renderDate(timestamp);
+			return cortexFunctions.renderDate(timestamp);
 		},
 
 		getRelativeDateLabel( date1, date2 ) {
