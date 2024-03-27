@@ -6,12 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		data() {
 			return {
+				localData:    {},
 				characters:   [],
 				characterID:  null,
-				viewY:        null,
 				mode:         'roster',
 				submode:      null,
 				editing:      null,
+				viewY:        null,
 			}
 		},
 
@@ -310,23 +311,27 @@ document.addEventListener('DOMContentLoaded', () => {
 				let localData = JSON.parse(localJSON);
 				if ( !localData || !localData['0.1'] ) return;
 
+				this.localData = localData;
+
 				if ( localData['0.1'].characters ) {
-					this.characters = localData['0.1'].characters;
+					this.characters = structuredClone( localData['0.1'].characters );
 				}
 
 			},
 
 			saveLocalData() {
 
-				localStorage.setItem('cortexToolkitData', JSON.stringify({
-					'0.1': {
-						characters: this.characters,
-					}
-				}));
+				this.localData['0.1'] = {
+					characters: this.characters,
+				}
+
+				localStorage.setItem('cortexToolkitData', JSON.stringify(this.localData));
+
 			},
 
 			clearLocalData() {
 				localStorage.setItem('cortexToolkitData', null);
+				window.reload();
 			}
 
 		}
