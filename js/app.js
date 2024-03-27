@@ -200,6 +200,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				character.dateTouched = ( new Date() ).toISOString();
 
+				// Convert timestamps to strings.
+				let dateProperties = [ 'dateCreated', 'dateModified' ];
+				for (let i = 0; i < dateProperties.length; i++) {
+					const property = dateProperties[i];
+
+					if ( typeof property === 'number' ) {
+						character[property] = ( new Date(character[property]) ).toISOString();
+					}
+					
+				}
+				
 				// Populate custom data sets for this app.
 				for (let i = 0; i < character.traitSets.length; i++) {
 					const traitSet = character.traitSets[i];
