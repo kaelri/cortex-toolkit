@@ -11394,6 +11394,55 @@ body {
   color: black;
 }
 
+.preview-toggle-fillable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  justify-items: center;
+  margin-top: 0.5rem;
+}
+.preview-toggle-fillable > div {
+  display: flex;
+  align-items: center;
+}
+.preview-toggle-fillable > div:nth-child(odd) {
+  justify-content: center;
+}
+.preview-toggle-fillable > div:nth-child(even) {
+  justify-content: flex-start;
+}
+.preview-toggle-fillable label {
+  display: block;
+  margin: 0;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: inherit;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.fillable .title,
+.fillable .character-pronouns > span,
+.fillable .character-description {
+  visibility: hidden;
+}
+.fillable .trait-set:not(.trait-set-style-stress) .trait-name,
+.fillable .trait-set:not(.trait-set-style-stress) .trait-description,
+.fillable .trait-set:not(.trait-set-style-stress) .trait-sfx-name,
+.fillable .trait-set:not(.trait-set-style-stress) .trait-sfx-description,
+.fillable .trait-set:not(.trait-set-style-stress) .trait-value > span {
+  visibility: hidden;
+}
+.fillable .trait-set:not(.trait-set-style-stress) .trait-value {
+  background: var(--color-primary);
+  width: 1rem;
+  height: 1rem;
+  opacity: 0.2;
+}
+
 .trait-set-style-default, .trait-set-style-two-columns-detailed, .trait-set-style-distinctions {
   display: flex;
 }

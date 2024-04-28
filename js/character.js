@@ -7,7 +7,22 @@ const Character = {
 		viewY:     Number,
 	},
 
+	data() {
+		return {
+			fillableMode: false,
+		}
+	},
+
 	computed: {
+
+		cssClass() {
+			let classes = [ 'character-sheet' ];
+			classes.push( 'submode-' + this.submode );
+			if ( this.submode === 'print' && this.fillableMode ) {
+				classes.push( 'fillable' );
+			}
+			return classes.join(' ');
+		},
 
 		name() {
 			return this.character?.name ?? '';
@@ -40,7 +55,7 @@ const Character = {
 	},
 
 	/*html*/
-	template: `<section :class="'character-sheet submode-' + submode">
+	template: `<section :class="cssClass">
 	
 		<!-- BUTTON: ADD ATTRIBUTE -->
 		<transition appear>
@@ -59,6 +74,14 @@ const Character = {
 					<span><i class="fas fa-download"></i> Export</span>
 				</div>
 			</div>
+		</div>
+		</transition>
+
+		<!-- FILLABLE TOGGLE (TEMP) -->
+		<transition appear>
+		<div class="preview-toggle-fillable" v-show="submode === 'print'">
+			<div><input type="checkbox" id="character-toggle-fillable-mode" :true-value="true" :false-value="false" v-model="fillableMode"></div>
+			<div><label for="character-toggle-fillable-mode">Fillable Mode</label></div>
 		</div>
 		</transition>
 
@@ -233,7 +256,7 @@ const Character = {
 										<div :class="{'trait-set-header-inner': true, 'selected': isSelected(['traitSet', s])}"
 											@click.stop="selectElement([ 'traitSet', s ])"
 										>
-											<div v-html="traitSet.name"></div>
+											<div><span v-html="traitSet.name"></span></div>
 										</div>
 									</transition>
 
@@ -315,7 +338,7 @@ const Character = {
 																	<span class="trait-sfx-name">Hinder</span>:
 
 																	<span class="trait-sfx-description"
-																		v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.nounSingular && traitSet.nounSingular.length ? traitSet.nounSingular : 'trait' ) + '’s d' + trait.value + ' for a d4.')"
+																		v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.nounSingular && traitSet.nounSingular.length ? traitSet.nounSingular.toLowerCase() : 'trait' ) + '’s d' + trait.value + ' for a d4.')"
 																	></span>
 
 																</template>

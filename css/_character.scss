@@ -466,3 +466,58 @@
 		color: black;
 	}
 }
+
+// FILLABLE TOGGLE (TEMP)
+.preview-toggle-fillable {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: .25rem;
+	justify-items: center;
+	margin-top: .5rem;
+	> div {
+		display: flex;
+		align-items: center;
+	}
+	> div:nth-child(odd) {
+		justify-content: center;
+	}
+	> div:nth-child(even) {
+		justify-content: flex-start;
+	}
+	label {
+		display: block;
+		margin: 0;
+		font-family: inherit;
+		font-size: .75rem;
+		color: inherit;
+		cursor: pointer;
+		user-select: none;
+	}
+}
+
+.fillable {
+	.title,
+	.character-pronouns > span,
+	.character-description {
+		visibility: hidden;
+	
+	}
+
+	.trait-set:not(.trait-set-style-stress) {
+		.trait-name,
+		// .trait-set-header-inner > div > *,
+		.trait-description,
+		.trait-sfx-name,
+		.trait-sfx-description,
+		.trait-value > span {
+			visibility: hidden;
+		}
+		.trait-value {
+			background: var(--color-primary);
+			width: 1rem;
+			height: 1rem;
+			opacity: .2;
+		}
+	}
+}
