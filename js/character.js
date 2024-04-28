@@ -315,7 +315,7 @@ const Character = {
 																	<span class="trait-sfx-name">Hinder</span>:
 
 																	<span class="trait-sfx-description"
-																		v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.nounSingular && traitSet.nounSingular.length ? traitSet.nounSingular : 'trait' ) + '’s d' + trait.value + ' for a d4.')"
+																		v-html="renderText('Gain a PP when you switch out this ' + ( traitSet.nounSingular && traitSet.nounSingular.length ? traitSet.nounSingular.toLowerCase() : 'trait' ) + '’s d' + trait.value + ' for a d4.')"
 																	></span>
 
 																</template>
