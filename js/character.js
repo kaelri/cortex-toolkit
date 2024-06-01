@@ -442,15 +442,15 @@ const Character = {
 
 			classes[ 'trait-set-style-' + traitSet.custom.cortexToolkit.style.body ] = true;
 
-			if ( traitSet.custom.cortexToolkit.features.description ) {
+			if ( traitSet?.custom?.cortexToolkit?.features?.description ) {
 				classes[ 'trait-set-has-feature-description' ] = true;
 			}
 
-			if ( traitSet.custom.cortexToolkit.features.sfx ) {
+			if ( traitSet?.custom?.cortexToolkit?.features?.sfx ) {
 				classes[ 'trait-set-has-feature-sfx' ] = true;
 			}
 
-			if ( traitSet.custom.cortexToolkit.features.subtraits ) {
+			if ( traitSet?.custom?.cortexToolkit?.features?.subtraits ) {
 				classes[ 'trait-set-has-feature-subtraits' ] = true;
 			}
 
@@ -464,15 +464,15 @@ const Character = {
 				'trait': true
 			}
 
-			if ( trait.description.length ) {
+			if ( trait?.description?.length ) {
 				classes['trait-has-description'] = true;
 			}
 
-			if ( trait.sfx.length ) {
+			if ( trait?.sfx?.length ) {
 				classes['trait-has-sfx'] = true;
 			}
 
-			if ( trait.traits.length ) {
+			if ( trait?.traits?.length ) {
 				classes['trait-has-subtraits'] = true;
 			}
 
