@@ -86,7 +86,7 @@ const SubtraitEditor = {
 			let t = this.traitID;
 			let f = this.subtraitID;
 
-			character.traitSets[s].traits[t].subtraits[f][ key ] = value;
+			character.traitSets[s].traits[t].traits[f][ key ] = value;
 
 			this.updateCharacter( character );
 
